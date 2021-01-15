@@ -1,5 +1,6 @@
 # Workspace files
 *.code-workspace
+recipe-book.code-workspace
 
 # Logs
 logs
