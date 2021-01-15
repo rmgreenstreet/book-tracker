@@ -26,7 +26,7 @@
 			
 			<div class="container">
 				<nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top" id="navbar">
-				  <a class="navbar-brand js-scroll-trigger" href="#top">Custom Forms</a>
+				  <a class="navbar-brand js-scroll-trigger" href="#top">Recipe Book</a>
 				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navHamburger" aria-controls="navHamburger" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon">
 						<span class="icon-bar hamburger-bar"></span>
@@ -36,20 +36,22 @@
 				  </button>
 				  <div class="collapse navbar-collapse" id="navHamburger">
 					<a class="nav-link js-scroll-trigger" href="/users/dashboard">Dashboard</a>
-					<a class="nav-link js-scroll-trigger" href="/users/list">All Users</a>
-					<a class="nav-link js-scroll-trigger" href="/forms">Forms</a>
+					<a class="nav-link js-scroll-trigger" href="/recipes">Recipes</a>
+					<a class="nav-link js-scroll-trigger" href="/ingredients">Ingredients</a>
+					<a class="nav-link js-scroll-trigger" href="/plans">Meal Plans</a>
+					<a class="nav-link js-scroll-trigger" href="/shopping-list">Shopping List</a>
 				  </div>
 				</nav>
 			</div>	
 		</header>
 		<main class="pt-4">	
 			<div class="container flash" id="flashMessages">
-				<% if(success && success.length) { %>
+				<% if(typeof success !== 'undefined' && success.length) { %>
 					<div class="alert alert-success">
 						<%= success %>
 					</div>
 				<% } %>
-				<% if(error && error.length) { %>
+				<% if(typeof error !== 'undefined' && error.length) { %>
 					<div class="alert alert-danger">
 						<%= error %>
 					</div>
