@@ -1,3 +1,6 @@
+# Workspace files
+*.code-workspace
+
 # Logs
 logs
 *.log
