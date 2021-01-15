@@ -1,0 +1,123 @@
+<div class="form-row mb-1">
+    <div class="col">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <label for="location[name]" class="input-group-text">Name</label>
+          </div>
+          <input type="text" id="location[name]" name="location[name]" class="form-control" required>
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <label for="location[officeNumber]" class="input-group-text"><%= page && page==='ownerDashboard'? 'Primary': '' %>Office #</label>
+          </div>
+          <input type="text" id="location[officeNumber]" name="location[officeNumber]" class="form-control" required>
+      </div>
+    </div>
+  </div>
+  <div class="form-row mb-1">
+    <div class="col">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <label for="location[phone]" class="input-group-text">Phone</label>
+          </div>
+          <input type="tel" id="location[phone]" name="location[phone]" class="form-control" required>
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+          <div class="input-group-prepend">
+              <label for="location[website]" class="input-group-text">Website</label>
+          </div>
+          <input type="url" id="location[website]" name="location[website]" class="form-control" required>
+      </div>
+    </div>
+  </div>
+  <div class="form-row mb-1">
+    <div class="col-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label for="location[address][streetNumber]" class="input-group-text">Street #</label>
+        </div>
+        <input type="number" name="location[address][streetNumber]" id="location[address][streetNumber]" style="width:5em;" class="form-control" required>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label for="location[address][streetName]" class="input-group-text">Street Name</label>
+        </div>
+        <input type="text" name="location[address][streetName]" id="location[address][streetName]" class="form-control" required>
+      </div>
+    </div>
+  </div>
+  <div class="form-row mb-1">
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label for="location[address][secondary]" class="input-group-text">Secondary Address</label>
+        </div>
+        <input type="text" name="location[address][secondary]" id="location[address][secondary]" class="form-control" placeholder="Optional - Example: Ste 1A">
+      </div>
+    </div>
+  </div>
+  <div class="form-row mb-1">
+    <div class="col-4">
+      <div class="input-group">
+        <label for="location[city]" class="input-group-text">City</label>
+        <input type="text" name="location[address][city]" id="location[address][city]" class="form-control" required>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label for="location[address][state]" class="input-group-text">State</label>
+        </div>
+        <select name="location[address][state]" id="location[address][state]" class="form-control">
+          <% Object.keys(states).forEach(key => { %>
+            <option value="<%= key %>"><%= key %></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label for="location[address][postal]" class="input-group-text">Postal</label>
+        </div>
+        <input type="text" name="location[address][postal]" id="location[address][postal]" class="form-control" maxlength="7" minlength="5" required>
+      </div>
+    </div>
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label for="location[address][country]" class="input-group-text">Country</label>
+        </div>
+        <select name="location[address][country]" id="location[address][country]" class="form-control">
+          <option value="USA">United States</option>
+          <option value="CAN">Canada</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="hiddenfields" style="display:none;">
+    
+    <input type="text" name="companyId" id="companyId" value="<%= typeof currentCompany !== 'undefined' ? currentCompany.id : '' %>">
+  </div>
+  <div class="form-row mb-1">
+    <div class="col-md-6">
+        <div class="input-group align-middle">
+            <label class="btn btn-secondary">
+                Add Location Logo (Optional)<input type="file" name="location[image]" id="locationImage" accept="image/*" hidden>
+            </label>
+        </div>
+    </div>
+  </div>
+  <div class="form-row mb-1">
+    <div class="col">
+      <h4>Primary Contact Information</h4>
+    </div>
+  </div>
+  <%- include('./addUserForm.ejs') %>
+  

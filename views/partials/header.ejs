@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title><%#= title %></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=.9, shrink-to-fit=no">
+		<link rel="icon" href="/images/favicon.png" type="image/x-icon/">
+		<!-- bootstrap styles -->
+        <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<!-- google fonts Latio import -->
+		<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+		<!-- FontAwesome styles and scripts -->
+		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+		<script src="https://kit.fontawesome.com/75e02839f8.js" crossorigin="anonymous"></script>
+		<!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+		<link rel="stylesheet" href="/stylesheets/style.css">
+		<!-- <link rel="stylesheet" href="/stylesheets/lmdd.css"> -->
+    </head>
+    <body>
+		<header>
+			
+			<div class="container">
+				<nav class="navbar navbar-dark bg-dark navbar-expand-lg fixed-top" id="navbar">
+				  <a class="navbar-brand js-scroll-trigger" href="#top">Custom Forms</a>
+				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navHamburger" aria-controls="navHamburger" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon">
+						<span class="icon-bar hamburger-bar"></span>
+						<span class="icon-bar hamburger-bar"></span>
+						<span class="icon-bar hamburger-bar"></span>
+					</span>
+				  </button>
+				  <div class="collapse navbar-collapse" id="navHamburger">
+					<a class="nav-link js-scroll-trigger" href="/users/dashboard">Dashboard</a>
+					<a class="nav-link js-scroll-trigger" href="/users/list">All Users</a>
+					<a class="nav-link js-scroll-trigger" href="/forms">Forms</a>
+				  </div>
+				</nav>
+			</div>	
+		</header>
+		<main class="pt-4">	
+			<div class="container flash" id="flashMessages">
+				<% if(success && success.length) { %>
+					<div class="alert alert-success">
+						<%= success %>
+					</div>
+				<% } %>
+				<% if(error && error.length) { %>
+					<div class="alert alert-danger">
+						<%= error %>
+					</div>
+				<% } %>
+			</div>
+			<!--[if lt IE 10]>
+				<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com">upgrade your browser</a> to improve your experience.</p>
+			<![endif]-->
+
