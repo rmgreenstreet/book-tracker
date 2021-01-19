@@ -1,15 +1,43 @@
 <%- include( 'partials/header') %> 
-<h1><%= title %></h1>
+
+<div class="container">
+    <section id="welcome" class="m-sm">
+        <h1 class="card-title" id="welcome-text">Welcome Back, <%= typeof user !== 'undefined' && typeof user.firstName !== 'undefined' ? user.firstname : 'Buddy!' %></h1>
+    </section>
+    <section class="row" id="main">
+        <div class="col">
+            <div class="row">
+                <div class="col card m-1 py-1" id="most-recent">
+                    <h2 class="card-title">Current/Most Recent Read</h2>
+                    <%- include( 'partials/book-card') %> 
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col card m-1" id="last-ten">
+                    <div class="card-body">
+                        <h2 class="card-title">Last 5 read</h2>
+                        <div class="card-columns">
+                            <%- include( 'partials/book-card') %> 
+                            <%- include( 'partials/book-card') %> 
+                            <%- include( 'partials/book-card') %> 
+                            <%- include( 'partials/book-card') %> 
+                            <%- include( 'partials/book-card') %> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="row" id="tags">
+        <div class="col card m-1" id="recent-tags">
+            <div class="card-body">
+                <h4 class="card-title">Recent Tags</h3>
+            </div>
+        </div>
+    </section>
+</div>
+
 <%- include( 'partials/footer') %> 
 
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html> -->

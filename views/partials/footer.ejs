@@ -5,48 +5,11 @@
                     Copyright <%= new Date().getFullYear() %> Robert Greenstreet
                 </p>
             <!-- <script src="/javascripts/jquery-ui.min.js" ></script> -->
-            <script>
-
-
-                <% if (typeof graphDatasets !== 'undefined') { %> 
-                    var graphDatasets = <%- JSON.stringify(graphDatasets) %>;
-                <% } %>
-                <% if (typeof beginDate !== 'undefined') { %> 
-                    var beginDate = <%- JSON.stringify(beginDate) %>;
-                    var beginMonth = new Date(beginDate).getMonth() + 1;
-                    var beginYear = new Date(beginDate).getFullYear()
-                <% } %>
-                <% if (typeof endDate !== 'undefined') { %> 
-                    var endDate = <%- JSON.stringify(endDate) %>;
-                    var endYear = new Date(endDate).getFullYear();
-                    var endMonth = new Date(endDate).getMonth() + 1;
-                    var endDay = new Date(endDate).getDate();
-                <% } %>
-                <% if (typeof datePoints !== 'undefined') { %> 
-                    var datePoints = <%- JSON.stringify(datePoints) %>;
-                <% } %>
-                
-                if (beginMonth && beginMonth < 10) {
-                beginMonth = '0'+beginMonth;
-                }
-
-                if (endMonth && endMonth < 10) {
-                endMonth = '0'+endMonth;
-                }
-
-                if (endDay && endDay < 10) {
-                endDay = '0' + endDay
-                }
-
-                document.querySelector('#beginDate').defaultValue = `${beginYear}-${beginMonth}-01`;
-                document.querySelector('#endDate').defaultValue = `${endYear}-${endMonth}-${endDay}`;
-            </script>
+            
             <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
             <script src="/javascripts/script.js" type="text/javascript"></script>
-            <script src="/javascripts/canvasRender.js"></script>
-            <script src="/javascripts/formEdit.js"></script>
         </footer>
     </body>
 </html>

@@ -1,0 +1,15 @@
+<div class="card m-1 book-card" id="<%#= currentBook.bookId + '-card' %>">
+    <div class="card-body">
+        <!-- <img src="" alt="" class="card-img" id="<%#= currentBook.bookId + '-cover' %>"> -->
+        <svg class="bd-placeholder-img card-img" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <rect width="100%" height="100%" fill="#868e96"></rect>
+        </svg>
+        <div class="card-img-overlay">
+            <h4 class="card-title book-card-title pl-1" id="<%#= currentBook.bookId + '-title' %>">Book Title</h4>
+        </div>
+        <p class="card-text book-card-dates" id="<%#= currentBook.bookId + '-dates' %>">Started: 2020-01-01 Finished: Currently Reading</p>
+        <p class="card-text book-card-summary" id="<%#= currentBook.bookId + '-summary' %>">Summary of the book currently being read</p>
+        <p class="card-text book-card-rating" id="<%#= currentBook.bookId + '-rating' %>">Stars Image</p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text book-card-tags" id="<%#= currentBook.bookId + '-tags' %>"><a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a></p>
+    </div>
+</div>
