@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const siteTitle = " - Meenen Transmission | Emporia, KS Mechanic | 800-903-8855"
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Home' });
