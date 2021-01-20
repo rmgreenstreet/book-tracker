@@ -9,16 +9,21 @@ const bookSchema = new Schema({
 
     title: String,
     googleBooksID: String,
-    reviews: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Review'
-      }],
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+      }
+    ],
     isbn_10: Number,
     isbn_13: Number,
-    tags: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Tag'
-      }]
+    // tags: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'Tag'
+    //   }
+    // ],
+    averageRating: Number
 
 });
 

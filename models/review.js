@@ -44,7 +44,6 @@ const reviewSchema = new Schema({
     },
     slug: {
         type: Text,
-        default: slugWithDate(book.title),
         required:true
     }
 
@@ -66,7 +65,10 @@ async function slugWithDate(text) {
         return formatted + myText;
   
   }
-
+reviewSchema.pre('save', async function (next) {
+    this.slug = await slugWithDate(this.title);
+    next();
+});
 reviewSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Review',reviewSchema);

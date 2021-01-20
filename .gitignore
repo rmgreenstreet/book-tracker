@@ -5,6 +5,9 @@ recipe-book.code-workspace
 # nodemon config file
 nodemon.json
 
+# Test folder
+test/*
+
 # Logs
 logs
 *.log
