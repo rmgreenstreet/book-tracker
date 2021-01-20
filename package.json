@@ -6,6 +6,10 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+  "nodemonConfig": {
+    "ignore": ["*.json", "*.txt", "*.md", "test/*", "docs/*", "models/*"],
+    "delay": "2500"
+  },
   "dependencies": {
     "cloudinary": "^1.23.0",
     "cookie-parser": "^1.4.5",

@@ -2,6 +2,9 @@
 *.code-workspace
 recipe-book.code-workspace
 
+# nodemon config file
+nodemon.json
+
 # Logs
 logs
 *.log
