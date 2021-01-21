@@ -1,0 +1,32 @@
+<%- include('partials/header') %> 
+<div class="container">
+    <h1>Register</h1>
+    <div class="row">
+        <div class="col-6">
+            <form action="/register" method="POST" id="register-form" enctype="multipart/form-data">
+                <div class="input-group mb-3">
+                    <label for="username" class="form-label input-group-text">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="<%= typeof username !== 'undefined' ? username: 'ILuvBooks101' %>">
+                </div>
+                <div class="input-group mb-3">
+                    <label for="emailAddress" class="form-label input-group-text">Email address</label>
+                    <input type="email" class="form-control" id="emailAddress" placeholder="<%= typeof emailAddress !== 'undefined' ? emailAddress: 'name@example.com' %>">
+                </div>
+                <div class="input-group mb-3">
+                    <label for="password" class="form-label input-group-text">Password</label>
+                    <input type="password" class="form-control" id="password">
+                </div>
+                <div class="input-group mb-3">
+                    <label for="confirmPassword" class="form-label input-group-text">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword">
+                </div>
+                <div class="input-group mb-3">
+                    <label for="profilePicture" class="form-label input-group-text">Profile Picture</label>
+                    <input class="form-control" type="file" id="profilePicture">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include('partials/footer') %> 

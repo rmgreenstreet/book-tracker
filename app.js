@@ -2,8 +2,17 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser')
 var logger = require('morgan');
 const mongoose = require('mongoose');
+const User = require('./models/user');
+const passport = require('passport')
+
+// CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 require('mongoose-type-url');
 
@@ -34,6 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

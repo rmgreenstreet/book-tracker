@@ -1,15 +1,42 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
+// const Review = require('./review');
+const Tag = require('./tag');
 const Schema = mongoose.Schema;
-const Review = require('./book');
-const mongoosePaginate = require('mongoose-paginate');
-const moment = require('moment');
 
-const reviewSchema = new Schema({
-
-
-
+const userSchema = new Schema({
+    // username:{
+    //     type:String,
+    //     unique:true,
+    //     required:true
+    // },
+    email:{
+        type:String,
+        unique:true,
+        required:true
+    },
+    image: {
+        url: {
+            type:String,
+            default:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+        },
+        public_id: String
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+      }
+    ],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
+    // ,
+    // isAdmin:{
+    //     type:Boolean,
+    //     default:false
+    // }
 });
 
-reviewSchema.plugin(mongoosePaginate);
+userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Review',reviewSchema);
+module.exports = mongoose.model('User',userSchema);

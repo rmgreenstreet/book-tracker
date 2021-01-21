@@ -25,7 +25,7 @@ const reviewSchema = new Schema({
         required: true
     },
     text: {
-        type: Text,
+        type: String,
         default: 'This user has read this book and given it a rating, but has not written a review.'
     },
     tags: [
@@ -39,11 +39,32 @@ const reviewSchema = new Schema({
         default: Date.now(),
         required: true
     },
+    bookStartedDate: {
+        type: Date,
+        default: Date.now(),
+        required: true
+    },
+    bookFinished: {
+        type: Boolean,
+        default: false
+    },
+    bookFinishedDate: {
+        type: Date,
+        required: function() {return this.bookFinished}
+    },
+    currentlyReading: {
+        type: Boolean,
+        default: true
+    },
+    gaveUpReading: {
+        type: Boolean,
+        default: false
+    },
     lastEdited: {
         type: Date
     },
     slug: {
-        type: Text,
+        type: String,
         required:true
     }
 
@@ -65,10 +86,18 @@ async function slugWithDate(text) {
         return formatted + myText;
   
   }
+
 reviewSchema.pre('save', async function (next) {
     this.slug = await slugWithDate(this.title);
+    if (this.gaveUpReading) {
+        this.currentlyReading = false;
+        this.bookFinished = false;
+        this.bookFinishedDate = Date.now();
+        this.starRating = 1;
+    }
     next();
 });
+
 reviewSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Review',reviewSchema);
+module.exports = mongoose.model('Review', reviewSchema);

@@ -6,7 +6,10 @@ recipe-book.code-workspace
 nodemon.json
 
 # Test folder
-test/*
+test/
+
+# .vscode folder
+.vscode/
 
 # Logs
 logs
