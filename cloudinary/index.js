@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const crypto = require('crypto');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 //configure cloudinary upload settings
 cloudinary.config({
@@ -22,6 +22,7 @@ const storage = new CloudinaryStorage({
         buf = buf.toString('hex');
         let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
         uniqFileName += buf;
+        
       cb(undefined, uniqFileName );
     }
   });

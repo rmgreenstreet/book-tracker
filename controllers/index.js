@@ -42,6 +42,8 @@ module.exports = {
 	},
 	// POST /register
 	async postRegister(req, res, next) {
+        // console.log(req.body);
+        // return res.render('register');
         try {
             /* if a file was uploaded, add the image to the request body */
             if(req.file) {
@@ -61,7 +63,7 @@ module.exports = {
         catch (err) {
             /*if registration fails for any reason, 
             delete the image that was uploaded from cloudinary */
-            deleteProfileImage(req);
+            await deleteProfileImage(req);
             const { username, email } = req.body;
             let error = err.message;
             if (error.includes('E11000') && error.includes('email')) {

@@ -2,7 +2,6 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser')
 var logger = require('morgan');
 const mongoose = require('mongoose');
 const User = require('./models/user');
@@ -10,7 +9,6 @@ const passport = require('passport')
 
 // CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(User.createStrategy());
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -26,12 +24,12 @@ if (app.get('env') == 'development'){ require('dotenv').config(); };
 mongoose.connect(process.env.DATABASE_URL,{
 	useNewUrlParser:true, 
 	useUnifiedTopology:true,
-  	useFindAndModify: false,
-  	useCreateIndex:true
+  useFindAndModify: false,
+  useCreateIndex:true
 }).then(() => {
-	console.log('Connected to Mongo DB')
+	console.log('Connected to Mongo DB');
 }).catch(err => {
-	console.log('Mongoose error: ',err)
+	console.log('Mongoose error: ',err);
 });
 
 // view engine setup
@@ -40,11 +38,9 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser);
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 

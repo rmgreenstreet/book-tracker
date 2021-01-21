@@ -5,11 +5,11 @@ const Tag = require('./tag');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    // username:{
-    //     type:String,
-    //     unique:true,
-    //     required:true
-    // },
+    username:{
+        type:String,
+        unique:true,
+        required:true
+    },
     email:{
         type:String,
         unique:true,
