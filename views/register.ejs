@@ -6,11 +6,11 @@
             <form action="/register" method="POST" id="register-form" enctype="multipart/form-data">
                 <div class="input-group mb-3">
                     <label for="username" class="form-label input-group-text">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="<%= typeof username !== 'undefined' ? username: 'ILuvBooks101' %>">
+                    <input type="text" class="form-control" id="username" placeholder="ILuvBooks101" value="<%= typeof username !== 'undefined' ? username: '' %>">
                 </div>
                 <div class="input-group mb-3">
-                    <label for="emailAddress" class="form-label input-group-text">Email address</label>
-                    <input type="email" class="form-control" id="emailAddress" placeholder="<%= typeof emailAddress !== 'undefined' ? emailAddress: 'name@example.com' %>">
+                    <label for="email" class="form-label input-group-text">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com" value="<%= typeof emailAddress !== 'undefined' ? emailAddress: '' %>">
                 </div>
                 <div class="input-group mb-3">
                     <label for="password" class="form-label input-group-text">Password</label>

@@ -8,6 +8,9 @@ nodemon.json
 # Test folder
 test/
 
+# tmp folder
+tmp/
+
 # .vscode folder
 .vscode/
 

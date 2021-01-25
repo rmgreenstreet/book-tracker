@@ -42,14 +42,18 @@ module.exports = {
 	},
 	// POST /register
 	async postRegister(req, res, next) {
-        // console.log(req.body);
+        console.log(req.file);
+        console.log(req.body);
         // return res.render('register');
         try {
             /* if a file was uploaded, add the image to the request body */
-            if(req.file) {
-                const { secure_url, public_id } = req.file;
-                req.body.image = {secure_url, public_id};
-            }
+            // if(req.file) {
+            //     console.log(req.file)
+            //     const secure_url = req.file.path;
+            //     const public_id = req.file.filename;
+            //     req.body.image = {secure_url, public_id};
+            // }
+            
             // create a new user in the database using the request body
             const user = await User.register(new User(req.body), req.body.password);
             //log the user in after signing up
@@ -63,6 +67,7 @@ module.exports = {
         catch (err) {
             /*if registration fails for any reason, 
             delete the image that was uploaded from cloudinary */
+            console.log(`Registration failed, deleting image ${req.file} from cloudinary`)
             await deleteProfileImage(req);
             const { username, email } = req.body;
             let error = err.message;

@@ -91,7 +91,9 @@ const middleware = {
 	},
 	async deleteProfileImage (req,res,next) {
 		if (req.file) {	
-			await cloudinary.uploader.destroy(req.file.public_id);
+			console.log(`deleting ${req.file.filename}`);
+			await cloudinary.uploader.destroy(req.file.filename);
+			console.log(req.file.filename + 'deleted');
 		}
 	},
 	async searchAndFilterPosts(req,res,next) {
