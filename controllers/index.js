@@ -42,8 +42,6 @@ module.exports = {
 	},
 	// POST /register
 	async postRegister(req, res, next) {
-        console.log(req.file);
-        console.log(req.body);
         // return res.render('register');
         try {
             /* if a file was uploaded, add the image to the request body */
