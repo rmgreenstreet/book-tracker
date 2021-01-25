@@ -47,13 +47,28 @@ module.exports = {
         // return res.render('register');
         try {
             /* if a file was uploaded, add the image to the request body */
-            // if(req.file) {
-            //     console.log(req.file)
-            //     const secure_url = req.file.path;
-            //     const public_id = req.file.filename;
-            //     req.body.image = {secure_url, public_id};
+            if(req.file) {
+                console.log(req.file)
+                const secure_url = req.file.path;
+                const public_id = req.file.filename;
+                req.body.image = {secure_url, public_id};
+            }
+            /* if a file was uploaded, send it to cloudinary */
+            // if (req.file) {
+            //     let uploadedImage = cloudinary.uploader.upload(req.file, 
+            //         {folder: `book_tracker/${process.env.CLOUDINARY_FOLDER}users`}, 
+            //         function(err, result) {
+            //             if(err) {
+            //                 throw new Error(err);
+            //             }
+            //             else {
+            //                 return result;
+            //             }
+            //         }
+            //     )
+            //     req.body.image.url = result.secure_url;
+            //     req.body.image.public_id = result.public_id;
             // }
-            
             // create a new user in the database using the request body
             const user = await User.register(new User(req.body), req.body.password);
             //log the user in after signing up

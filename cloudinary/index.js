@@ -15,9 +15,26 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const storage = multer.diskStorage( {
-    destination: function (req, file, cb) {
-        cb(null, '/tmp/uploads');
+// const storage = multer.diskStorage( {
+//     destination: function (req, file, cb) {
+//         cb(null, '/tmp/uploads');
+//     },
+//     filename: function (req, file, cb) {
+//         console.log('generating image filename');
+//         let buf = crypto.randomBytes(16);
+//         buf = buf.toString('hex');
+//         let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
+//         uniqFileName += buf;
+//         console.log(uniqFileName);
+//       cb(undefined, uniqFileName );
+//     }
+// });
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: ('book_tracker/'+process.env.CLOUDINARY_FOLDER+'users'),
+        allowedFormats: ['jpeg', 'jpg', 'png']
     },
     filename: function (req, file, cb) {
         console.log('generating image filename');
@@ -26,24 +43,9 @@ const storage = multer.diskStorage( {
         let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
         uniqFileName += buf;
         console.log(uniqFileName);
-      cb(undefined, uniqFileName );
+    cb(undefined, uniqFileName );
     }
-});
-
-// const storage = new CloudinaryStorage({
-//     cloudinary: cloudinary,
-//     // folder: ('book_tracker/'+process.env.CLOUDINARY_FOLDER+'users'),
-//     allowedFormats: ['jpeg', 'jpg', 'png'],
-    // filename: function (req, file, cb) {
-    //     console.log('generating image filename');
-    //     let buf = crypto.randomBytes(16);
-    //     buf = buf.toString('hex');
-    //     let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
-    //     uniqFileName += buf;
-    //     console.log(uniqFileName);
-    //   cb(undefined, uniqFileName );
-    // }
-//   });
+  });
 
 async function imageDelete(public_id, post) {
     //remove image from cloudinary

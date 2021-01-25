@@ -6,23 +6,23 @@
             <form action="/register" method="POST" id="register-form" enctype="multipart/form-data">
                 <div class="input-group mb-3">
                     <label for="username" class="form-label input-group-text">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="ILuvBooks101" value="<%= typeof username !== 'undefined' ? username: '' %>">
+                    <input type="text" class="form-control" id="username" name= "username" placeholder="ILuvBooks101" value="<%= typeof username !== 'undefined' ? username: '' %>">
                 </div>
                 <div class="input-group mb-3">
                     <label for="email" class="form-label input-group-text">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="name@example.com" value="<%= typeof emailAddress !== 'undefined' ? emailAddress: '' %>">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="<%= typeof emailAddress !== 'undefined' ? emailAddress: '' %>">
                 </div>
                 <div class="input-group mb-3">
                     <label for="password" class="form-label input-group-text">Password</label>
-                    <input type="password" class="form-control" id="password">
+                    <input type="password" class="form-control" id="password" name="password">
                 </div>
                 <div class="input-group mb-3">
                     <label for="confirmPassword" class="form-label input-group-text">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
                 </div>
                 <div class="input-group mb-3">
                     <label for="profilePicture" class="form-label input-group-text">Profile Picture</label>
-                    <input class="form-control" type="file" id="image">
+                    <input class="form-control" type="file" id="image" name="image">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
