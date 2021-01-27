@@ -3,17 +3,20 @@ const passportLocalMongoose = require('passport-local-mongoose');
 // const Review = require('./review');
 const Tag = require('./tag');
 const Schema = mongoose.Schema;
+const roles = ['basic', 'supervisor', 'admin'];
 
 const userSchema = new Schema({
     username:{
         type:String,
         unique:true,
-        required:true
+        required:true,
+        trim: true
     },
     email:{
         type:String,
         unique:true,
-        required:true
+        required:true,
+        trim: true
     },
     image: {
         url: {
@@ -21,6 +24,14 @@ const userSchema = new Schema({
             default:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
         },
         public_id: String
+    },
+    role: {
+        type: String,
+        default: 'basic',
+        enum: roles
+    },
+    accessToken: {
+     type: String
     },
     reviews: [
         {
@@ -30,11 +41,6 @@ const userSchema = new Schema({
     ],
     resetPasswordToken: String,
     resetPasswordExpires: Date
-    // ,
-    // isAdmin:{
-    //     type:Boolean,
-    //     default:false
-    // }
 });
 
 userSchema.plugin(passportLocalMongoose);

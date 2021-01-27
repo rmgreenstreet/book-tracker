@@ -4,6 +4,7 @@ const util = require('util');
 const { cloudinary } = require('../cloudinary');
 const { deleteProfileImage } = require('../middleware');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -54,13 +55,19 @@ module.exports = {
                 const public_id = req.file.filename;
                 req.body.image = {secure_url, public_id};
             }
+
             // create a new user in the database using the request body
-            const user = await User.register(new User(req.body), req.body.password);
+            const newUser = await User.register(new User(req.body), req.body.password);
+            /* create an access token for this user that lasts one day, and save it to the user */
+            newUser.accessToken = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+                expiresIn: "1d"
+            });
+            await newUser.save();
             //log the user in after signing up
-            req.login(user, function(err) {
+            req.login(newUser, function(err) {
                 if (err) return next(err);
                 //display a success message to the user
-                req.session.success = `Welcome to Book Tracker, ${user.username}!`;
+                req.session.success = `Welcome to Book Tracker, ${newUser.username}!`;
                 res.redirect('/');
             });
         }
@@ -98,6 +105,10 @@ module.exports = {
         if(!user && error) {
             return next(error);
         }
+        const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "1d"
+        });
+        await User.findByIdAndUpdate(user._id, { accessToken });
         req.login(user, function (err) {
             if(err){
                 return next(err);

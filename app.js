@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 const bodyParser = require('body-parser');
 var path = require('path');
+const jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
@@ -51,6 +52,20 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.use(async (req, res, next) => {
+  if (req.headers["x-access-token"]) {
+    const accessToken = req.headers["x-access-token"];
+    const { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
+    // Check if token has expired
+    if (exp < Date.now().valueOf() / 1000) { 
+    return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
+    } 
+    res.locals.loggedInUser = await User.findById(userId); next(); 
+  } else { 
+    next(); 
+  } 
+ });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
