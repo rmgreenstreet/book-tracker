@@ -15,21 +15,6 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// const storage = multer.diskStorage( {
-//     destination: function (req, file, cb) {
-//         cb(null, '/tmp/uploads');
-//     },
-//     filename: function (req, file, cb) {
-//         console.log('generating image filename');
-//         let buf = crypto.randomBytes(16);
-//         buf = buf.toString('hex');
-//         let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
-//         uniqFileName += buf;
-//         console.log(uniqFileName);
-//       cb(undefined, uniqFileName );
-//     }
-// });
-
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {

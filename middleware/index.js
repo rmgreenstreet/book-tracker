@@ -12,8 +12,8 @@ const middleware = {
 			Promise.resolve(fn(req, res, next))
 						 .catch(next);
 		},
-		/* see if the currently logged in user is the one who wrote the review 
-		attempting to be changed */
+	/* see if the currently logged in user is the one who wrote the review 
+	attempting to be changed */
 	async isReviewAuthor (req,res,next) {
 		let review = await Review.findById(req.params.review_id);
 		if (review.author.equals(req.user._id)) {
