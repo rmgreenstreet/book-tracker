@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Book = require('./book');
-const User = require('./user');
-const Tag = require('./tag');
+// const Book = require('./book');
+// const User = require('./user');
+// const Tag = require('./tag');
 const mongoosePaginate = require('mongoose-paginate');
 const moment = require('moment');
 
@@ -10,12 +10,14 @@ const reviewSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        immutable: true
       },
     book: {
         type: Schema.Types.ObjectId,
         ref: 'Book',
-        required: true
+        required: true,
+        immutable: true
       },
     starRating: {
         type:Number,
@@ -37,7 +39,8 @@ const reviewSchema = new Schema({
     created: {
         type: Date,
         default: Date.now(),
-        required: true
+        required: true,
+        immutable: true
     },
     bookStartedDate: {
         type: Date,

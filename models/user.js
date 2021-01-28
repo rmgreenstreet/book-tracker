@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 // const Review = require('./review');
-const Tag = require('./tag');
+// const Tag = require('./tag');
 const Schema = mongoose.Schema;
 const roles = ['basic', 'supervisor', 'admin'];
 
@@ -37,8 +37,31 @@ const userSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: 'Review'
-      }
+        }
     ],
+    reviewViews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ],
+    books: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Book'
+        }
+    ],
+    tags: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Tag'
+        }
+    ],
+    dateJoined: {
+        type: Date,
+        default: Date.now(),
+        immutable: true
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });

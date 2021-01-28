@@ -4,12 +4,30 @@ const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
 const moment = require('moment');
 
-const reviewSchema = new Schema({
+const tagSchema = new Schema({
 
-
+    title: {
+        type: String,
+        immutable: true
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        immutable: true
+    },
+    created: {
+        type: Date,
+        default: Date.now(),
+        required: true,
+        immutable: true
+    },
+    description: {
+        type: String
+    }
 
 });
 
-reviewSchema.plugin(mongoosePaginate);
+tagSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Review',reviewSchema);
+module.exports = mongoose.model('Review',tagSchema);

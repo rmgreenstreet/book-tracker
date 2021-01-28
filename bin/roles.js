@@ -3,24 +3,28 @@ const AccessControl = require("accesscontrol");
 const ac = new AccessControl();
  
 exports.roles = (function() {
-ac.grant("basic")
- .readOwn("profile")
- .updateOwn("profile")
- .readOwn("review")
- .updateOwn("review")
- 
-ac.grant("supervisor")
- .extend("basic")
- .readAny("profile")
- .readAny("review")
- 
-ac.grant("admin")
- .extend("basic")
- .extend("supervisor")
- .updateAny("profile")
- .deleteAny("profile")
- .updateAny("review")
- .deleteAny("review")
- 
-return ac;
+    ac.grant("basic")
+        .createOwn('review')
+        .readOwn("user")
+        .updateOwn("user")
+        .readOwn("review")
+        .updateOwn("review")
+        .readAny("book")
+        .readAny("user")
+        .readAny("review")
+    
+    ac.grant("supervisor")
+        .extend("basic")
+        .updateAny("user")
+        .updateAny("review")
+    
+    ac.grant("admin")
+        .extend("basic")
+        .extend("supervisor")
+        .deleteAny("user")
+        .deleteAny("review")
+        .updateAny("book")
+        .deleteAny("book")
+    
+    return ac;
 })();
