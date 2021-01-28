@@ -18,6 +18,7 @@ require('mongoose-type-url');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var booksRouter = require('./routes/books');
 
 const app = express();
 if (app.get('env') == 'development'){ require('dotenv').config(); };
@@ -52,6 +53,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/books', booksRouter);
 
 app.use(async (req, res, next) => {
   if (req.headers["x-access-token"]) {
