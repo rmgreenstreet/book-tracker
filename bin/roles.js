@@ -17,6 +17,7 @@ exports.roles = (function() {
         .extend("basic")
         .updateAny("user")
         .updateAny("review")
+        .createAny("tag")
     
     ac.grant("admin")
         .extend("basic")
@@ -25,6 +26,8 @@ exports.roles = (function() {
         .deleteAny("review")
         .updateAny("book")
         .deleteAny("book")
+        .updateAny("tag")
+        .deleteAny("tag")
     
     return ac;
 })();
