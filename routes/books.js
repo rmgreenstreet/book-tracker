@@ -24,7 +24,7 @@ const siteTitle = " - Book Tracker | What Should I Read Next?"
 router.get('/', isLoggedIn, getAllBooks);
 
 /* POST new book */
-router.post('/', /*isLoggedIn,*/ createBook);
+router.post('/', isLoggedIn, createBook);
 
 /* GET books-read page. */
 router.get('/read', function(req, res, next) {

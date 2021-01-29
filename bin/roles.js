@@ -1,33 +1,40 @@
-// server/roles.js
-const AccessControl = require("accesscontrol");
-const ac = new AccessControl();
- 
-exports.roles = (function() {
-    ac.grant("basic")
-        .createOwn('review')
-        .readOwn("user")
-        .updateOwn("user")
-        .readOwn("review")
-        .updateOwn("review")
-        .readAny("book")
-        .readAny("user")
-        .readAny("review")
-    
-    ac.grant("supervisor")
-        .extend("basic")
-        .updateAny("user")
-        .updateAny("review")
-        .createAny("tag")
-    
-    ac.grant("admin")
-        .extend("basic")
-        .extend("supervisor")
-        .deleteAny("user")
-        .deleteAny("review")
-        .updateAny("book")
-        .deleteAny("book")
-        .updateAny("tag")
-        .deleteAny("tag")
-    
-    return ac;
-})();
+const nodeAbac = require('node-abac');
+
+const accessPolicy = {
+    attributes: {
+        user: {
+            role: 'Is A Site Owner',
+            dateJoined: 'Member for over 1 year',
+            reviews: 'Has written at least 12 reviews'
+        }
+    },
+    rules: {
+        'fullAccess': {
+            attributes: {
+                'user.role': {
+                    comparison_type: 'string',
+                    comparison: 'isStrictlyEqual',
+                    value: 'owner'
+                }
+            }
+        },
+        'canModerateReviews': {
+            attributes: {
+                'user.dateJoined': {
+                    comparison_type: "datetime",
+                    comparison: "isLessRecentThan",
+                    value: "-1Y"
+                },
+                'user.reviews.length': {
+                    comparison_type: 'numeric',
+                    comparison: 'isGreaterThanEqualTo',
+                    value: '12'
+                }
+            }
+        }
+    }
+}
+
+const accessControl = new nodeAbac(accessPolicy, true);
+
+module.exports = accessControl;

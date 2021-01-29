@@ -94,4 +94,24 @@ app.listen(port, () => {
 	console.log("server has started, listening on port "+port);
 });
 
+const accessControl = require('./bin/roles');
+
+function testAccessControl() {
+  const subject = {
+    user: {
+      role: 'basic',
+      dateJoined: new Date(2020-01-01),
+      review: [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  };    
+
+  console.log(accessControl.enforce('fullAccess', subject, {}));
+};
+testAccessControl();
+
 module.exports = app;

@@ -3,7 +3,7 @@ const app = express();
 const sgMail = require('@sendgrid/mail');
 const ejs = require('ejs');
 const User = require('../models/user');
-const { roles } = require('../bin/roles');
+// const { roles } = require('../bin/roles');
 // const { deleteProfileImage } = require('../middleware');
 const crypto = require('crypto');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
