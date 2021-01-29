@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Review = require('./review');
+// const Review = require('./review');
 // const Tag = require('./tag');
 const mongoosePaginate = require('mongoose-paginate');
 const moment = require('moment');
@@ -15,18 +15,9 @@ const bookSchema = new Schema({
         type: String,
         immutable: true
     },
-    // reviews: [
-    //     {
-    //         type: Schema.Types.ObjectId,
-    //         ref: 'Review'
-    //   }
-    // ],
-    isbn_10: {
-        type: Number,
-        immutable: true
-    },
-    isbn_13: {
-        type: Number,
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         immutable: true
     },
     tags: [
@@ -36,7 +27,11 @@ const bookSchema = new Schema({
       }
     ],
     averageRating: Number,
-    numberOfRatings: Number
+    numberOfRatings: Number,
+    active: {
+        type: Boolean,
+        default: true
+    }
 
 });
 

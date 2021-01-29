@@ -5,7 +5,11 @@ const { storage } = require('../cloudinary');
 const upload = multer({storage: storage});
 const { 
     getAllBooks,
-    createBook
+    createBook,
+    findBook,
+    updateBook,
+    unPublishBook,
+    deleteBook
 } = require('../controllers/books');
 const { 
   asyncErrorHandler, 
