@@ -11,7 +11,7 @@ const bookSchema = new Schema({
         type: String,
         immutable: true
     },
-    googleBooksID: {
+    googleBooksId: {
         type: String,
         immutable: true
     },

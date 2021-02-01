@@ -16,12 +16,13 @@ passport.deserializeUser(User.deserializeUser());
 
 require('mongoose-type-url');
 
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
 
 const app = express();
-if (app.get('env') == 'development'){ require('dotenv').config(); };
 
 //connect to database
 mongoose.connect(process.env.DATABASE_URL,{
@@ -51,9 +52,39 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+//set local variables middleware
+app.use(async function (req,res,next) {
+  // req.user = await User.authenticate()('bob','password');
+  // req.user = User.findOne({username: 'bob'});
+  if (app.get('env') == 'development'){ 
+    req.user = {
+      'id':'6011d61a04abe04708edfb5f',
+      'username':'bob'
+    }
+  };
+	res.locals.currentUser = req.user;
+	//set success flash message
+	res.locals.success = req.session.success || "";
+	//delete flash message after sending it to the page so it doesn't show again
+	delete req.session.success;
+	//set error flash message
+	res.locals.error = req.session.error || "";
+	//delete flash message after sending it to the page so it doesn't show again
+	delete req.session.error;
+	//continue on to the next function in the middlware/route chain
+	next();
+})
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+
+
+if (app.get('env') == 'development'){ 
+  require('dotenv').config(); 
+};
 
 app.use(async (req, res, next) => {
   if (req.headers["x-access-token"]) {

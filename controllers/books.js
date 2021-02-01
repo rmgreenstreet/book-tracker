@@ -33,8 +33,6 @@ module.exports = {
             //Look up book using id submitted via Google Books API
             const googleBook = await getGoogleBook(req.body.bookId);
 
-            // const googleBook = await googleBooks.get({id: req.body.bookId});
-            console.log(googleBook.data);
             let newBook = await Book.create({
                 title: googleBook.data.volumeInfo.title,
                 googleBooksId: googleBook.data.id,
@@ -43,6 +41,7 @@ module.exports = {
             res.redirect('/books/'+newBook.id);
         } catch (err) {
             console.error(err.message);
+            req.session.error = err.message;
             res.redirect('/');
         }
     },
