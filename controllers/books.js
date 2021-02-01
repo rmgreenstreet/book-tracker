@@ -11,6 +11,12 @@ const Book = require('../models/book');
 
 const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes/'
 
+
+//Look up book using id submitted via Google Books API
+async function getGoogleBook(bookId) {
+    return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+}
+
 module.exports = {
 
     async getAllBooks(req, res, next) {
@@ -25,7 +31,7 @@ module.exports = {
     async createBook(req, res, next) {
         try {
             //Look up book using id submitted via Google Books API
-            const googleBook = await axios.get(booksApiUrl + req.body.bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+            const googleBook = await getGoogleBook(req.body.bookId);
 
             // const googleBook = await googleBooks.get({id: req.body.bookId});
             console.log(googleBook.data);
@@ -45,7 +51,7 @@ module.exports = {
             //Find book in database
             const currentBook = await Book.findOne({id: req.params.bookId, active:true});
             //Look up book using id submitted via Google Books API
-            const googleBook = await axios.get(booksApiUrl + currentBook.googleBooksId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+            const googleBook = await getGoogleBook(req.body.bookId);
 
             res.render('/books/book-details', {currentBook, googleBook: googleBook.data});
         } catch (err) {
@@ -59,7 +65,7 @@ module.exports = {
             //Find book in database, then update it
             const currentBook = await Book.findOneAndUpdate({id: req.params.bookId}, req.body);
             //Look up book using id submitted via Google Books API
-            const googleBook = await axios.get(booksApiUrl + currentBook.googleBooksId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+            const googleBook = await getGoogleBook(req.body.bookId);
             req.session.success = 'Book Information Updated!';
             res.render('/books/book-details', {currentBook, googleBook: googleBook.data});
         } catch (err) {
