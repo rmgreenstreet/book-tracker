@@ -23,7 +23,8 @@ const tagSchema = new Schema({
         immutable: true
     },
     description: {
-        type: String
+        type: String.apply,
+        required: true
     }
 
 });

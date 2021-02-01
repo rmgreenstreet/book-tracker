@@ -42,9 +42,7 @@ router.get('/:bookId', function (req, res, next) {
 });
 
 /* PUT specific book details */
-router.put('/:bookId', function (req, res, next) {
-    res.render('books/book-details', { title: 'Edit Book' + siteTitle });
-});
+router.put('/:bookId', /*isLoggedIn,*/ updateBook);
 
 /* DELETE specific book details */
 router.delete('/:bookId', function (req, res, next) {
