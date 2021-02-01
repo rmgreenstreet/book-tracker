@@ -62,13 +62,23 @@ module.exports = {
     async updateBook(req, res, next) {
         try {
             //Find book in database, then update it
-            const currentBook = await Book.findOneAndUpdate({id: req.params.bookId}, req.body);
+            // const currentBook = await Book.findOneAndUpdate({id: req.params.bookId}, req.body);
+
+            //workaround to add 'modified' information until I can figure out pre/post hook for 'findOneAndUpdate'
+            const currentBook = await Book.findById(req.params.bookId);
+            currentBook.tags = req.body.tags;
+            currentBook.modified = {
+                by: req.user.id,
+                at: Date.now()
+            };
+            await currentBook.save();
+
             //Look up book using id submitted via Google Books API
-            const googleBook = await getGoogleBook(req.body.bookId);
+            const googleBook = await getGoogleBook(currentBook.googleBooksId);
             req.session.success = 'Book Information Updated!';
-            res.render('/books/book-details', {currentBook, googleBook: googleBook.data});
+            res.redirect('/books/'+currentBook.id);
         } catch (err) {
-            console.error(err);
+            console.error(err.message);
             req.session.error = err.message;
             res.redirect('/');
         }

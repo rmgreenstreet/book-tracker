@@ -58,13 +58,13 @@ bookSchema.methods.updateRatings = async function (cb) {
     this.save();
 }
 
-bookSchema.pre('findOneAndUpdate', async () => {
-    const docToUpdate = await this.model.findOne(this.getQuery());
-    // this.set({'modified.by': 'req.user.id', 'modified.at': Date.now()})
-    docToUpdate.modified.by = req.user.id;
-    docToUpdate.modified.at = Date.now();
-    // await docToUpdate.save();
-});
+// bookSchema.pre('findOneAndUpdate', async () => {
+//     const docToUpdate = await this.model.findOne(this.getQuery());
+//     // this.set({'modified.by': 'req.user.id', 'modified.at': Date.now()})
+//     docToUpdate.modified.by = req.user.id;
+//     docToUpdate.modified.at = Date.now();
+//     // await docToUpdate.save();
+// });
 
 bookSchema.plugin(mongoosePaginate);
 
