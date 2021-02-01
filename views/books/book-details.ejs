@@ -16,6 +16,20 @@
                             <div class="col-md-4 cover-image">
                                 <img src="<%= googleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= currentBook.title %>" srcset="">
                             </div>
+                            <div class="col-md-4 title-author-rating">
+                                <h2 class="book-title"><%= currentBook.title %></h2>
+                                <h3 class="book-authors">
+                                    <% let combinedAuthors = '' %>
+                                    <% for(let author of googleBook.volumeInfo.authors) { %>
+                                        <% if(googleBook.volumeInfo.authors.indexOf(author) !== (googleBook.volumeInfo.authors.length -1)) { %>
+                                            <% combinedAuthors += `${author}, ` %>
+                                        <% } else { %>
+                                            <% combinedAuthors += author %>
+                                        <% } %>
+                                    <% } %>
+                                    <%= combinedAuthors %>
+                            </h3>
+                            </div>
                         </div>
                     </div>
                 </div>
