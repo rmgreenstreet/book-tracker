@@ -21,6 +21,7 @@ require('mongoose-type-url');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
+var tagsRouter = require('./routes/tags');
 
 const app = express();
 
@@ -80,6 +81,7 @@ app.use(async function (req,res,next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
+app.use('/tags', tagsRouter);
 
 
 if (app.get('env') == 'development'){ 

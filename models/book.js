@@ -63,7 +63,7 @@ bookSchema.pre('findOneAndUpdate', async () => {
     // this.set({'modified.by': 'req.user.id', 'modified.at': Date.now()})
     docToUpdate.modified.by = req.user.id;
     docToUpdate.modified.at = Date.now();
-    await docToUpdate.save();
+    // await docToUpdate.save();
 });
 
 bookSchema.plugin(mongoosePaginate);

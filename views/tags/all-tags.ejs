@@ -1,0 +1,32 @@
+<%- include( '../partials/header') %> 
+<div class="container">
+
+    <h1>View All Books</h1>
+    <p>Only the site owner should be able to access this</p>
+
+    <div class="main row">
+        <section class="col">
+            <div class="row">
+                <div class="col" id="filters">
+                    <%- include('../partials/filters') %>
+                </div>
+            </div>
+        </section>
+        <div class="col-9">
+            <section class="attribute-group mb-3" id="attribute-one">
+                <h2>Books in Modern Settings</h2>
+                <%- include( '../partials/results') %> 
+            </section>
+            <section class="attribute-group mb-3" id="attribute-two">
+                <h2>Books with romance sub-plots</h2>
+                <%- include( '../partials/results') %> 
+            </section>
+            <section class="attribute-group mb-3" id="attribute-three">
+                <h2>Books with a powerful protagonist</h2>
+                <%- include( '../partials/results') %> 
+            </section>
+        </div>
+    </div>
+</div>
+<%- include( '../partials/footer') %> 
+

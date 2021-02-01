@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
-const multer = require('multer');
-const { storage } = require('../cloudinary');
-const upload = multer({storage: storage});
 const { 
     getAllBooks,
     createBook,
