@@ -48,11 +48,15 @@ module.exports = {
     async findBook(req, res, next) {
         try {
             //Find book in database
-            const currentBook = await Book.findOne({id: req.params.bookId, active:true});
+            const currentBook = await Book.findById(req.params.bookId);
+            if (!currentBook.active) {
+                req.session.error = "The specified book has been unpublished";
+                return res.redirect('/');
+            }
             //Look up book using id submitted via Google Books API
-            const googleBook = await getGoogleBook(req.body.bookId);
+            const googleBook = await getGoogleBook(currentBook.googleBooksId);
 
-            res.render('/books/book-details', {currentBook, googleBook: googleBook.data});
+            res.render('books/book-details', {currentBook, googleBook: googleBook.data});
         } catch (err) {
             console.error(err);
             req.session.error = err.message;

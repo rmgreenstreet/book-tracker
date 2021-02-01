@@ -34,9 +34,7 @@ router.get('/browse', function(req, res, next) {
 });
 
 /* GET specific book details */
-router.get('/:bookId', function (req, res, next) {
-    res.render('books/book-details', { title: 'Edit Book' + siteTitle });
-});
+router.get('/:bookId', findBook);
 
 /* PUT specific book details */
 router.put('/:bookId', /*isLoggedIn,*/ updateBook);

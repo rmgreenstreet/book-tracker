@@ -1,4 +1,27 @@
 <%- include( '../partials/header') %> 
-<h1><%= title %></h1>
+<div class="container">
+    <div class="row">
+        <section class="col-3" id="book-tag-cloud">
+            <div class="row">
+                <div class="col">
+    
+                </div>
+            </div>
+        </section>
+        <section class="col-9" id="book-details">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-4 cover-image">
+                                <img src="<%= googleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= currentBook.title %>" srcset="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 <%- include( '../partials/footer') %> 
 
