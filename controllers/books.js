@@ -59,6 +59,7 @@ module.exports = {
             for this book, adding up the number of times a specific tag is used across
             all reviews, creating an array of objects like {tagName: count} and passing 
             that to tag-cloud, then passing that into the EJS render call */
+            const relevantReviews = await Review.find({book: currentBook._id})
             
 
             res.render('books/book-details', {currentBook, googleBook: googleBook.data});

@@ -24,6 +24,7 @@ async function seedBooks(devUser) {
     const numberOfBooks = Math.ceil(Math.random() * (100 - 50) + 50);
     console.log(`Creating ${numberOfBooks} Books`)
     for (let i = 1; i < numberOfBooks; i++) {
+        //pick a search term to use with google books API
         const randomWord = faker.random.word();
         const googleBooks = await axios.get(
             'https://www.googleapis.com/books/v1/volumes?q=' + 
@@ -31,9 +32,11 @@ async function seedBooks(devUser) {
             '&orderBy=newest&key=' + 
             process.env.GOOGLE_BOOKS_API_KEY
         );
+        //Pick a random book from the google books results to add to the database
         const randomIndex = Math.floor(Math.random() * googleBooks.data.items.length);
         console.log(`creating book from result number ${randomIndex+1}`);
         const singleGoogleBook = googleBooks.data.items[randomIndex];
+
         await Book.create({
             title: singleGoogleBook.volumeInfo.title,
             googleBooksId: singleGoogleBook.id,
@@ -56,10 +59,14 @@ async function seedReviews(devUser) {
         const randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
         //pick a random number of tags to apply between 1 and 10
         const numberOfTags = Math.ceil(Math.random() * 10);
+        //Make a copy of the tags array
         let tagsCopy = [];
         for (let i = 0; i < allTags.length; i++) {
             tagsCopy.push(allTags[i]._id);
         };
+        /* pick numberOfTags tags from tagsCopy, removing that option after the choice 
+        from tagsCopy afterward to prevent duplicate tags on the same review, and 
+        push them into randomTags to apply to the review */
         let randomTags = [];
         for (let j = 1; j <= numberOfTags; j++) {
             randomTags.push(
@@ -81,6 +88,7 @@ async function seedReviews(devUser) {
             created: randomStartDate,
             bookStartedDate: randomStartDate
         });
+        //If book was read all the way through, pick a random date this was done, between start date and current date
         if(wasBookFinished) {
             newReview.bookFinished = wasBookFinished;
             newReview.bookFinishedDate = randomFinishedDate;
