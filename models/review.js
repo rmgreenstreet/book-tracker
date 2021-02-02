@@ -7,6 +7,10 @@ const mongoosePaginate = require('mongoose-paginate');
 const moment = require('moment');
 
 const reviewSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -55,42 +59,46 @@ const reviewSchema = new Schema({
         type: Date,
         required: function() {return this.bookFinished}
     },
-    currentlyReading: {
-        type: Boolean,
-        default: true
-    },
-    gaveUpReading: {
-        type: Boolean,
-        default: false
-    },
+    // currentlyReading: {
+    //     type: Boolean,
+    //     default: true
+    // },
+    // gaveUpReading: {
+    //     type: Boolean,
+    //     default: false
+    // },
     lastEdited: {
         type: Date
     },
     slug: {
-        type: String,
-        required:true
+        type: String
     }
 
 });
 
 //generate url slug using post title and date created
 async function slugWithDate(text) {
-    let myText = text.toString().toLowerCase()
-      .replace(/\s+/g, '-')        // Replace spaces with -
-      .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
-      .replace(/\-\-+/g, '-')      // Replace multiple - with single -
-      .replace(/^-+/, '')          // Trim - from start of text
-      .replace(/-+$/, '');         // Trim - from end of text
+    let myText = text.toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-')        // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
+        .replace(/\-\-+/g, '-')      // Replace multiple - with single -
+        .replace(/^-+/, '')          // Trim - from start of text
+        .replace(/-+$/, '');         // Trim - from end of text
       
-      //
-      let date = moment(this.created)
-        , formatted = date.format('YYYY[-]MM[-]DD[-]');
-  
-        return formatted + myText;
+    let date = moment(this.created)
+    , formatted = date.format('YYYY[-]MM[-]DD[-]');
+
+    return formatted + myText;
   
   }
 
-reviewSchema.pre('save', async function (next) {
+  reviewSchema.pre('save', async function (next) {
+    this.slug = await slugWithDate(this.title);
+    next();
+  });
+
+reviewSchema.pre('updateOne', async function (next) {
     this.slug = await slugWithDate(this.title);
     if (this.gaveUpReading) {
         this.currentlyReading = false;
@@ -98,7 +106,6 @@ reviewSchema.pre('save', async function (next) {
         this.bookFinishedDate = Date.now();
         this.starRating = 1;
     }
-    next();
 });
 
 reviewSchema.plugin(mongoosePaginate);

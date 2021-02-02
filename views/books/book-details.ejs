@@ -12,11 +12,11 @@
             <div class="row">
                 <div class="col">
                     <div class="card">
-                        <div class="row">
+                        <div class="row p-1">
                             <div class="col-md-4 cover-image">
                                 <img src="<%= googleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= currentBook.title %>" srcset="">
                             </div>
-                            <div class="col-md-4 title-author-rating">
+                            <div class="col-md-8 title-author-rating">
                                 <h2 class="book-title"><%= currentBook.title %></h2>
                                 <h3 class="book-authors">
                                     <% let combinedAuthors = '' %>
@@ -28,7 +28,16 @@
                                         <% } %>
                                     <% } %>
                                     <%= combinedAuthors %>
-                            </h3>
+                                </h3>
+                                <a href="<%= googleBook.volumeInfo.infoLink %>" target="_blank"><img src="/images/poweredbygoogle.png" alt="Powered by Google" srcset=""></a>
+                            </div>
+                        </div>
+                        <div class="row p-1">
+                            <div class="col card-body">
+                                <hr class=" mt-0"/>
+                                <p class="card-text">
+                                    <%= googleBook.volumeInfo.description %>
+                                </p>
                             </div>
                         </div>
                     </div>

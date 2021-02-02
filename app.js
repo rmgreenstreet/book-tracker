@@ -1,13 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
+//Require packages
+const createError = require('http-errors');
+const express = require('express');
 const bodyParser = require('body-parser');
-var path = require('path');
+const path = require('path');
 const jwt = require('jsonwebtoken');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const mongoose = require('mongoose');
-const User = require('./models/user');
 const passport = require('passport');
+
+//Require models
+const User = require('./models/user');
+const Tag = require('./models/tag');
+
+//Require dev functions
+const { seetDatabase } = require('./seeds');
 
 // CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(User.createStrategy());
@@ -22,6 +29,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
 var tagsRouter = require('./routes/tags');
+const seedDatabase = require('./seeds');
 
 const app = express();
 
@@ -118,6 +126,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// seedDatabase();
 
 let port = process.env.PORT;
 if (port == null || port == "") {

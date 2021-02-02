@@ -3,6 +3,8 @@ const app = express();
 const axios = require('axios').default;
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const Book = require('../models/book');
+const Tag = require('../models/tag');
+const Review = require('../models/review');
 // const {google} = require('googleapis');
 // const googleBooks = google.books({
 //     version: 'v1',
@@ -12,10 +14,7 @@ const Book = require('../models/book');
 const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes/'
 
 
-//Look up book using id submitted via Google Books API
-async function getGoogleBook(bookId) {
-    return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
-}
+
 
 module.exports = {
 
@@ -55,6 +54,12 @@ module.exports = {
             }
             //Look up book using id submitted via Google Books API
             const googleBook = await getGoogleBook(currentBook.googleBooksId);
+
+            /* ToDo: Generate tag cloud using tag-cloud by looking up all reviews 
+            for this book, adding up the number of times a specific tag is used across
+            all reviews, creating an array of objects like {tagName: count} and passing 
+            that to tag-cloud, then passing that into the EJS render call */
+            
 
             res.render('books/book-details', {currentBook, googleBook: googleBook.data});
         } catch (err) {
@@ -110,6 +115,10 @@ module.exports = {
             req.session.error = err.message;
             res.redirect('/');
         }
+    },
+    //Look up book using id submitted via Google Books API
+    async getGoogleBook(bookId) {
+        return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
     }
 
 }

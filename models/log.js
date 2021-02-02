@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
 const moment = require('moment');
 
-const tagSchema = new Schema({
+const logSchema = new Schema({
 
     title: {
         type: String,
@@ -27,6 +27,6 @@ const tagSchema = new Schema({
 
 });
 
-tagSchema.plugin(mongoosePaginate);
+logSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Review',tagSchema);
+module.exports = mongoose.model('Log',logSchema);

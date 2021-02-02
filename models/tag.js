@@ -31,4 +31,4 @@ const tagSchema = new Schema({
 
 tagSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Review',tagSchema);
+module.exports = mongoose.model('Tag',tagSchema);
