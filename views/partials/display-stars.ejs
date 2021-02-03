@@ -1,0 +1,15 @@
+<div class="averageStars mb-2 d-inline mr-2">
+    <% for(let i = 0;i<5;i++) { %>
+        <% if(i < floorRating) { %>
+            <!-- show full star -->
+            <i class="fas fa-star"></i>
+        <% } else if( (currentBook.averageRating-i) > 0 && (currentBook.averageRating-i) < 1 ) { %>
+            <!-- show half star -->
+            <i class="fas fa-star-half-alt"></i>
+        <% } else { %>
+            <!-- show empty star -->
+            <i class="far fa-star"></i>
+        <% } %>
+    <% } %>
+    <%= (relevantReviews.length ? (relevantReviews.length + " Review" + (relevantReviews.length === 1 ? '' : 's') ): 'No Reviews Yet') %>
+</div>

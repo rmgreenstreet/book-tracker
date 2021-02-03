@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// const Review = require('./review');
+const Review = require('./review');
 // const Tag = require('./tag');
 const mongoosePaginate = require('mongoose-paginate');
 const moment = require('moment');
@@ -46,17 +46,30 @@ const bookSchema = new Schema({
 
 /* Todo later - method to update total and average rating for the book when
 a new review is published */
-bookSchema.methods.updateRatings = async function (cb) {
-    const allRatings = await Review.find({book: this._id}).select('starRating');
-    const ratingsTotal = allRatings
-        .map(c => c.starRating)
-        .reduce(function(t,c) {
-            return t + c;
-        });
-    this.averageRating = ratingsTotal / allRatings.length();
-    this.numberOfRatings = allRatings.length();
+bookSchema.methods.calculateAverageRating = async function() {
+    console.log('calculating averate rating')
+    console.log('book\'s current average rating is: '+this.averageRating);
+    let reviewTotal = 0;
+    let allReviews = await Review.find({book: this._id});
+    if(allReviews && allReviews.length) {
+      allReviews.forEach(review => {
+        reviewTotal += review.starRating;
+      });
+      this.averageRating = Math.round((reviewTotal/allReviews.length)*4)/4;
+      //apply average rating to the post
+      console.log('review total is: '+reviewTotal);
+      this.averageRating = (reviewTotal/allReviews.length);
+      this.numberOfRatings = allReviews.length;
+    }
+    else {
+        this.averageRating = reviewTotal;
+    }
+    
+    console.log('book\'s new average rating is: '+this.averageRating);
     this.save();
-}
+    const floorRating = Math.floor(this.averageRating);
+    return floorRating;
+};
 
 // bookSchema.pre('findOneAndUpdate', async () => {
 //     const docToUpdate = await this.model.findOne(this.getQuery());

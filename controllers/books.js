@@ -70,6 +70,7 @@ module.exports = {
                 req.session.error = "The specified book has been unpublished";
                 return res.redirect('/');
             }
+            const floorRating = await currentBook.calculateAverageRating();
             //Look up book using id submitted via Google Books API
             const googleBook = await getGoogleBook(currentBook.googleBooksId);
 
@@ -121,6 +122,7 @@ module.exports = {
             //Shuffle tag cloud for display
             fisherYatesShuffle(tags);
 
+
             // for (let tag of relevantTags) {
             //     let foundIndex = tags.findIndex(function(e) {
             //         return e.tagName === tag
@@ -142,7 +144,7 @@ module.exports = {
             //     randomize: true
             // });
 
-            res.render('books/book-details', {currentBook, googleBook: googleBook.data, tags, highestCount});
+            res.render('books/book-details', {currentBook, googleBook: googleBook.data, tags, highestCount, floorRating, relevantReviews});
         } catch (err) {
             console.error(err);
             req.session.error = err.message;

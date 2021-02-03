@@ -19,6 +19,7 @@
                             </div>
                             <div class="col-md-8 title-author-rating">
                                 <h2 class="book-title"><%= currentBook.title %></h2>
+                                <%- include('../partials/display-stars'); %>
                                 <h3 class="book-authors">
                                     <% let combinedAuthors = '' %>
                                     <% for(let author of googleBook.volumeInfo.authors) { %>
