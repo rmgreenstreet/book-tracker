@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const axios = require('axios').default;
 const tagCloud = require('tag-cloud');
+const promise = require('bluebird');
+promise.promisifyAll(tagCloud);
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const Book = require('../models/book');
 const Tag = require('../models/tag');
@@ -99,9 +101,7 @@ module.exports = {
                 }
             };
 
-            const cloud = tagCloud.tagCloud(tags, function(err, data) {
-                return data;
-            }, {
+            const cloud = await tagCloud.tagCloudAsync(tags, {
                 randomize: true
             });
 
