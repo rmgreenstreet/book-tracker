@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const axios = require('axios').default;
+const tagCloud = require('tag-cloud');
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const Book = require('../models/book');
 const Tag = require('../models/tag');
@@ -14,7 +15,10 @@ const Review = require('../models/review');
 const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes/'
 
 
-
+//Look up book using id submitted via Google Books API
+async function getGoogleBook(bookId) {
+    return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+}
 
 module.exports = {
 
@@ -59,10 +63,49 @@ module.exports = {
             for this book, adding up the number of times a specific tag is used across
             all reviews, creating an array of objects like {tagName: count} and passing 
             that to tag-cloud, then passing that into the EJS render call */
-            const relevantReviews = await Review.find({book: currentBook._id})
-            
 
-            res.render('books/book-details', {currentBook, googleBook: googleBook.data});
+            /* get all reviews for currentBook, selecting only 'tags', and populate those
+            tags, selecting only the 'title' of each tag */
+            const relevantReviews = await Review.find({book: currentBook._id}, 'tags')
+                .populate(
+                    {
+                        path:'tags',
+                        select: 'title'
+                    }
+                )
+                .exec();
+
+            /* go through the reviews and move only their tags to a separate array, to be easier to work with */
+            let relevantTags = [];
+            for (let review of relevantReviews) {
+                for (let tag of review.tags) {
+                    relevantTags.push(tag.title);
+                }
+            }
+
+            const tags = []; 
+            for (let tag of relevantTags) {
+                let foundIndex = tags.findIndex(function(e) {
+                    return e.tagName === tag
+                });
+                if (foundIndex !== -1) {
+                    tags[foundIndex].count++;
+                    foundindex = -1;
+                } else {
+                    tags.push({
+                        tagName: tag,
+                        count: 1
+                    })
+                }
+            };
+
+            const cloud = tagCloud.tagCloud(tags, function(err, data) {
+                return data;
+            }, {
+                randomize: true
+            });
+
+            res.render('books/book-details', {currentBook, googleBook: googleBook.data, cloud});
         } catch (err) {
             console.error(err);
             req.session.error = err.message;
@@ -116,10 +159,6 @@ module.exports = {
             req.session.error = err.message;
             res.redirect('/');
         }
-    },
-    //Look up book using id submitted via Google Books API
-    async getGoogleBook(bookId) {
-        return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
     }
 
 }
