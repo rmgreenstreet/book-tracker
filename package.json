@@ -13,7 +13,8 @@
       "*.md",
       "test/*",
       "docs/*",
-      "models/*"
+      "models/*",
+      "seeds.js"
     ],
     "delay": "2500"
   },

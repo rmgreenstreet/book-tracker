@@ -49,7 +49,7 @@ async function seedBooks(devUser) {
 
 async function seedReviews(devUser) {
     //Choose how many reviews will be created between 300 and 1000
-    const numberOfReviews = Math.floor(Math.random() * (1000-300) + 300);
+    const numberOfReviews = Math.floor(Math.random() * (2000-7000) + 700);
     console.log(`Creating ${numberOfReviews} Reviews`);
     const allBooks = await Book.find({});
     const allTags = await Tag.find({});

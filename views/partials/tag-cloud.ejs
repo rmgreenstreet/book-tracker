@@ -2,10 +2,10 @@
     <% const maxFontSize = 2 %>
     <% for (let tag of tags) { %>
         <% let fontSize = tag.count/highestCount * maxFontSize %>
-        <!-- Assign each tag to a 'bucket' for styling based on popularity -->
-        <% let bucketNumber = Math.floor(tag.count/highestCount * 5) %>
+        <% //Assign each tag to a 'bucket' for styling based on popularity %>
+        <% let bucketNumber = Math.round(tag.count/highestCount * 5) %>
         <% fontSize = +fontSize.toFixed(2) %>
-        <!-- Make sure font size will be at least 1em -->
+        <% //Make sure font size will be at least 1em %>
         <% if (fontSize <= 1) { %>
             <% fontSize = 1; %>
           <% } else { %>
