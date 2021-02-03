@@ -66,7 +66,11 @@ module.exports = {
         try {
             //Find book in database
             const currentBook = await Book.findById(req.params.bookId);
-            if (!currentBook.active) {
+            if(!currentBook) {
+                req.session.error = "Book not found";
+                return res.redirect('/');
+            }
+            if (!currentBook.active && req.user.role !== 'owner') {
                 req.session.error = "The specified book has been unpublished";
                 return res.redirect('/');
             }

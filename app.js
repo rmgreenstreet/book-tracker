@@ -70,7 +70,8 @@ app.use(async function (req,res,next) {
   if (app.get('env') == 'development'){ 
     req.user = {
       'id':'6011d61a04abe04708edfb5f',
-      'username':'bob'
+      'username':'bob',
+      'role': 'owner'
     }
   };
 	res.locals.currentUser = req.user;
