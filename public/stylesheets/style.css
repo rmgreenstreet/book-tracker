@@ -12,43 +12,27 @@ a {
   background-color: rgba(145, 145, 145, 0.5);
 }
 
-.bucket0 {
-  background-color: #ccc;
-  font-size: 1rem;
+ul.tags {
+  list-style-type: none;
 }
-.bucket1 {
-  background-color: green;
-  font-size: 1.1rem;
+
+li.tag {
+  max-width: 100%;
+  display: inline;
 }
-.bucket2 {
-  background-color: blue;
-  font-size: 1.2rem;
+
+a.bucket1 {
+  background-color: lightblue;
 }
-.bucket3 {
-  background-color: teal;
-  font-size: 1.3rem;
+a.bucket2 {
+  background-color: lightgreen;
 }
-.bucket4 {
-  background-color: pink;
-  font-size: 1.4rem;
+a.bucket3 {
+  background-color: lightyellow;
 }
-.bucket5 {
-  background-color: brown;
-  font-size: 1.5rem;
+a.bucket4 {
+  background-color: coral;
 }
-.bucket6 {
-  background-color: purple;
-  font-size: 1.6rem;
-}
-.bucket7 {
-  background-color: yellow;
-  font-size:1.7rem;
-}
-.bucket8 {
-  background-color: orange;
-  font-size: 1.8rem;
-}
-.bucket9 {
-  background-color: red;
-  font-size: 1.9rem;
+a.bucket5 {
+  background-color: rgb(172, 41, 172);
 }

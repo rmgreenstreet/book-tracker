@@ -16,6 +16,18 @@ const Review = require('../models/review');
 
 const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes/'
 
+//Implement Fisher-Yates(-Knuth) shuffle--for tags/tag cloud
+function fisherYatesShuffle (arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+        const swapIndex = Math.floor(Math.random() * (i + 1))
+        const currentItem = arr[i]
+        const itemToSwap = arr[swapIndex]
+        arr[i] = itemToSwap
+        arr[swapIndex] = currentItem
+      }
+      return arr
+}
+
 
 //Look up book using id submitted via Google Books API
 async function getGoogleBook(bookId) {
@@ -61,51 +73,76 @@ module.exports = {
             //Look up book using id submitted via Google Books API
             const googleBook = await getGoogleBook(currentBook.googleBooksId);
 
-            /* ToDo: Generate tag cloud using tag-cloud by looking up all reviews 
-            for this book, adding up the number of times a specific tag is used across
-            all reviews, creating an array of objects like {tagName: count} and passing 
-            that to tag-cloud, then passing that into the EJS render call */
-
-            /* get all reviews for currentBook, selecting only 'tags', and populate those
-            tags, selecting only the 'title' of each tag */
+            /* get all reviews for currentBook, selecting only 'tags', and populate those tags */
             const relevantReviews = await Review.find({book: currentBook._id}, 'tags')
                 .populate(
                     {
-                        path:'tags',
-                        select: 'title'
+                        path:'tags'
                     }
                 )
                 .exec();
 
-            /* go through the reviews and move only their tags to a separate array, to be easier to work with */
-            let relevantTags = [];
+            /* Distill tags to title, description, id, and number of occurrences for the book that the review is about */
+            const tags = []; 
             for (let review of relevantReviews) {
                 for (let tag of review.tags) {
-                    relevantTags.push(tag.title);
+                    //Check whether an object with a 'title' attribute that matches the current tag title
+                    let foundIndex = tags.findIndex(function(e) { return e.title === tag.title });
+                    //If one does exist, increase the 'count' of the tag at that index's occurrence
+                    if (foundIndex !== -1) {
+                        tags[foundIndex].count++;
+                        foundindex = -1;
+                    } else {
+                        /* If not, make a new object with that tag's attributes, whose 'count' attribute will be incremented 
+                        if it is found again */
+                        tags.push({
+                            title: tag.title,
+                            id: tag._id,
+                            description: tag.description,
+                            count: 1
+                        })
+                    }
+
+                    // relevantTags.push({
+                    //     title: tag.title, 
+                    //     id: tag._id, 
+                    //     description: tag.description
+                    // });
                 }
+                
             }
+            // Sort tags by 'count'
+            const orderedTags = tags.sort(function(a,b) {
+                return a.count - b.count;
+            })
+            .reverse();
 
-            const tags = []; 
-            for (let tag of relevantTags) {
-                let foundIndex = tags.findIndex(function(e) {
-                    return e.tagName === tag
-                });
-                if (foundIndex !== -1) {
-                    tags[foundIndex].count++;
-                    foundindex = -1;
-                } else {
-                    tags.push({
-                        tagName: tag,
-                        count: 1
-                    })
-                }
-            };
+            const highestCount = orderedTags[0].count;
+            //Shuffle tag cloud for display
+            fisherYatesShuffle(tags);
 
-            const cloud = await tagCloud.tagCloudAsync(tags, {
-                randomize: true
-            });
+            // for (let tag of relevantTags) {
+            //     let foundIndex = tags.findIndex(function(e) {
+            //         return e.tagName === tag
+            //     });
+            //     if (foundIndex !== -1) {
+            //         tags[foundIndex].count++;
+            //         foundindex = -1;
+            //     } else {
+            //         tags.push({
+            //             tagName: tag.title,
+            //             id: tag.id,
+            //             description: tag.description,
+            //             count: 1
+            //         })
+            //     }
+            // };
 
-            res.render('books/book-details', {currentBook, googleBook: googleBook.data, cloud});
+            // const cloud = await tagCloud.tagCloudAsync(tags, {
+            //     randomize: true
+            // });
+
+            res.render('books/book-details', {currentBook, googleBook: googleBook.data, tags, highestCount});
         } catch (err) {
             console.error(err);
             req.session.error = err.message;

@@ -1,14 +1,14 @@
 <%- include( '../partials/header') %> 
 <div class="container">
     <div class="row">
-        <section class="col-3" id="book-tag-cloud">
+        <section class="col-md-4" id="book-tag-cloud">
             <div class="row">
                 <div class="col">
-                    <%- cloud %>
+                    <%- include('../partials/tag-cloud'); %>
                 </div>
             </div>
         </section>
-        <section class="col-9" id="book-details">
+        <section class="col-md-8" id="book-details">
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -36,7 +36,7 @@
                             <div class="col card-body">
                                 <hr class=" mt-0"/>
                                 <p class="card-text">
-                                    <%= googleBook.volumeInfo.description %>
+                                    <%- googleBook.volumeInfo.description %>
                                 </p>
                             </div>
                         </div>
