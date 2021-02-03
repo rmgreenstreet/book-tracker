@@ -7,6 +7,10 @@ a {
   color: #00B7FF;
 }
 
+img.book-thumbnail {
+  max-height:20em;
+}
+
 .book-card-title {
   color: #fff;
   background-color: rgba(145, 145, 145, 0.5);
@@ -22,18 +26,23 @@ li.tag {
 }
 
 a.bucket1 {
-  background-color: lightblue;
+  background-color: lightyellow;
+  font-size: .75em;
 }
 a.bucket2 {
   background-color: lightgreen;
+  font-size: 1em;
 }
 a.bucket3 {
-  background-color: lightyellow;
+  background-color: lightblue;
+  font-size: 1.2em;
 }
 a.bucket4 {
   background-color: coral;
+  font-size: 1.5em
 }
 a.bucket5 {
   background-color: rgb(172, 41, 172);
   color: white;
+  font-size: 2em;
 }

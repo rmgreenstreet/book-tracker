@@ -15,7 +15,9 @@
                     <div class="card">
                         <div class="row p-1">
                             <div class="col-md-4 cover-image">
-                                <img src="<%= googleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= currentBook.title %>" srcset="">
+                                <% let thumbnailLink = '/images/book-not-found.jpg' %>
+                                <% if (googleBook.volumeInfo.imageLinks) { thumbnailLink = googleBook.volumeInfo.imageLinks.thumbnail } %>
+                                <img src="<%= thumbnailLink %>" alt="<%= currentBook.title %>" class="book-thumbnail">
                             </div>
                             <div class="col-md-8 title-author-rating">
                                 <h2 class="book-title"><%= currentBook.title %></h2>

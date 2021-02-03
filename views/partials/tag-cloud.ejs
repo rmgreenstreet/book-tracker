@@ -1,21 +1,21 @@
 <ul class="tags px-0">
-    <% const maxFontSize = 2 %>
+    <% const maxFontSize = 3 %>
     <% for (let tag of tags) { %>
         <% let fontSize = tag.count/highestCount * maxFontSize %>
         <% //Assign each tag to a 'bucket' for styling based on popularity %>
         <% let bucketNumber = Math.round(tag.count/highestCount * 5) %>
         <% fontSize = +fontSize.toFixed(2) %>
-        <% //Make sure font size will be at least 1em %>
+        <% //Make sure font size will be at least .75em %>
         <% if (fontSize <= 1) { %>
-            <% fontSize = 1; %>
+            <% fontSize = .75; %>
           <% } else { %>
             <% fontSize = fontSize; %>
           <% } %>
 
         <li class="tag">
-            <a class="tag-link btn py-0 bucket<%= bucketNumber %>" 
+            <a class="tag-link btn py-0 my-1 bucket<%= bucketNumber %>" 
                 href="/books/?t=<%= tag.id %>" 
-                style="font-size: <%= fontSize %>em"
+                style="font-size: <%#= fontSize %>em"
                 data-bs-toggle="tooltip" 
                 data-bs-html="true" 
                 title="<%= tag.description.substr(0,40) %>... (Click for more)">
