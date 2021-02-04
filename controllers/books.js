@@ -107,12 +107,6 @@ module.exports = {
                             count: 1
                         })
                     }
-
-                    // relevantTags.push({
-                    //     title: tag.title, 
-                    //     id: tag._id, 
-                    //     description: tag.description
-                    // });
                 }
                 
             }
@@ -126,28 +120,6 @@ module.exports = {
             //Shuffle tag cloud for display
             fisherYatesShuffle(tags);
 
-
-            // for (let tag of relevantTags) {
-            //     let foundIndex = tags.findIndex(function(e) {
-            //         return e.tagName === tag
-            //     });
-            //     if (foundIndex !== -1) {
-            //         tags[foundIndex].count++;
-            //         foundindex = -1;
-            //     } else {
-            //         tags.push({
-            //             tagName: tag.title,
-            //             id: tag.id,
-            //             description: tag.description,
-            //             count: 1
-            //         })
-            //     }
-            // };
-
-            // const cloud = await tagCloud.tagCloudAsync(tags, {
-            //     randomize: true
-            // });
-
             res.render('books/book-details', {currentBook, googleBook: googleBook.data, tags, highestCount, floorRating, relevantReviews});
         } catch (err) {
             console.error(err);
@@ -160,7 +132,6 @@ module.exports = {
             //Find book in database, then update it
             // const currentBook = await Book.findOneAndUpdate({id: req.params.bookId}, req.body);
 
-            //workaround to add 'modified' information until I can figure out pre/post hook for 'findOneAndUpdate'
             const currentBook = await Book.findById(req.params.bookId);
             currentBook.tags = req.body.tags;
             currentBook.modified = {
@@ -184,9 +155,16 @@ module.exports = {
             if(req.user.role === 'owner') {
                 //Find book in database, then update it with active: false 
                 await Book.findOneAndUpdate({_id: req.params.bookId}, {active: false});
-                // const updatedBook = await Book.findById(req.params.bookId);
+                //workaround to add 'modified' information until I can figure out pre/post hook for 'findOneAndUpdate'
+                const updatedBook = await Book.findById(req.params.bookId);
+                updatedBook.tags = req.body.tags;
+                updatedBook.modified = {
+                    by: req.user.id,
+                    at: Date.now()
+                };
+                await updatedBook.save();
                 req.session.success = 'The Book Has Been Unpublished!';
-                res.redirect('/books');
+                res.redirect(`/books/${req.params.bookId}`);
             } else {
                 req.session.error = 'You do not have permission to do that';
                 res.redirect('back');
@@ -202,7 +180,14 @@ module.exports = {
             if(req.user.role === 'owner') {
                 //Find book in database, then update it with active: false 
                 await Book.findOneAndUpdate({_id: req.params.bookId}, {active: true});
+                //workaround to add 'modified' information until I can figure out pre/post hook for 'findOneAndUpdate'
                 const updatedBook = await Book.findById(req.params.bookId);
+                updatedBook.tags = req.body.tags;
+                updatedBook.modified = {
+                    by: req.user.id,
+                    at: Date.now()
+                };
+                await updatedBook.save();
                 req.session.success = 'The Book Has Been Published!';
                 res.redirect(`/books/${updatedBook._id}`);
             } else {

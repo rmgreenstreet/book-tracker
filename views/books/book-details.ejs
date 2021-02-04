@@ -41,80 +41,80 @@
                                                 <div class="col">
                                                     <button type="button" class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish book</button>
                                                 </div>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="confirm-unpublish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="confirm-unpublish-label">Unpublish Book?</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to unpublish this book? It will no longer be available for users to write reviews, but existing reviews will remain in place. This action *can* be undone by an "Owner" user.</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <form action="/books/<%= currentBook.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
+                                                                <button class="btn btn-warning my-1">Unpublish book</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+            
                                                 <% } else { %>
                                                     <div class="col">
                                                         <button type="button" class="btn btn-success my-1" data-toggle="modal" data-target="#confirm-publish-modal">Re-publish book</button>
                                                     </div>
+                                                    <div class="col">
+                                                        <button type="button" class="btn btn-danger my-1" data-toggle="modal" data-target="#confirm-delete-modal">Delete book</button>
+                                                    </div>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="confirm-publish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirm-publish-label">Unpublish Book?</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure you want to publish this book? The book will become available for users to write new reviews about. This action *can* be undone.</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <form action="/books/<%= currentBook.id %>/publish?_method=PUT" class="publish-book" id="publish-book" method="post">
+                                                                    <button class="btn btn-success my-1">Re-publish book</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="confirm-delete-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-delete-label" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirm-delete-label">Delete Book?</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure you want to delete this book? The book is already unpublished, so no new reviews can be created for this book. </p>
+                                                                <p>All user-created reviews associated with this book will be permanently removed, and no new reviews for this book can be created. </p>
+                                                                <p><strong>This action *CANNOT* be undone.</strong></p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <form action="/books/<%= currentBook.id %>/unpublish?_method=DELETE" class="delete-book" id="delete-book"  method="post">
+                                                                    <button class="btn btn-danger my-1">Delete book</button>
+                                                                </form>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                
                                                 <% } %>
-                                                <div class="col">
-                                                    <button type="button" class="btn btn-danger my-1" data-toggle="modal" data-target="#confirm-delete-modal">Delete book</button>
-                                                </div>
                                             </div>
-        
-                                            
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="confirm-unpublish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="confirm-unpublish-label">Unpublish Book?</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Are you sure you want to unpublish this book? It will no longer be available for users to write reviews, but existing reviews will remain in place. This action *can* be undone by an "Owner" user.</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <form action="/books/<%= currentBook.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
-                                                            <button class="btn btn-warning my-1">Unpublish book</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
-        
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="confirm-publish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="confirm-publish-label">Unpublish Book?</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Are you sure you want to publish this book? The book will become available for users to write new reviews about. This action *can* be undone.</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <form action="/books/<%= currentBook.id %>/publish?_method=PUT" class="publish-book" id="publish-book" method="post">
-                                                            <button class="btn btn-success my-1">Re-publish book</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
-        
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="confirm-delete-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-delete-label" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="confirm-delete-label">Delete Book?</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Are you sure you want to delete this book? All user-created reviews associated with this book will be permanently removed, and no new reviews for this book can be created. This action *CANNOT* be undone.</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <form action="/books/<%= currentBook.id %>/unpublish?_method=DELETE" class="delete-book" id="delete-book"  method="post">
-                                                            <button class="btn btn-danger my-1">Delete book</button>
-                                                        </form>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-        
                                         <% } %>
                                     </div>
                                 </div>
