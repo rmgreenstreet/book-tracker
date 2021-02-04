@@ -37,9 +37,7 @@ const bookSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'User'
         },
-        at: {
-            type: Date
-        }
+        at: Date
     }
 
 });

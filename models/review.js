@@ -59,16 +59,20 @@ const reviewSchema = new Schema({
         type: Date,
         required: function() {return this.bookFinished}
     },
-    // currentlyReading: {
-    //     type: Boolean,
-    //     default: true
-    // },
-    // gaveUpReading: {
-    //     type: Boolean,
-    //     default: false
-    // },
-    lastEdited: {
-        type: Date
+    status: {
+        active: {
+            type: Boolean,
+            default: true,
+            required: true
+        },
+        reason: String
+    },
+    modified: {
+        by: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        at: Date
     },
     slug: {
         type: String

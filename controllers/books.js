@@ -197,8 +197,15 @@ module.exports = {
     async deleteBook(req, res, next) {
         try {
             //Find book in database and delete it 
-            const currentBook = await Book.findOneAndRemove({id: req.params.bookId});
-            req.session.success = 'The Book Has Been Deleted!';
+            const removedBook = await Book.findOneAndRemove({_id: req.params.bookId});
+            const removedReviews = await Review.findAndUpdate({book: req.params.bookId}, {
+                status: 
+                { 
+                    active: false,
+                    reason: 'Associated book removed'
+                }
+            });
+            req.session.success = `The Book ${removedBook.title} has been permanently deleted, with ${removedReviews.deletedCount} associated Reviews. Review authors will be notified.`;
             res.redirect('/books');
         } catch (err) {
             console.error(err);
