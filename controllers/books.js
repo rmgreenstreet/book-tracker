@@ -52,8 +52,25 @@ module.exports = {
 
     async getAllBooks(req, res, next) {
         try {
-            const allBooks = await Book.find({});
-            return res.render('books/all-books', {title: 'All Books', allBooks: allBooks});
+
+            //get any search provided by the user, if it exists
+            const { dbQuery } = res.locals;
+            //remove the search from the session
+            delete res.locals.dbQuery;
+            //get all posts, 10 per page, for the current page
+            let books = await Book.paginate(dbQuery,{
+                page: req.query.page || 1,
+                limit: 10,
+                sort:'-_id'
+            });
+            // set the current page of results
+            books.page = Number(books.page);
+            console.log(books.docs.length+' books found');
+            if(!books.docs.length && res.locals.query) {
+                res.locals.error = 'No results match that search.';
+            }
+
+            return res.render('books/all-books', {title: 'All Books', books});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');
@@ -194,24 +211,24 @@ module.exports = {
             res.redirect('/');
         }
     },
-    async deleteBook(req, res, next) {
-        try {
-            //Find book in database and delete it 
-            const removedBook = await Book.findOneAndRemove({_id: req.params.bookId});
-            const removedReviews = await Review.findAndUpdate({book: req.params.bookId}, {
-                status: 
-                { 
-                    active: false,
-                    reason: 'Associated book removed'
-                }
-            });
-            req.session.success = `The Book ${removedBook.title} has been permanently deleted, with ${removedReviews.deletedCount} associated Reviews. Review authors will be notified.`;
-            res.redirect('/books');
-        } catch (err) {
-            console.error(err);
-            req.session.error = err.message;
-            res.redirect('/');
-        }
-    }
-
+    // async deleteBook(req, res, next) {
+    //     try {
+    //         //Find book in database and delete it 
+    //         const removedBook = await Book.findOneAndRemove({_id: req.params.bookId});
+    //         const removedReviews = await Review.findAndUpdate({book: req.params.bookId}, {
+    //             status: 
+    //             { 
+    //                 active: false,
+    //                 reason: 'Associated book removed'
+    //             }
+    //         });
+    //         req.session.success = `The Book ${removedBook.title} has been permanently deleted, with ${removedReviews.deletedCount} associated Reviews. Review authors will be notified.`;
+    //         res.redirect('/books');
+    //     } catch (err) {
+    //         console.error(err);
+    //         req.session.error = err.message;
+    //         res.redirect('/');
+    //     }
+    // }
+    //Erring on the side of not actually deleting anything
 }

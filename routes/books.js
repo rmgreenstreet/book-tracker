@@ -7,19 +7,19 @@ const {
     updateBook,
     unPublishBook,
     rePublishBook,
-    deleteBook
 } = require('../controllers/books');
 const { 
   asyncErrorHandler, 
   isLoggedIn,
   isValidPassword,
-  changePassword
+  changePassword,
+  searchAndFilterPosts
 } = require('../middleware');
 
 const siteTitle = " - Book Tracker | What Should I Read Next?"
 
 /* GET All books page. */
-router.get('/', isLoggedIn, getAllBooks);
+router.get('/', isLoggedIn, searchAndFilterPosts, getAllBooks);
 
 /* POST new book */
 router.post('/', /*isLoggedIn,*/ createBook);
@@ -30,8 +30,8 @@ router.get('/read', function(req, res, next) {
 });
 
 /* GET browse-books page. */
-router.get('/browse', function(req, res, next) {
-  res.render('books/browse-books', { title: 'Browse Books' + siteTitle });
+router.get('/recommendations', function(req, res, next) {
+  res.render('books/recommended-books', { title: 'Recommended Books' + siteTitle });
 });
 
 /* GET specific book details */
@@ -44,9 +44,10 @@ router.put('/:bookId/unpublish', /*isLoggedIn,*/ unPublishBook);
 router.put('/:bookId/publish', /*isLoggedIn,*/ rePublishBook);
 
 /* DELETE specific book details */
-router.delete('/:bookId', function (req, res, next) {
-    res.redirect('/');
-});
+// router.delete('/:bookId', function (req, res, next) {
+//     res.redirect('/');
+// });
+//Erring on the side of "don't actually delete"
 
 
 module.exports = router;

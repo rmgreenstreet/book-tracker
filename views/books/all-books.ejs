@@ -14,16 +14,9 @@
         </section>
         <div class="col-9">
             <section class="attribute-group mb-3" id="attribute-one">
-                <h2>Books in Modern Settings</h2>
+                <%- include('../partials/pagination'); %>
                 <%- include( '../partials/results') %> 
-            </section>
-            <section class="attribute-group mb-3" id="attribute-two">
-                <h2>Books with romance sub-plots</h2>
-                <%- include( '../partials/results') %> 
-            </section>
-            <section class="attribute-group mb-3" id="attribute-three">
-                <h2>Books with a powerful protagonist</h2>
-                <%- include( '../partials/results') %> 
+                <%- include('../partials/pagination'); %>s
             </section>
         </div>
     </div>

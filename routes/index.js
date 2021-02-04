@@ -36,11 +36,6 @@ router.get('/books-read', function(req, res, next) {
   res.render('books/books-read', { title: 'Books I\'ve Read' + siteTitle });
 });
 
-/* GET browse-books page. */
-router.get('/browse-books', function(req, res, next) {
-  res.render('books/browse-books', { title: 'Browse Books' + siteTitle });
-});
-
 /* GET create user page  */
 router.get('/register', getRegister);
 

@@ -1,0 +1,21 @@
+<div class="row my-3 pagination">
+    <div class="col previousPagination">
+        <% if(books.page -1) { %>
+            <a href="<%= paginateUrl %><%= books.page - 1 %>"><< Prev</a>
+        <% } %>
+    </div>
+    <div class="col text-center pagesPagination">
+        <% if(books.pages > 1 && books.docs.length) { %>
+            <% for(let i = 1; i <= books.pages;i++) { %>
+                <a href="<%= paginateUrl %><%= i %>"
+                    <%= i === books.page ? 'style=color:#000;' : '' %>
+                    ><%= i %></a>
+            <% } %>
+        <% } %>
+    </div>
+    <div class="col text-right nextPagination">
+        <% if((books.page +1) <= books.pages) { %>
+            <a href="<%= paginateUrl %><%= books.page + 1 %>">Next >></a>
+        <% } %>
+    </div>
+</div>
