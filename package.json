@@ -14,9 +14,10 @@
       "test/*",
       "docs/*",
       "models/*",
-      "seeds.js"
+      "seeds.js",
+      "public/*"
     ],
-    "delay": "2500"
+    "delay": "1500"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.4.2",

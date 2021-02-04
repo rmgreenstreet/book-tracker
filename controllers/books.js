@@ -181,10 +181,34 @@ module.exports = {
     },
     async unPublishBook(req, res, next) {
         try {
-            //Find book in database, then update it with active: false 
-            const currentBook = await Book.findOneAndUpdate({id: req.params.bookId}, {active: false});
-            req.session.success = 'The Book Has Been Unpublished!';
-            res.redirect('/books');
+            if(req.user.role === 'owner') {
+                //Find book in database, then update it with active: false 
+                await Book.findOneAndUpdate({_id: req.params.bookId}, {active: false});
+                // const updatedBook = await Book.findById(req.params.bookId);
+                req.session.success = 'The Book Has Been Unpublished!';
+                res.redirect('/books');
+            } else {
+                req.session.error = 'You do not have permission to do that';
+                res.redirect('back');
+            }
+        } catch (err) {
+            console.error(err);
+            req.session.error = err.message;
+            res.redirect('/');
+        }
+    },
+    async rePublishBook(req, res, next) {
+        try {
+            if(req.user.role === 'owner') {
+                //Find book in database, then update it with active: false 
+                await Book.findOneAndUpdate({_id: req.params.bookId}, {active: true});
+                const updatedBook = await Book.findById(req.params.bookId);
+                req.session.success = 'The Book Has Been Published!';
+                res.redirect(`/books/${updatedBook._id}`);
+            } else {
+                req.session.error = 'You do not have permission to do that';
+                res.redirect('back');
+            }
         } catch (err) {
             console.error(err);
             req.session.error = err.message;

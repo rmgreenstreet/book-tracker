@@ -6,7 +6,6 @@ const {
     findBook,
     updateBook,
     unPublishBook,
-    rePublishBook,
     deleteBook
 } = require('../controllers/books');
 const { 
@@ -39,9 +38,6 @@ router.get('/:bookId', findBook);
 
 /* PUT unpublish a book */
 router.put('/:bookId/unpublish', /*isLoggedIn,*/ unPublishBook);
-
-/* PUT re-publish a book */
-router.put('/:bookId/publish', /*isLoggedIn,*/ rePublishBook);
 
 /* DELETE specific book details */
 router.delete('/:bookId', function (req, res, next) {

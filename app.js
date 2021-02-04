@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const methodOverride = require('method-override');
 
 //Require models
 const User = require('./models/user');
@@ -48,6 +49,7 @@ mongoose.connect(process.env.DATABASE_URL,{
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(methodOverride("_method"));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
