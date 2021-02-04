@@ -12,3 +12,7 @@ function formatTagCloud() {
         tag.classList.add('btn', 'p-1', 'm-1');
     }
 }
+
+document.querySelector('#unpublish-book').addEventListener('submit', function () {
+    
+});

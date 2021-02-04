@@ -36,8 +36,8 @@ router.get('/browse', function(req, res, next) {
 /* GET specific book details */
 router.get('/:bookId', findBook);
 
-/* PUT specific book details */
-router.put('/:bookId', /*isLoggedIn,*/ updateBook);
+/* PUT unpublish a book */
+router.put('/:bookId/unpublish', /*isLoggedIn,*/ unPublishBook);
 
 /* DELETE specific book details */
 router.delete('/:bookId', function (req, res, next) {

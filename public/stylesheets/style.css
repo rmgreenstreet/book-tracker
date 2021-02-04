@@ -3,9 +3,9 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
+/* a {
   color: #00B7FF;
-}
+} */
 
 img.book-thumbnail {
   max-height:20em;
@@ -45,4 +45,12 @@ a.bucket5 {
   background-color: rgb(172, 41, 172);
   color: white;
   font-size: 2em;
+}
+
+a.powered-by-google {
+  display: block;
+}
+
+form.unpublish-book, form.delete-book {
+  display: inline;
 }
