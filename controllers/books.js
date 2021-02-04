@@ -34,6 +34,20 @@ async function getGoogleBook(bookId) {
     return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
 }
 
+//flip whether book is published or unpublished (active: true/false);
+async function flipPublished(req, state) {
+    //Find book in database, then update it with state and modified by/at information
+    const updatedBook = await Book.findOneAndUpdate({_id: req.params.bookId}, {
+        active: state,
+        modified: {
+            by: req.user.id,
+            at: Date.now()
+        }
+    });
+    const action = state === false ? 'Unpublished' : 'Published';
+    req.session.success = `The Book Has Been ${action}!`;
+}
+
 module.exports = {
 
     async getAllBooks(req, res, next) {
@@ -153,15 +167,7 @@ module.exports = {
     async unPublishBook(req, res, next) {
         try {
             if(req.user.role === 'owner') {
-                //Find book in database, then update it with active: false and modified by/at information
-                const updatedBook = await Book.findOneAndUpdate({_id: req.params.bookId}, {
-                    active: false,
-                    updated: {
-                        by: req.user.id,
-                        at: Date.now()
-                    }
-                });
-                req.session.success = 'The Book Has Been Unpublished!';
+                await flipPublished(req, false);
                 res.redirect(`/books/${req.params.bookId}`);
             } else {
                 req.session.error = 'You do not have permission to do that';
@@ -176,16 +182,8 @@ module.exports = {
     async rePublishBook(req, res, next) {
         try {
             if(req.user.role === 'owner') {
-                //Find book in database, then update it with active: true and modified by/at information
-                const updatedBook = await Book.findOneAndUpdate({_id: req.params.bookId}, {
-                    active: true,
-                    updated: {
-                        by: req.user.id,
-                        at: Date.now()
-                    }
-                });
-                req.session.success = 'The Book Has Been Published!';
-                res.redirect(`/books/${updatedBook._id}`);
+                await flipPublished(req, true);
+                res.redirect(`/books/${req.params.bookId}`);
             } else {
                 req.session.error = 'You do not have permission to do that';
                 res.redirect('back');
