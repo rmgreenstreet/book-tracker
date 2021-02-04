@@ -153,16 +153,14 @@ module.exports = {
     async unPublishBook(req, res, next) {
         try {
             if(req.user.role === 'owner') {
-                //Find book in database, then update it with active: false 
-                await Book.findOneAndUpdate({_id: req.params.bookId}, {active: false});
-                //workaround to add 'modified' information until I can figure out pre/post hook for 'findOneAndUpdate'
-                const updatedBook = await Book.findById(req.params.bookId);
-                updatedBook.tags = req.body.tags;
-                updatedBook.modified = {
-                    by: req.user.id,
-                    at: Date.now()
-                };
-                await updatedBook.save();
+                //Find book in database, then update it with active: false and modified by/at information
+                const updatedBook = await Book.findOneAndUpdate({_id: req.params.bookId}, {
+                    active: false,
+                    updated: {
+                        by: req.user.id,
+                        at: Date.now()
+                    }
+                });
                 req.session.success = 'The Book Has Been Unpublished!';
                 res.redirect(`/books/${req.params.bookId}`);
             } else {
@@ -178,16 +176,14 @@ module.exports = {
     async rePublishBook(req, res, next) {
         try {
             if(req.user.role === 'owner') {
-                //Find book in database, then update it with active: false 
-                await Book.findOneAndUpdate({_id: req.params.bookId}, {active: true});
-                //workaround to add 'modified' information until I can figure out pre/post hook for 'findOneAndUpdate'
-                const updatedBook = await Book.findById(req.params.bookId);
-                updatedBook.tags = req.body.tags;
-                updatedBook.modified = {
-                    by: req.user.id,
-                    at: Date.now()
-                };
-                await updatedBook.save();
+                //Find book in database, then update it with active: true and modified by/at information
+                const updatedBook = await Book.findOneAndUpdate({_id: req.params.bookId}, {
+                    active: true,
+                    updated: {
+                        by: req.user.id,
+                        at: Date.now()
+                    }
+                });
                 req.session.success = 'The Book Has Been Published!';
                 res.redirect(`/books/${updatedBook._id}`);
             } else {
