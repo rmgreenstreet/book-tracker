@@ -113,7 +113,7 @@ const middleware = {
 			//initialize an empty array to store our db queries {objects}
 			const dbQueries=[];
 			//destructure all potential properties from req.query
-			let {search, price, avgRating, location, distance } = req.query;
+			let {search, avgRating, author } = req.query;
 			/* check if user submitted text search terms */
 			if(search) {
 				search = new RegExp(escapeRegExp(search), 'gi');
@@ -121,60 +121,9 @@ const middleware = {
 				now the database will know to search the title, description, & location
 				fields, using the search regular expression*/
 				dbQueries.push({$or: [
-					{title:search},
-					{description: search},
-					{location:search}
+					{title: search},
+					{text: search}
 				]});
-			}
-			if(location) {
-				let coordinates;
-				try {
-					//geocode the location to extract geo-coordinates (lng, lat)
-				const response = await geocodingClient
-				.forwardGeocode({
-					query:location,
-					limit:1
-				})
-				.send();
-				//destructure coordinates [ <longitude>, <latitude>]
-				coordinates = response.body.features[0].geometry;
-				} catch (err) {
-					req.session.error = 'Invalid location';
-				}
-				
-				
-				//set max distance to user's choice or 25 miles
-				let maxDistance = distance || 25;
-				// now we need to convert the distance to meters (why?), one mile is approximately 1609.34 meters
-				maxDistance *= 1609.34;
-				/* create a db query object for proximity searching via location (geometry) and push it into the dbQueries array */
-				dbQueries.push({
-					geometry: {
-						$near:{
-							$geometry: {
-								type:'Point',
-								coordinates
-							},
-							$maxDistance: maxDistance
-						}
-					}
-				});
-			}
-			if(price) {
-				/*
-				check individual min/max values and create a db query object for each
-				then push the object into the dbQueries array
-				min will search for all post documents with price
-				greater than or equal to ($gte) the min value
-				max will search for all post documents with price
-				less than or equal to ($lte) the max value
-				*/
-				if(price.min) {
-					dbQueries.push({price:{$gte: price.min}});
-				}
-				if(price.max) {
-					dbQueries.push({price:{$lte: price.max}});
-				}
 			}
 			if(avgRating) {
 				/* create a dbquery object that finds any post documents where the average rating value 
@@ -182,6 +131,10 @@ const middleware = {
 				dbQueries.push({
 					avgRating:{$gte:avgRating}
 				});
+			}
+			if(author) {
+				/* add the resource type to dbqueries */
+				dbQueries.push({author: author});
 			}
 			/* 
 			pass database query to next middleware route's middleware chain

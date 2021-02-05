@@ -58,19 +58,62 @@ module.exports = {
             //remove the search from the session
             delete res.locals.dbQuery;
             //get all posts, 10 per page, for the current page
-            let books = await Book.paginate(dbQuery,{
+            let reviews = await Review.paginate(dbQuery,{
                 page: req.query.page || 1,
                 limit: 10,
                 sort:'-_id'
             });
             // set the current page of results
-            books.page = Number(books.page);
-            console.log(books.docs.length+' books found');
-            if(!books.docs.length && res.locals.query) {
+            reviews.page = Number(reviews.page);
+            console.log(reviews.docs.length+' reviews found');
+            if(!reviews.docs.length && res.locals.query) {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/all-books', {title: 'All Books', books});
+            return res.render('books/all-books', {title: 'All Books', reviews});
+        } catch (err) {
+            req.session.error = err.message;
+            res.redirect('/');
+        }
+    },
+
+    async getSearchResults(req, res, next) {
+        try {
+
+            //get any search provided by the user, if it exists
+            const { dbQuery } = res.locals;
+            const resourceType = res.locals.query.resource;
+            const paginateOptions = {
+                page: req.query.page || 1,
+                limit: 10,
+                sort:'-_id'
+            }
+            //remove the search from the session
+            delete res.locals.dbQuery;
+            //get all posts, 10 per page, for the current page
+            let results;
+            switch(resourceType) {
+                case 'Review': 
+                    results = await Review.paginate(dbQuery, paginateOptions);
+                    break;
+                case 'Book': 
+                    results = await Book.paginate(dbQuery, paginateOptions);
+                    break;
+                case 'Tag': 
+                    results = await Tag.paginate(dbQuery, paginateOptions);
+                    break;
+                default :
+                    results = await Book.find({}, paginateOptions);
+            }
+
+            // set the current page of results
+            results.page = Number(results.page);
+            console.log(results.docs.length+' results found');
+            if(!results.docs.length && res.locals.query) {
+                res.locals.error = 'No results match that search.';
+            }
+
+            return res.render('books/all-books', {title: 'All Books', results});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');

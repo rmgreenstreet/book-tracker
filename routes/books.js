@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({mergeParams:true});
 const { 
     getAllBooks,
+    getSearchResults,
     createBook,
     findBook,
     updateBook,
@@ -19,15 +20,13 @@ const {
 const siteTitle = " - Book Tracker | What Should I Read Next?"
 
 /* GET All books page. */
-router.get('/', isLoggedIn, searchAndFilterPosts, getAllBooks);
+router.get('/', isLoggedIn, searchAndFilterPosts, getSearchResults);
 
 /* POST new book */
 router.post('/', /*isLoggedIn,*/ createBook);
 
 /* GET books-read page. */
-router.get('/read', function(req, res, next) {
-  res.render('books/books-read', { title: 'Books I\'ve Read' + siteTitle });
-});
+router.get('/read', searchAndFilterPosts, getSearchResults);
 
 /* GET browse-books page. */
 router.get('/recommendations', function(req, res, next) {
