@@ -3,7 +3,8 @@ const app = express();
 const axios = require('axios').default;
 const tagCloud = require('tag-cloud');
 const promise = require('bluebird');
-promise.promisifyAll(tagCloud);
+const moment = require('moment');
+// promise.promisifyAll(tagCloud);
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const Book = require('../models/book');
 const Tag = require('../models/tag');
@@ -122,7 +123,7 @@ module.exports = {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks});
+            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, moment});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');

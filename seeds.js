@@ -63,7 +63,7 @@ async function seedBooks(devUser) {
         const googleBooks = await axios.get(
             'https://www.googleapis.com/books/v1/volumes?q=' + 
              randomWord + 
-            '&orderBy=newest&key=' + 
+            '&orderBy=newest&filter=ebooks&key=' + 
             process.env.GOOGLE_BOOKS_API_KEY
         );
         //Pick a random book from the google books results to add to the database
