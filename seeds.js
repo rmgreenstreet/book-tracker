@@ -129,12 +129,14 @@ async function seedReviews(devUser) {
         if(wasBookFinished) {
             newReview.bookFinished = wasBookFinished;
             newReview.bookFinishedDate = randomFinishedDate;
+        } else if (Math.random() < 0.5 ? true : false) {
+            newReview.bookFinishedDate = randomFinishedDate;
         }
         if (i < 50) {
             newReview.author = devUser._id;
         }
         await newReview.save();
-        console.log(`${newReview.starRating} star review created for ${randomBook.title} by ${allUsers.find(user => user._id === newReview.author).username}`);
+        console.log(`${newReview.starRating} star review created for ${randomBook.title}`);
     };
     console.log(`${numberOfReviews} reviews created`);
     return;
