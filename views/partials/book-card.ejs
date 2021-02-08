@@ -1,19 +1,19 @@
-<div class="card m-1 book-card" id="<%#= currentBook.bookId + '-card' %>">
+<div class="card m-1 book-card" id="<%= document.book.id + '-card' %>">
     <div class="card-body">
         <% let matchedGoogleBook = googleBooks.find(book => book.id === document.book.googleBooksId); %>
-        <% if (typeof matchedGoogleBook !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks.smallThumbnail !== 'undefined') { %>
-            <img src="<%= matchedGoogleBook.volumeInfo.imageLinks.smallThumbnail %>" alt="<%= matchedGoogleBook.volumeInfo.title %>" class="card-img" id="<%= currentBook.bookId + '-cover' %>">
+        <% if (typeof matchedGoogleBook !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks.smallThumbnail !== 'undefined' ) { %>
+            <img src="<%= matchedGoogleBook.volumeInfo.imageLinks.smallThumbnail %>" alt="<%= matchedGoogleBook.volumeInfo.title %>" class="card-img" id="<%= document.bookId + '-cover' %>">
         <% } else { %>
             <svg class="bd-placeholder-img card-img" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <rect width="100%" height="100%" fill="#868e96"></rect>
             </svg>
         <% } %>
         <div class="card-img-overlay">
-            <h4 class="card-title book-card-title pl-1" id="<%#= currentBook.bookId + '-title' %>">Book Title</h4>
+            <h4 class="card-title book-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title %></h4>
         </div>
-        <p class="card-text book-card-dates" id="<%#= currentBook.bookId + '-dates' %>">Started: 2020-01-01 Finished: Currently Reading</p>
-        <p class="card-text book-card-summary" id="<%#= currentBook.bookId + '-summary' %>">Summary of the book currently being read</p>
-        <p class="card-text book-card-rating" id="<%#= currentBook.bookId + '-rating' %>">Stars Image</p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
-        <p class="card-text book-card-tags" id="<%#= currentBook.bookId + '-tags' %>"><a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a></p>
+        <p class="card-text book-card-dates" id="<%= document.book.id + '-dates' %>">Started: 2020-01-01 Finished: Currently Reading</p>
+        <p class="card-text book-card-summary" id="<%= document.book.id + '-summary' %>">Summary of the book currently being read</p>
+        <p class="card-text book-card-rating" id="<%= document.book.id + '-rating' %>">Stars Image</p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text book-card-tags" id="<%= document.book.id + '-tags' %>"><a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a></p>
     </div>
 </div>
