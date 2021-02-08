@@ -8,9 +8,7 @@
                 <rect width="100%" height="100%" fill="#868e96"></rect>
             </svg>
         <% } %>
-        <div class="card-img-overlay">
-            <h4 class="card-title book-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title %></h4>
-        </div>
+        <h4 class="card-title book-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title %></h4>
         <p class="card-text book-card-dates" id="<%= document.book.id + '-dates' %>">Started: <%= moment(document.bookStartedDate).format('MMM Do, YYYY') %> <br />
             <% if(!document.bookFinished && typeof document.bookFinishedDate !== 'undefined') { %> 
                 Re-shelved <%= moment(document.bookFinishedDate).format('MMM Do, YYYY') %>
@@ -20,7 +18,15 @@
                 Currently Reading
             <% } %></p>
         <p class="card-text book-card-summary" id="<%= document.book.id + '-summary' %>"><%= document.text ? document.text.substr(0, 35) + '...' : 'No review text available' %></p>
-        <p class="card-text book-card-rating" id="<%= document.book.id + '-rating' %>"><%- include('display-stars', {currentBook: document})></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
-        <p class="card-text book-card-tags" id="<%= document.book.id + '-tags' %>"><a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a> <a href="">Tag</a></p>
+        <p class="card-text book-card-rating" id="<%= document.book.id + '-rating' %>"><%- include('display-stars', {rating: document.starRating}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text book-card-tags" id="<%= document.book.id + '-tags' %>">
+            <% for(let tag of document.tags) { %>
+                <% if (document.tags.indexOf(tag) !== document.tags.length-1) { %>
+                    <a href="/books?resource=Book&tag=<%= tag.id %>"><%= tag.title %></a>, 
+                <% } else { %>
+                    <a href="/books?resource=Book&tag=<%= tag.id %>"><%= tag.title %></a>
+                <% } %>
+            <% } %>
+        </p>
     </div>
 </div>

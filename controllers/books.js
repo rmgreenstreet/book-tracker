@@ -96,7 +96,7 @@ module.exports = {
             let googleBooks = [];
             switch(resourceType) {
                 case 'Review': 
-                    paginateOptions.populate = {path: 'book'};
+                    paginateOptions.populate = {path: 'book tags'};
                     results = await Review.paginate(dbQuery, paginateOptions);
                         for (let document of results.docs) {
                             const googleBooksResults = await getGoogleBook(document.book.googleBooksId);

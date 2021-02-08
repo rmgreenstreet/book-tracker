@@ -1,9 +1,12 @@
 <div class="averageStars mb-2 d-inline">
+    <% if (typeof relevantReviews === 'undefined') { %>
+        Your rating:
+    <% } %>
     <% for(let i = 0;i<5;i++) { %>
-        <% if(i < floorRating) { %>
+        <% if(i < rating) { %>
             <!-- show full star -->
             <i class="fas fa-star"></i>
-        <% } else if( (currentBook.averageRating-i) > 0 && (currentBook.averageRating-i) < 1 ) { %>
+        <% } else if( (rating-i) > 0 && (rating-i) < 1 ) { %>
             <!-- show half star -->
             <i class="fas fa-star-half-alt"></i>
         <% } else { %>
@@ -11,5 +14,7 @@
             <i class="far fa-star"></i>
         <% } %>
     <% } %>
-    <%= (relevantReviews.length ? (relevantReviews.length + " Review" + (relevantReviews.length === 1 ? '' : 's') ): 'No Reviews Yet') %>
+    <% if(typeof relevantReviews !== 'undefined' ) { %>
+        <%= (relevantReviews.length ? (relevantReviews.length + " Review" + (relevantReviews.length === 1 ? '' : 's') ): 'No Reviews Yet') %>
+    <% } %>
 </div>
