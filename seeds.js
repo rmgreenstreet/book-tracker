@@ -10,7 +10,41 @@ const axios = require('axios');
 const faker = require('faker');
 const moment = require('moment');
 
-async function seedTags(devUser) {
+async function seedUsers() {
+    //Choose how many users to create between 50 and 100
+    const numberOfUsers = Math.ceil(Math.random() * (100 - 50) + 50);
+    console.log(`Creating ${numberOfUsers} users`);
+
+        
+    for (let i = 0; i < numberOfUsers; i++) {
+        try {
+            const firstLast = faker.name.firstName() + faker.name.lastName();
+            const randomUser = {
+                username: firstLast,
+                email: firstLast + '@mail.com'
+            }
+            const newUser = await User.register(randomUser, 'password');
+            console.log(`New User ${randomUser.username} created`)
+        } catch (err) {
+            if(err.message.includes('already registered')) {
+                continue;
+            }
+        }
+    };
+    try {
+        const devUser = await User.register({
+            username: 'bob',
+            email: 'bob@bob.com',
+            role: 'owner'
+        }, 'password');
+    } catch (err) {
+        console.error(err.message);
+    }
+    console.log(`${numberOfUsers} Users created!`);
+    return;    
+}
+
+async function seedTags() {
     const defaultTags = require('./tmp/tags.json');
     for(let tag of defaultTags.defaultTags) {
         await Tag.create(tag);
@@ -22,7 +56,7 @@ async function seedTags(devUser) {
 async function seedBooks(devUser) {
     //Choose how many books to create between 50 and 100
     const numberOfBooks = Math.ceil(Math.random() * (100 - 50) + 50);
-    console.log(`Creating ${numberOfBooks} Books`)
+    console.log(`Creating ${numberOfBooks} Books`);
     for (let i = 1; i < numberOfBooks; i++) {
         //pick a search term to use with google books API
         const randomWord = faker.random.word();
@@ -33,9 +67,9 @@ async function seedBooks(devUser) {
             process.env.GOOGLE_BOOKS_API_KEY
         );
         //Pick a random book from the google books results to add to the database
-        const randomIndex = Math.floor(Math.random() * googleBooks.data.items.length);
-        console.log(`creating book from result number ${randomIndex+1}`);
-        const singleGoogleBook = googleBooks.data.items[randomIndex];
+        const randomBookIndex = Math.floor(Math.random() * googleBooks.data.items.length);
+        console.log(`creating book from result number ${randomBookIndex+1}`);
+        const singleGoogleBook = googleBooks.data.items[randomBookIndex];
 
         await Book.create({
             title: singleGoogleBook.volumeInfo.title,
@@ -49,12 +83,15 @@ async function seedBooks(devUser) {
 
 async function seedReviews(devUser) {
     //Choose how many reviews will be created between 300 and 1000
-    const numberOfReviews = Math.floor(Math.random() * (2000-7000) + 700);
+    const numberOfReviews = Math.floor(Math.random() * (1000-5000) + 5000);
     console.log(`Creating ${numberOfReviews} Reviews`);
     const allBooks = await Book.find({});
     const allTags = await Tag.find({});
+    const allUsers = await User.find({});
 
     for (let i = 0; i < numberOfReviews; i++) {
+        //pick a random user to be the author of the review
+        const randomUserIndex = Math.floor(Math.random() * allUsers.length);
         //pick a random book from the database to write a review about
         const randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
         //pick a random number of tags to apply between 1 and 10
@@ -80,7 +117,7 @@ async function seedReviews(devUser) {
         const randomFinishedDate = new Date(faker.date.between(moment(randomStartDate).format('YYYY[-]MM[-]DD'), moment(Date.now()).format('YYYY[-]MM[-]DD')));
         const newReview = new Review( {
             title: faker.lorem.words(5),
-            author: devUser._id,
+            author: allUsers[randomUserIndex]._id,
             book: randomBook._id,
             starRating: Math.ceil(Math.random() * 5),
             text: faker.lorem.paragraph(),
@@ -93,13 +130,19 @@ async function seedReviews(devUser) {
             newReview.bookFinished = wasBookFinished;
             newReview.bookFinishedDate = randomFinishedDate;
         }
+        if (i < 50) {
+            newReview.author = devUser._id;
+        }
         await newReview.save();
-        console.log(`${newReview.starRating} star review created for ${randomBook.title}`);
+        console.log(`${newReview.starRating} star review created for ${randomBook.title} by ${allUsers.find(user => user._id === newReview.author).username}`);
     };
     console.log(`${numberOfReviews} reviews created`);
+    return;
 };
 
 async function seedDatabase() {
+    await User.deleteMany({role: {$not: /owner/}});
+    console.log('All non-owner users deleted')
     const devUser = await User.findOne({username: 'bob'});
     await Book.deleteMany({});
     console.log('All Books removed');
@@ -107,6 +150,8 @@ async function seedDatabase() {
     console.log('All Tags Removed');
     await Review.deleteMany({});
     console.log('All Reviews removed');
+
+    await seedUsers();
 
     await seedBooks(devUser);
     

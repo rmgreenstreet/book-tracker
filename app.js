@@ -67,14 +67,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //set local variables middleware
 app.use(async function (req,res,next) {
-  // req.user = await User.authenticate()('bob','password');
   // req.user = User.findOne({username: 'bob'});
   if (app.get('env') == 'development'){ 
+    // req.user = await User.authenticate()('bob', 'password');
     req.user = {
-      'id':'6011d61a04abe04708edfb5f',
-      'username':'bob',
-      'role': 'owner'
-    }
+      username: 'bob',
+      email: 'bob@bob.com',
+      id: '60217ea4db471180bc238ae2'
+    };
   };
 	res.locals.currentUser = req.user;
 	//set success flash message

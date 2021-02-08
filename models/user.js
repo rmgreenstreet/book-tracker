@@ -3,7 +3,7 @@ const passportLocalMongoose = require('passport-local-mongoose');
 // const Review = require('./review');
 // const Tag = require('./tag');
 const Schema = mongoose.Schema;
-const roles = ['basic', 'supervisor', 'admin'];
+const roles = ['basic', 'supervisor', 'admin', 'owner'];
 
 const userSchema = new Schema({
     username:{

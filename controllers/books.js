@@ -92,12 +92,21 @@ module.exports = {
             delete res.locals.dbQuery;
             //get all posts, 10 per page, for the current page
             let results;
+            let googleBooks = [];
             switch(resourceType) {
                 case 'Review': 
+                    paginateOptions.populate = {path: 'book'};
                     results = await Review.paginate(dbQuery, paginateOptions);
+                        for (let document of results.docs) {
+                            const googleBooksResults = await getGoogleBook(document.book.googleBooksId);
+                            googleBooks.push(googleBooksResults.data);
+                        }
                     break;
                 case 'Book': 
                     results = await Book.paginate(dbQuery, paginateOptions);
+                    for (let document of results.docs) {
+                        googleBooks.push(await getGoogleBook(document.googleBooksId));
+                    }
                     break;
                 case 'Tag': 
                     results = await Tag.paginate(dbQuery, paginateOptions);
@@ -113,7 +122,7 @@ module.exports = {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/all-books', {title: 'All Books', results});
+            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');
