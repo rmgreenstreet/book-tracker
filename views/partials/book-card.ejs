@@ -8,7 +8,7 @@
                 <rect width="100%" height="100%" fill="#868e96"></rect>
             </svg>
         <% } %>
-        <h4 class="card-title book-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title %></h4>
+        <h4 class="card-title book-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title.length > 25 ? document.book.title.substr(0,20)+'...' : document.book.title %></h4>
         <p class="card-text book-card-dates" id="<%= document.book.id + '-dates' %>">Started: <%= moment(document.bookStartedDate).format('MMM Do, YYYY') %> <br />
             <% if(!document.bookFinished && typeof document.bookFinishedDate !== 'undefined') { %> 
                 Re-shelved <%= moment(document.bookFinishedDate).format('MMM Do, YYYY') %>
@@ -28,5 +28,16 @@
                 <% } %>
             <% } %>
         </p>
+        <% let googleBooksLink = ''; %>
+        <% if (matchedGoogleBook.saleInfo.buyLink) { %>
+        <% googleBooksLink = matchedGoogleBook.saleInfo.buyLink %>
+        <% } else if (matchedGoogleBook.volumeInfo.infoLink) { %>
+        <% googleBooksLink = matchedGoogleBook.volumeInfo.infoLink %>
+        <% } else if (matchedGoogleBook.volumeInfo.canonicalVolumeLink) { %>
+        <% googleBooksLink = matchedGoogleBook.volumeInfo.canonicalVolumeLink %>
+        <% } else { %>
+        <% googleBooksLink = 'https://books.google.com' %>
+        <% } %>
+        <a href="<%= googleBooksLink %>" target="_blank"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
     </div>
 </div>

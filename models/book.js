@@ -13,6 +13,7 @@ const bookSchema = new Schema({
     },
     googleBooksId: {
         type: String,
+        unique: true,
         immutable: true
     },
     createdBy: {
