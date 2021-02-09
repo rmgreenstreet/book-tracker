@@ -113,7 +113,7 @@ const middleware = {
 			//initialize an empty array to store our db queries {objects}
 			const dbQueries=[];
 			//destructure all potential properties from req.query
-			let {search, avgRating, author } = req.query;
+			let {search, avgRating, author, resource } = req.query;
 			/* check if user submitted text search terms */
 			if(search) {
 				search = new RegExp(escapeRegExp(search), 'gi');
@@ -147,7 +147,9 @@ const middleware = {
 
 		/* build the paginateUrl for pagination partial
 		first remove 'page' string value from the queryKeys array, if it exists */
-		queryKeys.splice(queryKeys.indexOf('page'),1);
+		if(queryKeys.indexOf('page')) {
+			queryKeys.splice(queryKeys.indexOf('page'),1);
+		}
 		/* now check if queryKeys has any other values, if it does then we know the user submitted the search/filter form
 		if it doesn't then they are on /posts or a specific page from /posts, e.g., /posts?page=2
 		we assign the delimiter based on whether or not the user submitted the search/filter form

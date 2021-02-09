@@ -127,7 +127,7 @@ module.exports = {
 
             // set the current page of results
             results.page = Number(results.page);
-            console.log(results.docs.length+' results found');
+            // console.log(results.docs.length+' results found');
             if(!results.docs.length && res.locals.query) {
                 res.locals.error = 'No results match that search.';
             }
