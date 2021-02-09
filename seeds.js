@@ -55,7 +55,7 @@ async function seedTags() {
 
 async function seedBooks(devUser) {
     //Choose how many books to create between 50 and 100
-    const numberOfBooks = Math.ceil(Math.random() * (100 - 50) + 50);
+    const numberOfBooks = Math.ceil(Math.random() * (200 - 100) + 100);
     console.log(`Creating ${numberOfBooks} Books`);
     for (let i = 1; i < numberOfBooks; i++) {
         try {
@@ -85,6 +85,7 @@ async function seedBooks(devUser) {
     return;
 };
 
+/* TODO: Make it so that one user can't write multiple reviews about the same book */
 async function seedReviews(devUser) {
     //Choose how many reviews will be created between 300 and 1000
     const numberOfReviews = Math.floor(Math.random() * (1000-5000) + 5000);
