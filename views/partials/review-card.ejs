@@ -1,0 +1,45 @@
+<div class="card m-1 review-card" id="<%= document.id + '-card' %>">
+    <div class="card-body">
+        <a href="/reviews/<%= document.id %>">
+            <% let matchedGoogleBook = googleBooks.find(book => book.id === document.book.googleBooksId); %>
+            <% if (typeof matchedGoogleBook !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks.thumbnail !== 'undefined' ) { %>
+                <img src="<%= matchedGoogleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= matchedGoogleBook.volumeInfo.title %>" class="card-img" id="<%= document.bookId + '-cover' %>">
+            <% } else { %>
+                <svg class="bd-placeholder-img card-img" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                </svg>
+            <% } %>
+            <h4 class="card-title review-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title.length > 25 ? document.book.title.substr(0,20)+'...' : document.book.title %></h4>
+        </a>
+        <p class="card-text review-card-dates" id="<%= document.book.id + '-dates' %>">Started: <%= moment(document.bookStartedDate).format('MMM Do, YYYY') %> <br />
+            <% if(!document.bookFinished && typeof document.bookFinishedDate !== 'undefined') { %> 
+                Re-shelved <%= moment(document.bookFinishedDate).format('MMM Do, YYYY') %>
+            <% } else if (document.bookFinished) { %>
+                Finished: <%= moment(document.bookFinishedDate).format('MMM Do, YYYY') %>
+            <% } else { %>
+                Currently Reading
+            <% } %></p>
+        <p class="card-text review-card-summary" id="<%= document.book.id + '-summary' %>"><%= document.text ? document.text.substr(0, 35) + '...' : 'No review text available' %></p>
+        <p class="card-text review-card-rating" id="<%= document.book.id + '-rating' %>"><%- include('display-stars', {rating: document.starRating}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text review-card-tags" id="<%= document.book.id + '-tags' %>">
+            <% for(let tag of document.tags) { %>
+                <% if (document.tags.indexOf(tag) !== document.tags.length-1) { %>
+                    <a href="/books?resource=Book&tag=<%= tag.id %>"><%= tag.title %></a>, 
+                <% } else { %>
+                    <a href="/books?resource=Book&tag=<%= tag.id %>"><%= tag.title %></a>
+                <% } %>
+            <% } %>
+        </p>
+        <% let googleBooksLink = ''; %>
+        <% if (matchedGoogleBook.saleInfo.buyLink) { %>
+        <% googleBooksLink = matchedGoogleBook.saleInfo.buyLink %>
+        <% } else if (matchedGoogleBook.volumeInfo.infoLink) { %>
+        <% googleBooksLink = matchedGoogleBook.volumeInfo.infoLink %>
+        <% } else if (matchedGoogleBook.volumeInfo.canonicalVolumeLink) { %>
+        <% googleBooksLink = matchedGoogleBook.volumeInfo.canonicalVolumeLink %>
+        <% } else { %>
+        <% googleBooksLink = 'https://books.google.com' %>
+        <% } %>
+        <a href="<%= googleBooksLink %>" target="_blank"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+    </div>
+</div>
