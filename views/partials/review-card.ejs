@@ -20,7 +20,7 @@
                 Currently Reading
             <% } %></p>
         <p class="card-text review-card-summary" id="<%= document.book.id + '-summary' %>"><%= document.text ? document.text.substr(0, 35) + '...' : 'No review text available' %></p>
-        <p class="card-text review-card-rating" id="<%= document.book.id + '-rating' %>"><%- include('display-stars', {rating: document.starRating}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text review-card-rating" id="<%= document.book.id + '-rating' %>"><%- include('display-stars', {rating: document.starRating, numberOfRatings: document.numberOfRatings, resourceType: 'Review'}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
         <p class="card-text review-card-tags" id="<%= document.book.id + '-tags' %>">
             <% for(let tag of document.tags) { %>
                 <% if (document.tags.indexOf(tag) !== document.tags.length-1) { %>
