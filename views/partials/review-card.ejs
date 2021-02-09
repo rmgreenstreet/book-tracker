@@ -40,6 +40,13 @@
         <% } else { %>
         <% googleBooksLink = 'https://books.google.com' %>
         <% } %>
-        <a href="<%= googleBooksLink %>" target="_blank"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+        <div class="row">
+            <div class="col">
+                <a href="<%= googleBooksLink %>" target="_blank"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+            </div>
+            <div class="col">
+                <a href="/reviews/<%= document.id %>">Edit Review</a>
+            </div>
+        </div>
     </div>
 </div>
