@@ -106,7 +106,13 @@ module.exports = {
                 case 'Book': 
                     results = await Book.paginate(dbQuery, paginateOptions);
                     for (let document of results.docs) {
-                        googleBooks.push(await getGoogleBook(document.googleBooksId));
+                        const googleBooksResults = await getGoogleBook(document.googleBooksId);
+                        googleBooks.push(googleBooksResults.data);
+                        const recentReview = await Review.findOne({book: document._id}).select('tags').populate({path: 'tags'});
+                        // console.log(recentReview);
+                        for (let tag of recentReview.tags) {
+                            document.tags.push(tag);
+                        }
                     }
                     break;
                 case 'Tag': 

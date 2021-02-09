@@ -1,0 +1,46 @@
+<div class="card m-1 book-card" id="<%= document.id + '-card' %>">
+    <div class="card-body">
+        <a href="/books/<%= document.id %>">
+            <% let matchedGoogleBook = googleBooks.find(book => book.id === document.googleBooksId); %>
+            <% if (typeof matchedGoogleBook !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks.thumbnail !== 'undefined' ) { %>
+                <img src="<%= matchedGoogleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= matchedGoogleBook.volumeInfo.title %>" class="card-img" id="<%= document.id + '-cover' %>">
+            <% } else { %>
+                <svg class="bd-placeholder-img card-img" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                </svg>
+            <% } %>
+            <h4 class="card-title book-card-title pl-1" id="<%= document.id + '-title' %>"><%= document.title.length > 25 ? document.title.substr(0,20)+'...' : document.title %></h4>
+        </a>
+        <p class="card-text book-card-rating" id="<%= document.id + '-rating' %>"><%- include('display-stars', {rating: document.averageRating}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text book-card-tags" id="<%= document.id + '-tags' %>">
+            <% if (document.tags.length) { %>
+                <% const numberOfTagsToDisplay = document.tags.length < 5 ? document.tags.length : 5; %>
+                <% for(let i = 0; i < numberOfTagsToDisplay; i++) { %>
+                    <% if (i < numberOfTagsToDisplay - 1) { %>
+                        <a href="/books?resource=Book&tag=<%= document.tags[i].id %>"><%= document.tags[i].title %></a>, 
+                    <% } else { %>
+                        <a href="/books?resource=Book&tag=<%= document.tags[i].id %>"><%= document.tags[i].title %></a>
+                    <% } %>
+                <% } %>
+            <% } %>
+        </p>
+        <% let googleBooksLink = ''; %>
+        <% if (matchedGoogleBook.saleInfo.buyLink) { %>
+        <% googleBooksLink = matchedGoogleBook.saleInfo.buyLink %>
+        <% } else if (matchedGoogleBook.volumeInfo.infoLink) { %>
+        <% googleBooksLink = matchedGoogleBook.volumeInfo.infoLink %>
+        <% } else if (matchedGoogleBook.volumeInfo.canonicalVolumeLink) { %>
+        <% googleBooksLink = matchedGoogleBook.volumeInfo.canonicalVolumeLink %>
+        <% } else { %>
+        <% googleBooksLink = 'https://books.google.com' %>
+        <% } %>
+        <div class="row">
+            <div class="col">
+                <a href="<%= googleBooksLink %>" target="_blank"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+            </div>
+            <div class="col">
+                <a href="/reviews/<%= document.id %>">Edit Review</a>
+            </div>
+        </div>
+    </div>
+</div>

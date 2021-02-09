@@ -21,12 +21,7 @@ const bookSchema = new Schema({
         ref: 'User',
         immutable: true
     },
-    tags: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Tag'
-      }
-    ],
+    tags: [],
     averageRating: Number,
     numberOfRatings: Number,
     active: {

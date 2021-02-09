@@ -58,25 +58,29 @@ async function seedBooks(devUser) {
     const numberOfBooks = Math.ceil(Math.random() * (100 - 50) + 50);
     console.log(`Creating ${numberOfBooks} Books`);
     for (let i = 1; i < numberOfBooks; i++) {
-        //pick a search term to use with google books API
-        const randomWord = faker.random.word();
-        const googleBooks = await axios.get(
-            'https://www.googleapis.com/books/v1/volumes?q=' + 
-             randomWord + 
-            '&orderBy=newest&filter=ebooks&key=' + 
-            process.env.GOOGLE_BOOKS_API_KEY
-        );
-        //Pick a random book from the google books results to add to the database
-        const randomBookIndex = Math.floor(Math.random() * googleBooks.data.items.length);
-        console.log(`creating book from result number ${randomBookIndex+1}`);
-        const singleGoogleBook = googleBooks.data.items[randomBookIndex];
+        try {
+            //pick a search term to use with google books API
+            const randomWord = faker.random.word();
+            const googleBooks = await axios.get(
+                'https://www.googleapis.com/books/v1/volumes?q=' + 
+                randomWord + 
+                '&orderBy=newest&filter=ebooks&key=' + 
+                process.env.GOOGLE_BOOKS_API_KEY
+            );
+            //Pick a random book from the google books results to add to the database
+            const randomBookIndex = Math.floor(Math.random() * googleBooks.data.items.length);
+            console.log(`creating book from result number ${randomBookIndex+1}`);
+            const singleGoogleBook = googleBooks.data.items[randomBookIndex];
 
-        await Book.create({
-            title: singleGoogleBook.volumeInfo.title,
-            googleBooksId: singleGoogleBook.id,
-            createdBy: devUser._id
-        });
-        console.log(`Book number ${i} of ${numberOfBooks} created: ${singleGoogleBook.volumeInfo.title} from Faker seed ${randomWord}`);
+            await Book.create({
+                title: singleGoogleBook.volumeInfo.title,
+                googleBooksId: singleGoogleBook.id,
+                createdBy: devUser._id
+            });
+            console.log(`Book number ${i} of ${numberOfBooks} created: ${singleGoogleBook.volumeInfo.title} from Faker seed ${randomWord}`);
+        } catch (err) {
+            continue;
+        }
     };
     return;
 };
@@ -143,21 +147,21 @@ async function seedReviews(devUser) {
 };
 
 async function seedDatabase() {
-    await User.deleteMany({role: {$not: /owner/}});
-    console.log('All non-owner users deleted')
+    // await User.deleteMany({role: {$not: /owner/}});
+    // console.log('All non-owner users deleted')
     const devUser = await User.findOne({username: 'bob'});
     await Book.deleteMany({});
     console.log('All Books removed');
-    await Tag.deleteMany({});
-    console.log('All Tags Removed');
+    // await Tag.deleteMany({});
+    // console.log('All Tags Removed');
     await Review.deleteMany({});
     console.log('All Reviews removed');
 
-    await seedUsers();
+    // await seedUsers();
 
     await seedBooks(devUser);
     
-    await seedTags(devUser);
+    // await seedTags(devUser);
 
     await seedReviews(devUser);
 };
