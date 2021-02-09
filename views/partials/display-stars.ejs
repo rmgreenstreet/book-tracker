@@ -1,6 +1,11 @@
 <div class="averageStars mb-2 d-inline">
-    <% if (typeof relevantReviews === 'undefined') { %>
-        Your rating:
+    <% switch (resourceType) { 
+        case 'Review': %>
+        Your Rating: 
+        <% break;
+        case 'Book': %>
+        Average Rating: 
+        <% break; %>
     <% } %>
     <% for(let i = 0;i<5;i++) { %>
         <% if(i < rating) { %>
@@ -14,7 +19,9 @@
             <i class="far fa-star"></i>
         <% } %>
     <% } %>
-    <% if(typeof relevantReviews !== 'undefined' ) { %>
-        <%= (relevantReviews.length ? (relevantReviews.length + " Review" + (relevantReviews.length === 1 ? '' : 's') ): 'No Reviews Yet') %>
+    <% if(numberOfRatings) { %>
+        <%= numberOfRatings + " Review" + (numberOfRatings === 1 ? '' : 's') %>
+    <% } else { %>
+        No Reviews Yet
     <% } %>
 </div>

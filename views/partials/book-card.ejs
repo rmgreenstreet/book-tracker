@@ -11,7 +11,7 @@
             <% } %>
             <h4 class="card-title book-card-title pl-1" id="<%= document.id + '-title' %>"><%= document.title.length > 25 ? document.title.substr(0,20)+'...' : document.title %></h4>
         </a>
-        <p class="card-text book-card-rating" id="<%= document.id + '-rating' %>"><%- include('display-stars', {rating: document.averageRating}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
+        <p class="card-text book-card-rating" id="<%= document.id + '-rating' %>"><%- include('display-stars', {rating: document.averageRating, numberOfRatings: document.numberOfRatings, resourceType}) %></p> <!-- partial with tooltips that 1 star = 'hated', etc. -->
         <p class="card-text book-card-tags" id="<%= document.id + '-tags' %>">
             <% if (document.tags.length) { %>
                 <% const numberOfTagsToDisplay = document.tags.length < 5 ? document.tags.length : 5; %>

@@ -106,6 +106,9 @@ module.exports = {
                 case 'Book': 
                     results = await Book.paginate(dbQuery, paginateOptions);
                     for (let document of results.docs) {
+                        if (!document.averageRating) {
+                            await document.calculateAverageRating();
+                        }
                         const googleBooksResults = await getGoogleBook(document.googleBooksId);
                         googleBooks.push(googleBooksResults.data);
                         const recentReview = await Review.findOne({book: document._id}).select('tags').populate({path: 'tags'});

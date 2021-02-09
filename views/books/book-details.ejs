@@ -23,7 +23,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h2 class="book-title"><%= currentBook.title %></h2>
-                                        <%- include('../partials/display-stars', {rating: currentBook.averageRating}); %>
+                                        <%- include('../partials/display-stars', {rating: currentBook.averageRating, numberofRatings: currentBook.numberofRatings}); %>
                                         <h3 class="book-authors">
                                             <% let combinedAuthors = '' %>
                                             <% for(let author of googleBook.volumeInfo.authors) { %>
