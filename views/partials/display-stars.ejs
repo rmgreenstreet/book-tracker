@@ -19,9 +19,9 @@
             <i class="far fa-star"></i>
         <% } %>
     <% } %>
-    <% if(numberOfRatings) { %>
+    <% if(typeof numberOfRatings !== 'undefined') { %>
         <%= numberOfRatings + " Review" + (numberOfRatings === 1 ? '' : 's') %>
-    <% } else { %>
+    <% } else if (resourceType !== 'Review') { %>
         No Reviews Yet
     <% } %>
 </div>
