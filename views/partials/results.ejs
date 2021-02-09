@@ -1,5 +1,17 @@
 <div class="card-columns">
     <% for (let document of results.docs) { %>
-        <%- include('review-card', {document}) %> 
-    <% } %>
+        <% switch (resourceType) { 
+            case 'Review': %>
+            <%- include('review-card', {document}) %> 
+            <% break; 
+            case 'Book': %>
+            <%- include('book-card', {document}) %> 
+            <% break; 
+            case 'Tag': %>
+            <%- include('tag-card', {document}) %> 
+            <% break; 
+            default: %>
+            <p>No Results for that Resource Type</p>
+        <% }; %>
+    <% }; %>
 </div>

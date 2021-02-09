@@ -123,7 +123,7 @@ module.exports = {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, moment});
+            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, moment, resourceType});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');
