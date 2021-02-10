@@ -30,6 +30,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
 var tagsRouter = require('./routes/tags');
+var reviewsRouter = require('./routes/reviews');
 const seedDatabase = require('./seeds');
 
 const app = express();
@@ -93,6 +94,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
 app.use('/tags', tagsRouter);
+app.use('/reviews', reviewsRouter);
 
 
 if (app.get('env') == 'development'){ 

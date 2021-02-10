@@ -35,7 +35,7 @@ module.exports = {
             });
             // set the current page of results
             reviews.page = Number(reviews.page);
-            console.log(reviews.docs.length+' reviews found');
+            // console.log(reviews.docs.length+' reviews found');
             if(!reviews.docs.length && res.locals.query) {
                 res.locals.error = 'No results match that search.';
             }
@@ -52,7 +52,7 @@ module.exports = {
 
             //get any search provided by the user, if it exists
             const { dbQuery } = res.locals;
-            const resourceType = res.locals.query.resource;
+            let resourceType = res.locals.query.resource;
             const paginateOptions = {
                 page: req.query.page || 1,
                 limit: 10,
@@ -91,7 +91,20 @@ module.exports = {
                     results = await Tag.paginate(dbQuery, paginateOptions);
                     break;
                 default :
-                    results = await Book.find({}, paginateOptions);
+                    results = await Book.paginate({}, paginateOptions);
+                    resourceType = 'Book';
+                    for (let document of results.docs) {
+                        if (!document.averageRating) {
+                            await document.calculateAverageRating();
+                        }
+                        const googleBooksResults = await getGoogleBook(document.googleBooksId);
+                        googleBooks.push(googleBooksResults.data);
+                        const recentReview = await Review.findOne({book: document._id}).select('tags').populate({path: 'tags'});
+                        // console.log(recentReview);
+                        for (let tag of recentReview.tags) {
+                            document.tags.push(tag);
+                        }
+                    }
             }
 
             // set the current page of results

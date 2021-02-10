@@ -1,13 +1,8 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
 const { 
-    getAllBooks,
-    createBook,
-    findBook,
-    updateBook,
-    unPublishBook,
-    deleteBook
-} = require('../controllers/books');
+  getReviewDetails
+} = require('../controllers/reviews');
 const { 
   asyncErrorHandler, 
   isLoggedIn,
@@ -17,30 +12,20 @@ const {
 
 const siteTitle = " - Book Tracker | What Should I Read Next?"
 
-/* GET All books page. */
-router.get('/', isLoggedIn, getAllBooks);
+/* GET All reviews page. */
+router.get('/', isLoggedIn);
 
-/* POST new book */
-router.post('/', /*isLoggedIn,*/ createBook);
+/* POST new review */
+// router.post('/', /*isLoggedIn,*/ createReview);
 
-/* GET books-read page. */
-router.get('/read', function(req, res, next) {
-  res.render('books/books-read', { title: 'Books I\'ve Read' + siteTitle });
-});
+/* GET specific review details */
+router.get('/:reviewId', getReviewDetails);
 
-/* GET browse-books page. */
-router.get('/browse', function(req, res, next) {
-  res.render('books/browse-books', { title: 'Browse Books' + siteTitle });
-});
+/* PUT unpublish a review */
+// router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);
 
-/* GET specific book details */
-router.get('/:bookId', findBook);
-
-/* PUT unpublish a book */
-router.put('/:bookId/unpublish', /*isLoggedIn,*/ unPublishBook);
-
-/* DELETE specific book details */
-router.delete('/:bookId', function (req, res, next) {
+/* DELETE specific review details */
+router.delete('/:reviewId', function (req, res, next) {
     res.redirect('/');
 });
 
