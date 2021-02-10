@@ -34,6 +34,10 @@ const reviewSchema = new Schema({
         type: String,
         default: 'This user has read this book and given it a rating, but has not written a review.'
     },
+    public: {
+        type: Boolean,
+        default: true
+    },
     tags: [
         {
             type: Schema.Types.ObjectId,
@@ -67,6 +71,7 @@ const reviewSchema = new Schema({
         },
         reason: String
     },
+    favorite: Boolean,
     modified: {
         by: {
             type: Schema.Types.ObjectId,
