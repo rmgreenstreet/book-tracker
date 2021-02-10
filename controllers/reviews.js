@@ -31,8 +31,8 @@ module.exports = {
                 req.session.error = "The specified review has been marked \"Private\" by the user";
                 return res.redirect('/');
             }
-            const googleBook = await getGoogleBook(currentReview.book._id);
-            res.render('/reviews/review-details', {currentBook, googleBook});
+            const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
+            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data});
         } catch (err) {
             console.error(err.message);
             req.session.error = err.message;

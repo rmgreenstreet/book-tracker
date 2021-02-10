@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col">
                     <h2>Tags</h2>
-                    <%- include('../partials/tag-cloud'); %>
+                    
                 </div>
             </div>
         </section>
@@ -17,27 +17,32 @@
                             <div class="col-md-4 cover-image">
                                 <% let thumbnailLink = '/images/book-not-found.jpg' %>
                                 <% if (googleBook.volumeInfo.imageLinks) { thumbnailLink = googleBook.volumeInfo.imageLinks.thumbnail } %>
-                                <img src="<%= thumbnailLink %>" alt="<%= currentBook.title %>" class="book-thumbnail">
+                                <img src="<%= thumbnailLink %>" alt="<%= currentReview.title %>" class="book-thumbnail">
                             </div>
                             <div class="col-md-8 title-author-rating">
                                 <div class="row">
                                     <div class="col">
-                                        <h2 class="book-title"><%= currentBook.title %></h2>
-                                        <%- include('../partials/display-stars', {rating: currentBook.averageRating, numberOfRatings: currentBook.numberOfRatings, resourceType: 'Book'}); %>
+                                        <h2 class="book-title"><%= currentReview.title %></h2>
+                                        <%- include('../partials/display-stars', {rating: currentReview.rating, resourceType: 'Review'}); %>
                                         <h3 class="book-authors">
-                                            <% let combinedAuthors = '' %>
-                                            <% for(let author of googleBook.volumeInfo.authors) { %>
-                                                <% if(googleBook.volumeInfo.authors.indexOf(author) !== (googleBook.volumeInfo.authors.length -1)) { %>
-                                                    <% combinedAuthors += `${author}, ` %>
-                                                <% } else { %>
-                                                    <% combinedAuthors += author %>
+                                            <% if (typeof googleBook.volumeInfo.length > 0) { %>
+                                                <% let combinedAuthors = '' %>
+                                                <% for(let author of googleBook.volumeInfo.authors) { %>
+                                                    <% if(googleBook.volumeInfo.authors.indexOf(author) !== (googleBook.volumeInfo.authors.length -1)) { %>
+                                                        <% combinedAuthors += `${author}, ` %>
+                                                    <% } else { %>
+                                                        <% combinedAuthors += author %>
+                                                    <% } %>
                                                 <% } %>
+                                                <%= combinedAuthors %>
+                                            <% } else { %>
+                                                <%= googleBook.volumeInfo.authors %>
                                             <% } %>
-                                            <%= combinedAuthors %>
+                                            
                                         </h3>
                                         <% if(currentUser.role = 'owner') { %>
                                             <div class="row" id="owner-controls">
-                                                <% if (currentBook.active) { %>
+                                                <% if (currentReview.active) { %>
                                                 <div class="col">
                                                     <button type="button" class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish book</button>
                                                 </div>
@@ -54,7 +59,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <form action="/books/<%= currentBook.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
+                                                            <form action="/books/<%= currentReview.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
                                                                 <button class="btn btn-warning my-1">Unpublish book</button>
                                                             </form>
                                                         </div>
@@ -82,7 +87,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <form action="/books/<%= currentBook.id %>/publish?_method=PUT" class="publish-book" id="publish-book" method="post">
+                                                                <form action="/books/<%= currentReview.id %>/publish?_method=PUT" class="publish-book" id="publish-book" method="post">
                                                                     <button class="btn btn-success my-1">Re-publish book</button>
                                                                 </form>
                                                             </div>
@@ -105,7 +110,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <form action="/books/<%#= currentBook.id %>/unpublish?_method=DELETE" class="delete-book" id="delete-book"  method="post">
+                                                                <form action="/books/<%#= currentReview.id %>/unpublish?_method=DELETE" class="delete-book" id="delete-book"  method="post">
                                                                     <button class="btn btn-danger my-1">Delete book</button>
                                                                 </form>
                                                             </div>
@@ -124,7 +129,7 @@
                                             <a href="<%= googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
                                             |
                                         <% } %>
-                                        <a href="/reviews/new/<%= currentBook.id %>" class="new-review">Write a Review</a>
+                                        <a href="/reviews/new/<%= currentReview.id %>" class="new-review">Write a Review</a>
                                     </div>
                                 </div>
                             </div>

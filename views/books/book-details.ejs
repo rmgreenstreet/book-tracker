@@ -25,15 +25,19 @@
                                         <h2 class="book-title"><%= currentBook.title %></h2>
                                         <%- include('../partials/display-stars', {rating: currentBook.averageRating, numberOfRatings: currentBook.numberOfRatings, resourceType: 'Book'}); %>
                                         <h3 class="book-authors">
-                                            <% let combinedAuthors = '' %>
-                                            <% for(let author of googleBook.volumeInfo.authors) { %>
-                                                <% if(googleBook.volumeInfo.authors.indexOf(author) !== (googleBook.volumeInfo.authors.length -1)) { %>
-                                                    <% combinedAuthors += `${author}, ` %>
-                                                <% } else { %>
-                                                    <% combinedAuthors += author %>
+                                            <% if (typeof googleBook.volumeInfo.length > 0) { %>
+                                                <% let combinedAuthors = '' %>
+                                                <% for(let author of googleBook.volumeInfo.authors) { %>
+                                                    <% if(googleBook.volumeInfo.authors.indexOf(author) !== (googleBook.volumeInfo.authors.length -1)) { %>
+                                                        <% combinedAuthors += `${author}, ` %>
+                                                    <% } else { %>
+                                                        <% combinedAuthors += author %>
+                                                    <% } %>
                                                 <% } %>
+                                                <%= combinedAuthors %>
+                                            <% } else { %>
+                                                <%= googleBook.volumeInfo.authors %>
                                             <% } %>
-                                            <%= combinedAuthors %>
                                         </h3>
                                         <% if(currentUser.role = 'owner') { %>
                                             <div class="row" id="owner-controls">
