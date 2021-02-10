@@ -22,45 +22,30 @@
                             <div class="col-md-8 title-author-rating">
                                 <div class="row">
                                     <div class="col">
-                                        <h2 class="book-title"><%= currentReview.title %></h2>
-                                        <%- include('../partials/display-stars', {rating: currentReview.rating, resourceType: 'Review'}); %>
-                                        <h3 class="book-authors">
-                                            <% if (typeof googleBook.volumeInfo.length > 0) { %>
-                                                <% let combinedAuthors = '' %>
-                                                <% for(let author of googleBook.volumeInfo.authors) { %>
-                                                    <% if(googleBook.volumeInfo.authors.indexOf(author) !== (googleBook.volumeInfo.authors.length -1)) { %>
-                                                        <% combinedAuthors += `${author}, ` %>
-                                                    <% } else { %>
-                                                        <% combinedAuthors += author %>
-                                                    <% } %>
-                                                <% } %>
-                                                <%= combinedAuthors %>
-                                            <% } else { %>
-                                                <%= googleBook.volumeInfo.authors %>
-                                            <% } %>
-                                            
-                                        </h3>
+                                        <h2 class="book-title">Review of <%= currentReview.book.title %></h2>
+                                        <%- include('../partials/display-stars', {rating: currentReview.starRating, resourceType: 'Review'}); %>
+                                        
                                         <% if(currentUser.role = 'owner') { %>
                                             <div class="row" id="owner-controls">
-                                                <% if (currentReview.active) { %>
+                                                <% if (currentReview.status.active) { %>
                                                 <div class="col">
-                                                    <button type="button" class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish book</button>
+                                                    <button type="button" class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish review</button>
                                                 </div>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="confirm-unpublish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="confirm-unpublish-label">Unpublish Book?</h5>
+                                                            <h5 class="modal-title" id="confirm-unpublish-label">Unpublish Review?</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to unpublish this book? It will no longer be available for users to write reviews, but existing reviews will remain in place. This action *can* be undone by an "Owner" user.</p>
+                                                            <p>Are you sure you want to unpublish this review? It will no longer be publicly visible, nor editable by you, unless you re-publish the review.</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <form action="/books/<%= currentReview.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
-                                                                <button class="btn btn-warning my-1">Unpublish book</button>
+                                                            <form action="/reviews/<%= currentReview.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
+                                                                <button class="btn btn-warning my-1">Unpublish Review</button>
                                                             </form>
                                                         </div>
                                                     </div>
@@ -69,7 +54,7 @@
             
                                                 <% } else { %>
                                                     <div class="col">
-                                                        <button type="button" class="btn btn-success my-1" data-toggle="modal" data-target="#confirm-publish-modal">Re-publish book</button>
+                                                        <button type="button" class="btn btn-success my-1" data-toggle="modal" data-target="#confirm-publish-modal">Re-publish review</button>
                                                     </div>
                                                     <!-- <div class="col">
                                                         <button type="button" class="btn btn-danger my-1" data-toggle="modal" data-target="#confirm-delete-modal">Delete book</button>
@@ -79,16 +64,16 @@
                                                         <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="confirm-publish-label">Unpublish Book?</h5>
+                                                                <h5 class="modal-title" id="confirm-publish-label">Re-publish Review</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <p>Are you sure you want to publish this book? The book will become available for users to write new reviews about. This action *can* be undone.</p>
+                                                                <p>Are you sure you want to publish this review? The book will become available for you to edit, and if set to 'public', for other users to see. This action *can* be undone.</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <form action="/books/<%= currentReview.id %>/publish?_method=PUT" class="publish-book" id="publish-book" method="post">
-                                                                    <button class="btn btn-success my-1">Re-publish book</button>
+                                                                <form action="/review/<%= currentReview.id %>/publish?_method=PUT" class="publish-review" id="publish-review" method="post">
+                                                                    <button class="btn btn-success my-1">Re-publish Review</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -129,7 +114,7 @@
                                             <a href="<%= googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
                                             |
                                         <% } %>
-                                        <a href="/reviews/new/<%= currentReview.id %>" class="new-review">Write a Review</a>
+                                        <a href="/reviews/new/<%= currentReview.id %>" class="new-review">Edit Review</a>
                                     </div>
                                 </div>
                             </div>
@@ -138,10 +123,11 @@
                             <div class="col card-body">
                                 <hr class=" mt-0"/>
                                 <p class="card-text">
-                                    <% if(googleBook.volumeInfo.description) { %>
-                                        <%- googleBook.volumeInfo.description %>
+                                    <h4><%= currentReview.title %></h4>
+                                    <% if(currentReview.text) { %>
+                                        <%- currentReview.text %>
                                     <% } else { %>
-                                        <p class="no-description">No description available for this book</p>
+                                        <p class="no-description">No text was included in this review</p>
                                     <% } %>
                                     <a href="<%= googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
                                 </p>
