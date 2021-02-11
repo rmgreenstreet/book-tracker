@@ -1,25 +1,25 @@
 <%- include( '../partials/header') %> 
 <div class="container">
     <div class="row">
-        <section class="col-md-4" id="review-tag-cloud">
+        <!-- <section class="col-md-4" id="review-tag-cloud">
             <div class="row">
                 <div class="col">
                     <h2>Tags</h2>
                     
                 </div>
             </div>
-        </section>
-        <section class="col-md-8" id="review-details">
+        </section> -->
+        <section class="col" id="review-details">
             <div class="row">
-                <div class="col">
+                <div class="col-md-8">
                     <div class="card">
                         <div class="row p-1">
-                            <div class="col-md-4 cover-image">
+                            <div class="col-md-4 col-lg-3 cover-image">
                                 <% let thumbnailLink = '/images/book-not-found.jpg' %>
                                 <% if (googleBook.volumeInfo.imageLinks) { thumbnailLink = googleBook.volumeInfo.imageLinks.thumbnail } %>
                                 <img src="<%= thumbnailLink %>" alt="<%= currentReview.title %>" class="book-thumbnail">
                             </div>
-                            <div class="col-md-8 title-author-rating">
+                            <div class="col-md-8 col-lg-9 title-author-rating">
                                 <div class="row">
                                     <div class="col">
                                         <h2 class="book-title">Review of <%= currentReview.book.title %></h2>
@@ -37,10 +37,10 @@
                                     </div>
                                 </div>
                                 <div class="row reading-journey mt-2">
-                                    <div class="col date-started">
+                                    <div class="col-12 col-md-6 date-started">
                                         Started reading: <%= currentReview.bookStartedDate.toLocaleDateString('en-US', dateStringOptions); %>
                                     </div>
-                                    <div class="col date-finished">
+                                    <div class="col-12 col-md-6 date-finished">
                                         <% if (!currentReview.bookFinished && currentReview.bookFinishedDate) { %>
                                             Re-shelved: <%= currentReview.finishedDate.toLocaleDateString('en-US', dateStringOptions); %>
                                         <% } else if (!currentReview.bookFinished && !currentReview.bookFinishedDate) { %>
@@ -48,6 +48,9 @@
                                         <% } else if (currentReview.bookFinished) { %> 
                                             Finished Reading: <%= currentReview.bookFinishedDate.toLocaleDateString('en-US', dateStringOptions); %>
                                         <% } %>
+                                    </div>
+                                    <div class="col-12 review-date">
+                                        Reviewed: <%= currentReview.created.toLocaleDateString('en-US', dateStringOptions); %>
                                     </div>
                                 </div>
                             </div>
