@@ -77,6 +77,12 @@ app.use(async function (req,res,next) {
       id: '60217ea4db471180bc238ae2'
     };
   };
+  //provide options for displaying date strings
+  res.locals.dateStringOptions = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  };
 	res.locals.currentUser = req.user;
 	//set success flash message
 	res.locals.success = req.session.success || "";
