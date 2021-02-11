@@ -1,7 +1,5 @@
 const express = require('express');
 const app = express();
-const promise = require('bluebird');
-const moment = require('moment');
 const { 
     fisherYatesShuffle, 
     getGoogleBook, 
@@ -114,7 +112,7 @@ module.exports = {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, moment, resourceType});
+            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, resourceType});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');
