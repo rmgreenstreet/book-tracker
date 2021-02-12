@@ -3,7 +3,8 @@ const app = express();
 const { 
     fisherYatesShuffle, 
     getGoogleBook, 
-    flipPublished 
+    flipPublished, 
+    getPopularTags
 } = require('../util');
 // promise.promisifyAll(tagCloud);
 if (app.get('env') == 'development'){ require('dotenv').config(); }
@@ -15,7 +16,7 @@ module.exports = {
 
     async getReviewDetails(req, res, next) {
         try {
-            /* find the specified book in the database */
+            /* find the specified review in the database */
             const currentReview = await Review.findById(req.params.reviewId).populate({path: 'book tags author'});
             if(!currentReview) {
                 req.session.error = "Review not found";
@@ -31,8 +32,10 @@ module.exports = {
                 req.session.error = "The specified review has been marked \"Private\" by the user";
                 return res.redirect('/');
             }
+            //Find tags other users have applied to this book, filtered to the (up to) ten highest occurences
+            const {tags: popularTags} = await getPopularTags(currentReview.book._id, 7);
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
-            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data});
+            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags});
         } catch (err) {
             console.error(err.message);
             req.session.error = err.message;
