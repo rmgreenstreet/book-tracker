@@ -1,0 +1,107 @@
+<%- include( '../partials/header') %> 
+<div class="container">
+    <div class="row">
+        <section class="col-md-3" id="review-tags">
+            <div class="row">
+                <div class="col">
+                    <!-- <h2>Tags</h2> -->
+                    <div class="row mt-1">
+                        <div class="col">
+                            <h4>Your Tags</h4>
+                            <p>
+                                <% for (let tag of currentReview.tags) { %> 
+                                    <a href="/books/?tag=<%= tag.id %>&resource=Book"><%= tag.title %></a><%= currentReview.tags.indexOf(tag) < currentReview.tags.length - 1 ? ', ' : '' %>
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4>Popular Tags for This Book</h4>
+                            <% for (let tag of popularTags) { %>
+                                <% if (tag.count > 1) { %>
+                                    <a href="/books/?tag=<%= tag.id %>&resource=Book"><%= tag.title %></a>&nbsp;(<%= tag.count %>)<%= popularTags.indexOf(tag) < popularTags.length - 1 ? ', ' : '' %>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="col-md-9" id="review-details">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="row p-1">
+                            <div class="col-md-4 col-lg-3 cover-image">
+                                <% let thumbnailLink = '/images/book-not-found.jpg' %>
+                                <% if (googleBook.volumeInfo.imageLinks) { thumbnailLink = googleBook.volumeInfo.imageLinks.thumbnail } %>
+                                <img src="<%= thumbnailLink %>" alt="<%= currentReview.title %>" class="book-thumbnail">
+                            </div>
+                            <div class="col-md-8 col-lg-9 title-author-rating">
+                                <div class="row">
+                                    <div class="col">
+                                        <h2 class="book-title"><%= currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
+                                        <%- include('../partials/display-stars', {rating: currentReview.starRating, resourceType: 'Review'}); %>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col">
+                                        <% if (googleBook.saleInfo.buyLink) { %>
+                                            <a href="<%= googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
+                                        <% } %>
+                                        <% if (currentReview.author.id === currentUser.id) { %>
+                                            | <a href="/reviews/edit/<%= currentReview.id %>" class="new-review">Edit Review</a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="row reading-journey mt-2">
+                                    <div class="col-12 col-md-6 date-started">
+                                        Started reading: <%= currentReview.bookStartedDate.toLocaleDateString('en-US', dateStringOptions); %>
+                                    </div>
+                                    <div class="col-12 col-md-6 date-finished">
+                                        <% if (!currentReview.bookFinished && currentReview.bookFinishedDate) { %>
+                                            Re-shelved: <%= currentReview.finishedDate.toLocaleDateString('en-US', dateStringOptions); %>
+                                        <% } else if (!currentReview.bookFinished && !currentReview.bookFinishedDate) { %>
+                                            Currently Reading
+                                        <% } else if (currentReview.bookFinished) { %> 
+                                            Finished Reading: <%= currentReview.bookFinishedDate.toLocaleDateString('en-US', dateStringOptions); %>
+                                        <% } %>
+                                    </div>
+                                    <div class="col-12 review-date">
+                                        Reviewed: <%= currentReview.created.toLocaleDateString('en-US', dateStringOptions); %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row p-1">
+                            <div class="col card-body">
+                                <hr class=" mt-0"/>
+                                <p class="card-text">
+                                    <h4><%= currentReview.title %></h4>
+                                    <% if(currentReview.text) { %>
+                                        <%- currentReview.text %>
+                                    <% } else { %>
+                                        <p class="no-description">No text was included in this review</p>
+                                    <% } %>
+                                    <a href="<%= googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="row mt-3">
+        <section class="col books-like-this">
+            <h4>Similar books you may enjoy</h4>
+        </section>
+        <section class="col by-this-author">
+            <h4>Other books by this author</h4>
+        </section>
+    </div>
+</div>
+  
+<%- include( '../partials/footer') %> 
+
