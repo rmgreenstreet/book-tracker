@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
 const { 
-  getReviewDetails
+  getReviewDetails,
+  getReviewEdit
 } = require('../controllers/reviews');
 const { 
   asyncErrorHandler, 
@@ -20,6 +21,9 @@ router.get('/', isLoggedIn);
 
 /* GET specific review details */
 router.get('/:reviewId', getReviewDetails);
+
+/* GET edit review */
+router.get('/edit/:reviewId', getReviewDetails);
 
 /* PUT unpublish a review */
 // router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);
