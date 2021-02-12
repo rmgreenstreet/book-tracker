@@ -32,8 +32,11 @@ module.exports = {
                 req.session.error = "The specified review has been marked \"Private\" by the user";
                 return res.redirect('/');
             }
-            //Find tags other users have applied to this book, filtered to the (up to) ten highest occurences
-            const {tags: popularTags} = await getPopularTags(currentReview.book._id, 7);
+            //Find tags other users have applied to this book, filtered to the (up to) seven highest occurences
+            const {tags} = await getPopularTags(currentReview.book._id);
+            let popularTags = tags.filter(function(tag) {
+                return tag.count > 1;
+            });
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
             res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags});
         } catch (err) {

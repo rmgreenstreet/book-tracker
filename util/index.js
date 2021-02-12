@@ -35,55 +35,39 @@ module.exports = {
         const action = state ? 'Published' : 'Upublished';
         req.session.success = `The Book Has Been ${action}!`;
     },
-    async getPopularTags(bookId, limit) {
+    async getPopularTags(bookId) {
         /* get all reviews for currentBook, selecting only 'tags', and populate those tags */
-        let relevantReviews
-            if (limit) {
-                relevantReviews = await Review.find({book: bookId}, 'tags')
-                    .populate(
-                        {
-                            path:'tags'
-                        }
-                    )
-                    .limit(limit)
-                    .exec();
-            } else {
-                relevantReviews = await Review.find({book: bookId}, 'tags')
-                    .populate(
-                        {
-                            path:'tags'
-                        }
-                    )
-                    .exec();
+        const relevantReviews = await Review.find({book: bookId}, 'tags')
+            .populate(
+                {
+                    path:'tags'
                 }
+            );
 
-            /* Distill tags to title, description, id, and number of occurrences for the book that the review is about */
-            const tags = []; 
-            for (let review of relevantReviews) {
-                for (let tag of review.tags) {
-                    //Check whether an object with a 'title' attribute that matches the current tag title
-                    let foundIndex = tags.findIndex(function(e) { return e.title === tag.title });
-                    //If one does exist, increase the 'count' of the tag at that index's occurrence
-                    if (foundIndex !== -1) {
-                        tags[foundIndex].count++;
-                        foundindex = -1;
-                    } else {
-                        /* If not, make a new object with that tag's attributes, whose 'count' attribute will be incremented 
-                        if it is found again */
-                        tags.push({
-                            title: tag.title,
-                            id: tag._id,
-                            description: tag.description,
-                            count: 1
-                        })
-                    }
+        /* Distill tags to title, description, id, and number of occurrences for the book that the review is about */
+        const tags = []; 
+        for (let review of relevantReviews) {
+            for (let tag of review.tags) {
+                //Check whether an object with a 'title' attribute that matches the current tag title
+                let foundIndex = tags.findIndex(function(e) { return e.title === tag.title });
+                //If one does exist, increase the 'count' of the tag at that index's occurrence
+                if (foundIndex !== -1) {
+                    tags[foundIndex].count++;
+                    foundindex = -1;
+                } else {
+                    /* If not, make a new object with that tag's attributes, whose 'count' attribute will be incremented 
+                    if it is found again */
+                    tags.push({
+                        title: tag.title,
+                        id: tag._id,
+                        description: tag.description,
+                        count: 1
+                    })
                 }
-                
             }
-
-            return {tags, relevantReviews};
+        }
+        return {tags, relevantReviews};
     }
-
 
 }
 

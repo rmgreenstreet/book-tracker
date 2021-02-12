@@ -22,6 +22,11 @@
                     <div class="row">
                         <div class="col">
                             <h4>Popular Tags</h4>
+                            <% for (let tag of popularTags) { %>
+                                <% if (tag.count > 1) { %>
+                                    <a href="/books/?tag=<%= tag.id %>&resource=Book"><%= tag.title %></a> (<%= tag.count %>) <%= popularTags.indexOf(tag) < popularTags.length - 1 ? ', ' : '' %>
+                                <% } %>
+                            <% } %>
                         </div>
                     </div>
                 </div>
