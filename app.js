@@ -9,6 +9,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const methodOverride = require('method-override');
+const expressSanitizer = require('express-sanitizer');
 
 //Require models
 const User = require('./models/user');
@@ -54,6 +55,8 @@ app.use(methodOverride("_method"));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// Mount express-sanitizer middleware here
+app.use(expressSanitizer());
 app.use(cookieParser());
 app.use(require('express-session')({
   secret:"more things in the world",
