@@ -1,6 +1,6 @@
 <%- include( '../partials/header') %> 
 <div class="container">
-    <form action="/reviews/edit/<%= currentReview.id %>?_PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded">
+    <form action="/reviews/edit/<%= currentReview.id %>?_PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded" class="form-inline">
         <section class="col-md-3" id="review-tags">
             <div class="row">
                 <div class="col" class="tags">
@@ -58,21 +58,29 @@
                                         </fieldset>
                                     </div>
                                 </div>
-                                <div class="row reading-journey mt-2">
-                                    <div class="col-12 col-md-6 date-started">
-                                        Started reading: <%= currentReview.bookStartedDate.toLocaleDateString('en-US', dateStringOptions); %>
+                                <div class="form-row reading-journey mt-2 form-group">
+                                    <div class="col-12 col-md-6 date-started input-group">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="bookStartedDate">
+                                                Started
+                                            </label>
+                                        </div>
+                                        <input type="date" name="review[bookStartedDate]" id="bookStartedDate" value="<%= new Date(currentReview.bookStartedDate.toLocaleDateString('en-US',{})).toISOString().split('T')[0] %>" class="form-control">
                                     </div>
-                                    <div class="col-12 col-md-6 date-finished">
-                                        <% if (!currentReview.bookFinished && currentReview.bookFinishedDate) { %>
-                                            Re-shelved: <%= currentReview.finishedDate.toLocaleDateString('en-US', dateStringOptions); %>
-                                        <% } else if (!currentReview.bookFinished && !currentReview.bookFinishedDate) { %>
-                                            Currently Reading
-                                        <% } else if (currentReview.bookFinished) { %> 
-                                            Finished Reading: <%= currentReview.bookFinishedDate.toLocaleDateString('en-US', dateStringOptions); %>
-                                        <% } %>
-                                    </div>
-                                    <div class="col-12 review-date">
-                                        Reviewed: <%= currentReview.created.toLocaleDateString('en-US', dateStringOptions); %>
+                                    <div class="col-12 col-md-6 date-finished input-group">
+                                            <% if (!currentReview.bookFinished && currentReview.bookFinishedDate) { %>
+                                                <div class="input-group-prepend">
+                                                    <label class="input-group-text" for="bookFinishedDate">Re-shelved</label> 
+                                                </div>
+                                                <input type="date" name="review[bookFinishedDate]" id="bookFinishedDate" class="form-control" value="<%= new Date(currentReview.bookFinishedDate.toLocaleDateString('en-US', {})).toISOString().split('T')[0] %>" >
+                                            <% } else if (!currentReview.bookFinished && !currentReview.bookFinishedDate) { %>
+                                                Currently Reading
+                                            <% } else if (currentReview.bookFinished) { %>
+                                                <div class="input-group-prepend">
+                                                    <label class="input-group-text" for="bookFinishedDate">Finished</label>
+                                                </div>
+                                                <input type="date" name="review[bookFinishedDate]" id="bookFinishedDate" class="form-control" value="<%= new Date(currentReview.bookFinishedDate.toLocaleDateString('en-US', {})).toISOString().split('T')[0] %>">
+                                            <% } %>
                                     </div>
                                 </div>
                             </div>
