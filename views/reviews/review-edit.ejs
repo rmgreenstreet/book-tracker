@@ -1,9 +1,9 @@
 <%- include( '../partials/header') %> 
 <div class="container">
-    <div class="row">
+    <form action="/reviews/edit/<%= currentReview.id %>?_PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded">
         <section class="col-md-3" id="review-tags">
             <div class="row">
-                <div class="col">
+                <div class="col" class="tags">
                     <!-- <h2>Tags</h2> -->
                     <div class="row mt-1">
                         <div class="col">
@@ -42,7 +42,20 @@
                                 <div class="row">
                                     <div class="col">
                                         <h2 class="book-title"><%= currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
-                                        <%- include('../partials/display-stars', {rating: currentReview.starRating, resourceType: 'Review'}); %>
+                                        <fieldset class="starability-basic">
+                                            <legend>Rating</legend>
+                                            <input type="radio" id="editReviewno-rate" class="input-no-rate" name="review[starRating]" value="0" aria-label="No rating." />
+                                            <input type="radio" name="review[starRating]" value="1" id="editReview1" <%= currentReview.starRating === 1 ? 'checked' : '' %>/>
+                                            <label for="editReview1" title="Terrible">1 star</label>
+                                            <input type="radio" name="review[starRating]" value="2" id="editReview2" <%= currentReview.starRating === 2 ? 'checked' : '' %>/>
+                                            <label for="editReview2" title="Not good">2 stars</label>
+                                            <input type="radio" name="review[starRating]" value="3" id="editReview3" <%= currentReview.starRating === 3 ? 'checked' : '' %>/>
+                                            <label for="editReview3" title="Average">3 stars</label>
+                                            <input type="radio" name="review[starRating]" value="4" id="editReview4" <%= currentReview.starRating === 4 ? 'checked' : '' %>/>
+                                            <label for="editReview4" title="Very good">4 stars</label>
+                                            <input type="radio" name="review[starRating]" value="5" id="editReview5" <%= currentReview.starRating === 5 ? 'checked' : '' %>/>
+                                            <label for="editReview5" title="Amazing">5 stars</label>
+                                        </fieldset>
                                     </div>
                                 </div>
                                 <div class="row reading-journey mt-2">
@@ -82,7 +95,7 @@
                 </div>
             </div>
         </section>
-    </div>
+    </form>
 </div>
   
 <%- include( '../partials/footer') %> 

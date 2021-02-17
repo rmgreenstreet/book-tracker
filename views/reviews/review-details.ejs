@@ -51,7 +51,7 @@
                                             <a href="<%= googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
                                         <% } %>
                                         <% if (currentReview.author.id === currentUser.id) { %>
-                                            | <a href="/reviews/edit/<%= currentReview.id %>" class="new-review">Edit Review</a>
+                                            | <a href="/reviews/<%= currentReview.id %>/edit" class="new-review">Edit Review</a>
                                         <% } %>
                                     </div>
                                 </div>

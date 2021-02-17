@@ -23,7 +23,7 @@ router.get('/', isLoggedIn);
 router.get('/:reviewId', getReviewDetails);
 
 /* GET edit review */
-router.get('/edit/:reviewId', getReviewEdit);
+router.get('/:reviewId/edit', getReviewEdit);
 
 /* PUT unpublish a review */
 // router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);
