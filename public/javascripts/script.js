@@ -6,9 +6,14 @@ window.onload = function () {
     })
 };
 
-// function formatTagCloud() {
-//     let tagCloud = document.querySelectorAll("span[class^='bucket'");
-//     for (let tag of tagCloud) {
-//         tag.classList.add('btn', 'p-1', 'm-1');
-//     }
-// }
+function removeTagFromList() {
+    let parentTag = this.closest('.tag');
+    parentTag.querySelector('input').checked = false;
+    parentTag.remove();
+};
+
+let allXs = document.querySelectorAll('.tag');
+
+for (let x of allXs) {
+    x.onclick = removeTagFromList;
+}

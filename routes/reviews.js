@@ -24,6 +24,9 @@ router.get('/:reviewId', getReviewDetails);
 
 /* GET edit review */
 router.get('/:reviewId/edit', getReviewEdit);
+// router.get('/:reviewId/edit', function(req,res,next) {
+//   res.render('../test/tagblock.ejs');
+// });
 
 /* PUT unpublish a review */
 // router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);

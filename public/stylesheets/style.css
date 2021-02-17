@@ -54,3 +54,23 @@ a.powered-by-google {
 form.unpublish-book, form.delete-book {
   display: inline;
 }
+
+.tag {
+  display: inline;
+}
+
+.tag-checkbox {
+  display: none;
+}
+
+.tag-label {
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  background-color: #e9ecef;
+  padding: .5em;
+}
+
+.remove-tag-x {
+  font-weight: bold;
+  cursor: pointer;
+}

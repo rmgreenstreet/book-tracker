@@ -1,4 +1,4 @@
-<%- include( '../partials/header') %> 
+<%- include('../partials/header') %> 
 <div class="container">
     <form action="/reviews/edit/<%= currentReview.id %>?_PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded" class="form-inline">
         <section class="col-md-3" id="review-tags">
@@ -8,11 +8,14 @@
                     <div class="row mt-1">
                         <div class="col">
                             <h4>Your Tags</h4>
-                            <p>
-                                <% for (let tag of currentReview.tags) { %> 
-                                    <a href="/books/?tag=<%= tag.id %>&resource=Book"><%= tag.title %></a><%= currentReview.tags.indexOf(tag) < currentReview.tags.length - 1 ? ', ' : '' %>
+                                <% for (let tag of currentReview.tags) { %>
+                                    <div class="tag">
+                                        <label for="tag<%= tag.id %>" class="tag-label">
+                                                    <%= tag.title %>&nbsp;<span class="remove-tag-x">X</span>
+                                        </label>
+                                        <input type="checkbox" name="review[tags]" class="tag-checkbox" checked id="tag<%= tag.id %>" value="<%= tag.id %>">
+                                    </div>
                                 <% } %>
-                            </p>
                         </div>
                     </div>
                     <div class="row">
@@ -103,13 +106,13 @@
                                     <div class="input-group-prepend">
                                         <label for="reviewTitle" class="input-group-text">Title</label>
                                     </div>
-                                    <input type="text" name="review[title]" id="reviewTitle" class="form-control" value="<%= currentReview.title %>">
+                                    <input type="text" name="review[title]" id="reviewTitle" class="form-control" maxlength="100" value="<%= currentReview.title %>">
                                 </div>
                                 <div class="form-group mt-3">
                                     <label for="reviewText" class="input-group-text">Body</label>
                                     <!-- <div class="input-group-prepend">
                                     </div> -->
-                                    <textarea name="review[text]" id="reviewText" class="form-control" rows="10" placeholder="<%= currentReview.text ? '' : 'Write your review here' %>"><%= currentReview.text ? currentReview.text : '' %></textarea>
+                                    <textarea name="review[text]" id="reviewText" class="form-control" rows="10" maxlength="1000" placeholder="<%= currentReview.text ? '' : 'Write your review here' %>"><%= currentReview.text ? currentReview.text : '' %></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save</button>
                                 <p class="card-text mt-2">
