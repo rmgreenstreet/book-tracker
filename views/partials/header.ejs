@@ -17,9 +17,38 @@
 		<!-- FontAwesome styles and scripts -->
 		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 		<script src="https://kit.fontawesome.com/75e02839f8.js" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="/stylesheets/style.css">
-		<!-- <link rel="stylesheet" href="/stylesheets/lmdd.css"> -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/starability@2.4.0/starability-css/starability-all.min.css">
+		<!-- scripts for TinyMCE wysiwyg editor -->
+		<script src="https://cdn.tiny.cloud/1/ylwvnsnnjwcn1xawpztaw6lnc1lmm5tc1th1ahs3zg7dgetr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+		<script>
+			tinymce.init({
+				selector: "textarea#reviewText",
+				skin: "bootstrap",
+				plugins: "lists, link, image, media",
+				toolbar:
+				  "h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help",
+				menubar: false,
+				setup: (editor) => {
+				  // Apply the focus effect
+				  editor.on("init", () => {
+					editor.getContainer().style.transition =
+					  "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out";
+				  });
+				  editor.on("focus", () => {
+					(editor.getContainer().style.boxShadow =
+					  "0 0 0 .2rem rgba(0, 123, 255, .25)"),
+					  (editor.getContainer().style.borderColor = "#80bdff");
+				  });
+				  editor.on("blur", () => {
+					(editor.getContainer().style.boxShadow = ""),
+					  (editor.getContainer().style.borderColor = "");
+				  });
+				},
+			  });
+		</script>
+
+		<link rel="stylesheet" href="/stylesheets/style.css">
+
     </head>
     <body>
 		<header>
