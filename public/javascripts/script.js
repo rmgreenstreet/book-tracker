@@ -12,7 +12,7 @@ function removeTagFromList() {
     parentTag.remove();
 };
 
-let allXs = document.querySelectorAll('.tag');
+let allXs = document.querySelectorAll('.remove-tag-x');
 
 for (let x of allXs) {
     x.onclick = removeTagFromList;
