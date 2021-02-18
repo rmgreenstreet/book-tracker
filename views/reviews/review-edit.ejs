@@ -107,8 +107,8 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="col">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="review[bookFinished]" id="wasBookFinished" class="form-check-input" <%= !currentReview.bookFinished && currentReview.bookFinishedDate ? 'checked' : '' %>>
+                                        <div class="form-check-inline">
+                                            <input type="checkbox" name="review[bookFinished]" id="wasBookFinished" class="form-check-input form-control" <%= !currentReview.bookFinished && currentReview.bookFinishedDate ? 'checked' : '' %>>
                                             <label for="wasBookFinished" class="form-check-label">I re-shelved this book without finishing it</label>
                                         </div>
                                     </div>

@@ -94,7 +94,6 @@ function listResults(results) {
 
                 tagSearchResults.appendChild(blankResult);
             }
-            
         }
     } else {
         const noResultsNode = document.createElement('p');

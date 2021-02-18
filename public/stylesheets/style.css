@@ -88,3 +88,12 @@ form.unpublish-book, form.delete-book {
 .quick-result-title {
   text-decoration: underline;
 }
+
+legend {
+  display: none;
+}
+
+#wasBookFinished {
+  height: 15px;
+  width: 15px;
+}
