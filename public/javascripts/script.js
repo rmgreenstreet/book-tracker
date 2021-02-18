@@ -29,6 +29,8 @@ function addTagToList() {
     document.querySelector('.applied-tags').appendChild(parentTag);
 }
 
+
+
 let allXs = document.querySelectorAll('.remove-tag-x');
 
 for (let x of allXs) {
@@ -39,4 +41,22 @@ let allPluses = document.querySelectorAll('.add-tag-plus');
 
 for (let plus of allPluses) {
     plus.onclick = addTagToList;
+}
+
+const tagSearchBox = document.querySelector('#tag-search');
+
+let timeout = null;
+tagSearchBox.addEventListener('input', function () {
+    var that = this;
+    if (timeout !== null) {
+        clearTimeout(timeout);
+    }
+    timeout = setTimeout(function () {
+        doSearch(that.value);
+    }, 200);
+});
+
+async function doSearch(value){
+    const response = await axios.get(`/tags/search/${value}`);
+    console.log(response.data);
 }
