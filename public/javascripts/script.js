@@ -15,6 +15,11 @@ function removeTagFromList() {
         parentTag.querySelector('.add-tag-plus').classList.remove('not-visible');
         this.classList.add('not-visible');
         document.querySelector('.popular-tags').appendChild(parentTag);
+    } else if (parentTag.classList.contains('searched-tag') && document.querySelector('#tag-search').value) {
+        parentTag.querySelector('input').checked = false;
+        parentTag.querySelector('.add-tag-plus').classList.remove('not-visible');
+        this.classList.add('not-visible');
+        document.querySelector('#tag-search-results').appendChild(parentTag);
     } else {
         parentTag.remove();
     }
@@ -23,7 +28,10 @@ function removeTagFromList() {
 function addTagToList() {
     let parentTag = this.closest('.tag');
     this.classList.add('not-visible');
-    parentTag.querySelector('.tag-count').classList.add('not-visible');
+    let tagCount = parentTag.querySelector('.tag-count');
+    if (tagCount) {
+        tagCount.classList.add('not-visible');
+    }
     parentTag.querySelector('.remove-tag-x').classList.remove('not-visible');
     parentTag.querySelector('input').checked = true;
     document.querySelector('.applied-tags').appendChild(parentTag);
@@ -51,12 +59,46 @@ tagSearchBox.addEventListener('input', function () {
     if (timeout !== null) {
         clearTimeout(timeout);
     }
-    timeout = setTimeout(function () {
-        doSearch(that.value);
+    timeout = setTimeout(async function () {
+        let results = await doSearch(that.value);
+        listResults(results);
     }, 200);
 });
 
 async function doSearch(value){
     const response = await axios.get(`/tags/search/${value}`);
-    console.log(response.data);
+    return response.data;
+}
+
+function listResults(results) {
+    let tagSearchResults = document.querySelector('#tag-search-results');
+    for (let child of tagSearchResults.children) {
+        tagSearchResults.removeChild(child);
+    }
+    if (results.length > 0) {
+        for (let result of results) {
+            if (!document.querySelector('.applied-tags').querySelector(`#tag${result._id}`)) {
+                let blankResult = document.querySelector('#quick-result').content.cloneNode(true);
+                blankResult.querySelector('.tag').setAttribute('title', `${result.description.substr(0,20)}...`)
+                
+                let resultLabel = blankResult.querySelector('label');
+                resultLabel.setAttribute('for', `tag${result._id}`);
+                resultLabel.prepend(`${result.title}`);
+
+                let resultCheckBox = blankResult.querySelector('input');
+                resultCheckBox.setAttribute('id', `tag${result._id}`);
+                resultCheckBox.setAttribute('value', `${result._id}`);
+
+                blankResult.querySelector('.remove-tag-x').addEventListener('click', removeTagFromList);
+                blankResult.querySelector('.add-tag-plus').addEventListener('click', addTagToList);
+
+                tagSearchResults.appendChild(blankResult);
+            }
+            
+        }
+    } else {
+        const noResultsNode = document.createElement('p');
+        noResultsNode.appendChild(document.createTextNode('No Tags Found'));
+        tagSearchResults.appendChild(noResultsNode);
+    }
 }

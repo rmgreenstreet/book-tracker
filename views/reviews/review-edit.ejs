@@ -12,16 +12,17 @@
                                 <% for (let tag of currentReview.tags) { %>
                                     <div class="tag">
                                         <label for="tag<%= tag.id %>" class="tag-label">
-                                                    <%= tag.title %>&nbsp;<span class="remove-tag-x">X</span>
+                                                    <%= tag.title %><span class="remove-tag-x">&nbsp;X</span>
                                         </label>
                                         <input type="checkbox" name="review[tags]" class="tag-checkbox" checked id="tag<%= tag.id %>" value="<%= tag.id %>">
                                     </div>
                                 <% } %>
                             </div>
-                            <input type="text" name="tag-search" id="tag-search" class="form-control" placeholder="Search for tags">
+                            <input type="text" name="" id="tag-search" class="form-control" placeholder="Search for tags">
+                            <div id="tag-search-results" class="mt-1"></div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col">
                             <h4>Popular Tags for This Book</h4>
                             <div class="popular-tags">
@@ -30,9 +31,9 @@
                                         <% if (!currentReview.tags.find(reviewTag => reviewTag.id == tag.id)) { %>
                                             <div class="tag popular-tag">
                                                 <label for="tag<%= tag.id %>" class="tag-label">
-                                                            <%= tag.title %>&nbsp;
-                                                            <span class="tag-count">(<%= tag.count %>)</span>
-                                                            <span class="remove-tag-x not-visible">X</span>
+                                                            <%= tag.title %>
+                                                            <span class="tag-count">&nbsp;(<%= tag.count %>)</span>
+                                                            <span class="remove-tag-x not-visible">&nbsp;X</span>
                                                             <span class="add-tag-plus">&nbsp;+</span>
                                                 </label>
                                                 <input type="checkbox" name="review[tags]" class="tag-checkbox" id="tag<%= tag.id %>" value="<%= tag.id %>">
@@ -141,6 +142,7 @@
         </section>
     </form>
 </div>
+<%- include('../partials/tag-results'); %>
   
 <%- include( '../partials/footer') %> 
 

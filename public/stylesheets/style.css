@@ -78,3 +78,13 @@ form.unpublish-book, form.delete-book {
 .not-visible {
   display: none;
 }
+
+.quick-result {
+  border: 1px solid black;
+  padding: 1em;
+  margin-top: -1px;
+}
+
+.quick-result-title {
+  text-decoration: underline;
+}
