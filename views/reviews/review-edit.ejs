@@ -8,6 +8,7 @@
                     <div class="row mt-1">
                         <div class="col">
                             <h4>Your Tags</h4>
+                            <div class="applied-tags">
                                 <% for (let tag of currentReview.tags) { %>
                                     <div class="tag">
                                         <label for="tag<%= tag.id %>" class="tag-label">
@@ -16,16 +17,30 @@
                                         <input type="checkbox" name="review[tags]" class="tag-checkbox" checked id="tag<%= tag.id %>" value="<%= tag.id %>">
                                     </div>
                                 <% } %>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <h4>Popular Tags for This Book</h4>
-                            <% for (let tag of popularTags) { %>
-                                <% if (tag.count > 1) { %>
-                                    <a href="/books/?tag=<%= tag.id %>&resource=Book"><%= tag.title %></a>&nbsp;(<%= tag.count %>)<%= popularTags.indexOf(tag) < popularTags.length - 1 ? ', ' : '' %>
+                            <div class="popular-tags">
+                                <% for (let tag of popularTags) { %>
+                                    <% if (tag.count > 1) { %>
+                                        <% if (!currentReview.tags.find(reviewTag => reviewTag.id == tag.id)) { %>
+                                            <div class="tag popular-tag">
+                                                <label for="tag<%= tag.id %>" class="tag-label">
+                                                            <%= tag.title %>&nbsp;
+                                                            <span class="tag-count">(<%= tag.count %>)</span>
+                                                            <span class="remove-tag-x not-visible">X</span>
+                                                            <span class="add-tag-plus">&nbsp;+</span>
+                                                </label>
+                                                <input type="checkbox" name="review[tags]" class="tag-checkbox" id="tag<%= tag.id %>" value="<%= tag.id %>">
+                                            </div>
+                                        <% } %>
+                                    <% } %>
                                 <% } %>
-                            <% } %>
+                            </div>
                         </div>
                     </div>
                 </div>

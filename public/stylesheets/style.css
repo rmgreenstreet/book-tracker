@@ -70,7 +70,11 @@ form.unpublish-book, form.delete-book {
   padding: .5em;
 }
 
-.remove-tag-x {
+.remove-tag-x, .add-tag-plus{
   font-weight: bold;
   cursor: pointer;
+}
+
+.not-visible {
+  display: none;
 }
