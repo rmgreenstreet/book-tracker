@@ -80,7 +80,7 @@ module.exports = {
         }
     },
     async searchTags(req, res, next) {
-        let foundTags = ['No Tag Found'];
+        let foundTags = [{data: ['No Tag Found']}];
         try {
             foundTags = await Tag.find({title: new RegExp(req.params.tagTitle, 'i')});
             res.send(foundTags);

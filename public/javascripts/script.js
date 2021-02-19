@@ -27,7 +27,11 @@ function removeTagFromList() {
 
 function addTagToList() {
     let parentTag = this.closest('.tag');
-    this.classList.add('not-visible');
+    if (document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id'))) {
+        parentTag.remove();
+        parentTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag');
+    }
+    parentTag.querySelector('.add-tag-plus').classList.add('not-visible');
     let tagCount = parentTag.querySelector('.tag-count');
     if (tagCount) {
         tagCount.classList.add('not-visible');
