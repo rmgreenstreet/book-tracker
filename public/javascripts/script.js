@@ -4,6 +4,11 @@ window.onload = function () {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+    $('#tag-search').keypress(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
 };
 
 function removeTagFromList() {
@@ -28,8 +33,10 @@ function removeTagFromList() {
 function addTagToList() {
     let parentTag = this.closest('.tag');
     if (document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id'))) {
-        parentTag.remove();
-        parentTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag');
+        if (parentTag !== document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag')) {
+            parentTag.remove();
+            parentTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag');
+        }
     }
     parentTag.querySelector('.add-tag-plus').classList.add('not-visible');
     let tagCount = parentTag.querySelector('.tag-count');
