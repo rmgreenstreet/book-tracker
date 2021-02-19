@@ -26,11 +26,15 @@ router.get('/:reviewId', getReviewDetails);
 /* GET edit review */
 router.get('/:reviewId/edit', getReviewEdit);
 // router.get('/:reviewId/edit', function(req,res,next) {
-//   res.render('../test/tagblock.ejs');
+//   res.render('../test/edit-form.ejs');
 // });
 
 /* PUT update a review */
-router.put('/:reviewId', putUpdateReview)
+router.put('/:reviewId', putUpdateReview);
+// router.put('/:reviewId', function (req,res,next) {
+//   console.log(req.body.review);
+//   res.redirect('back');
+// });
 
 /* PUT unpublish a review */
 // router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);

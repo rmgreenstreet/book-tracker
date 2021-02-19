@@ -11,11 +11,15 @@ window.onload = function () {
     });
 };
 
-function removeTagFromList() {
+function removeTagFromList(e) {
+    /* Prevent checkbox from being unchecked by the click prior to being programattically unchecked, the two of which together would make it reverse */
+    e.preventDefault();
+
     console.log('removing tag');
     let parentTag = this.closest('.tag');
     if(parentTag.classList.contains('popular-tag')){
         parentTag.querySelector('input').checked = false;
+        parentTag.querySelector('input').setAttribute('checked', false);
         parentTag.querySelector('.tag-count').classList.remove('not-visible');
         parentTag.querySelector('.add-tag-plus').classList.remove('not-visible');
         this.classList.add('not-visible');
@@ -30,20 +34,24 @@ function removeTagFromList() {
     }
 };
 
-function addTagToList() {
+function addTagToList(e) {
+    /* Prevent checkbox from being checked by the click prior to being programattically checked, the two of which together would make it reverse */
+    e.preventDefault();
+
     let parentTag = this.closest('.tag');
     if (parentTag !== document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag')) {
         parentTag.remove();
         parentTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag');
     }
+    document.querySelector('.applied-tags').appendChild(parentTag);
     parentTag.querySelector('.add-tag-plus').classList.add('not-visible');
     let tagCount = parentTag.querySelector('.tag-count');
     if (tagCount) {
         tagCount.classList.add('not-visible');
     }
     parentTag.querySelector('.remove-tag-x').classList.remove('not-visible');
-    parentTag.querySelector('.tag-checkbox').setAttribute('checked','');
-    document.querySelector('.applied-tags').appendChild(parentTag);
+    parentTag.querySelector('.tag-checkbox').checked = true;
+    parentTag.querySelector('.tag-checkbox').setAttribute('checked','true');
 }
 
 
