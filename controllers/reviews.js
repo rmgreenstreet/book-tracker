@@ -82,6 +82,28 @@ module.exports = {
             }
             res.redirect('back');
         }
+    },
+    async putUpdateReview(req, res, next) {
+        try {
+            let updates = req.body.review;
+
+            /* convert dates from string to date */
+            updates.bookStartedDate = new Date(updates.bookStartedDate);
+            updates.bookFinishedDate = new Date(updates.bookFinishedDate);
+            
+            if (updates.bookFinishedDate && updates.bookStartedDate > updates.bookFinishedDate) {
+                req.session.error = '"Started" date cannot be after "Finished" date.';
+                return res.redirect('back');
+            }
+            
+            let currentReview = await Review.findOneAndUpdate({_id: req.params.reviewId}, updates);
+
+            req.session.success = 'The Review has been updated!'
+            res.redirect(`/reviews/${req.params.reviewId}`)
+        } catch (err) {
+            req.session.error = err.message;
+            res.redirect('back');
+        }
     }
 
 }

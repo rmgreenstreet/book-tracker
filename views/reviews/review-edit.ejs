@@ -1,6 +1,6 @@
 <%- include('../partials/header') %> 
 <div class="container">
-    <form action="/reviews/edit/<%= currentReview.id %>?_PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded" class="form-inline">
+    <form action="/reviews/<%= currentReview.id %>?_method=PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded" class="form-inline">
         <section class="col-md-3" id="review-tags">
             <div class="row">
                 <div class="col" class="tags">
@@ -108,7 +108,8 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-check-inline">
-                                            <input type="checkbox" name="review[bookFinished]" id="wasBookFinished" class="form-check-input form-control" <%= !currentReview.bookFinished && currentReview.bookFinishedDate ? 'checked' : '' %>>
+                                            <input type="checkbox" name="review[bookFinished]" id="wasBookFinished" class="form-check-input form-control" value=false 
+                                            <%= !currentReview.bookFinished && currentReview.bookFinishedDate ? 'checked' : '' %>>
                                             <label for="wasBookFinished" class="form-check-label">I re-shelved this book without finishing it</label>
                                         </div>
                                     </div>

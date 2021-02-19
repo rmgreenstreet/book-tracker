@@ -42,7 +42,7 @@ function addTagToList() {
         tagCount.classList.add('not-visible');
     }
     parentTag.querySelector('.remove-tag-x').classList.remove('not-visible');
-    parentTag.querySelector('input').checked = true;
+    parentTag.querySelector('.tag-checkbox').setAttribute('checked','');
     document.querySelector('.applied-tags').appendChild(parentTag);
 }
 
