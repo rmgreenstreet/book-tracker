@@ -130,68 +130,69 @@
                                     <textarea name="review[text]" id="reviewText" class="form-control" rows="10" maxlength="1000" placeholder="<%= currentReview.text ? '' : 'Write your review here' %>"><%= currentReview.text ? currentReview.text : '' %></textarea>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col"><button type="submit" class="btn btn-primary">Save</button>
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary">Save</button>
                                     </div>
                                     <div class="col">
-                                        <% if(currentUser.role = 'owner' || currentUser.id === review.author.id) { %>
+                                        <% if(currentUser.role = 'owner') { %>
                                             <div class="row" id="owner-controls">
-                                                <% if (currentBook.active) { %>
-                                                <div class="col">
-                                                    <button type="button" class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish book</button>
+                                                <% if (currentReview.status.active) { %>
+                                                <div class="col text-right">
+                                                    <a class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish review</a>
                                                 </div>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="confirm-unpublish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="confirm-unpublish-label">Unpublish Book?</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <h5 class="modal-title" id="confirm-unpublish-label">Unpublish review?</h5>
+                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to unpublish this book? It will no longer be available for users to write reviews, but existing reviews will remain in place. This action *can* be undone by an "Owner" user.</p>
+                                                            <p>Are you sure you want to unpublish this review? It will no longer be visible to other users. This action *can* be undone.</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <form action="/books/<%= currentBook.id %>/unpublish?_method=PUT" class="unpublish-book" id="unpublish-book" method="post">
-                                                                <button class="btn btn-warning my-1">Unpublish book</button>
-                                                            </form>
+                                                            <a href="/reviews/<%= currentReview.id %>/unpublish" class="btn btn-warning my-1">Unpublish review</a>
                                                         </div>
                                                     </div>
                                                     </div>
                                                 </div>
             
                                                 <% } else { %>
-                                                    <div class="col">
-                                                        <button type="button" class="btn btn-success my-1" data-toggle="modal" data-target="#confirm-publish-modal">Re-publish book</button>
+                                                    <div class="col text-right">
+                                                        <button type="button" class="btn btn-success my-1" data-toggle="modal" data-target="#confirm-publish-modal">Re-publish review</button>
                                                     </div>
-                                                    <!-- <div class="col">
-                                                        <button type="button" class="btn btn-danger my-1" data-toggle="modal" data-target="#confirm-delete-modal">Delete book</button>
-                                                    </div> -->
-                                                    <!-- Modal -->
                                                     <div class="modal fade" id="confirm-publish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="confirm-publish-label">Re-publish Book?</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                <h5 class="modal-title" id="confirm-publish-label">Re-publish review?</h5>
+                                                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <p>Are you sure you want to publish this book? The book will become available for users to write new reviews about. This action *can* be undone.</p>
+                                                                <p>Are you sure you want to publish this review? It will become visible to other users. This action *can* be undone.</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <form action="/books/<%= currentBook.id %>/publish?_method=PUT" class="publish-book" id="publish-book" method="post">
-                                                                    <button class="btn btn-success my-1">Re-publish book</button>
-                                                                </form>
+                                                                <a href="/reviews/<%= currentReview.id %>/publish" class="btn btn-warning my-1">Re-publish review</a>
                                                             </div>
                                                         </div>
                                                         </div>
                                                     </div>
+                
+                                                <% } %>
+                                            </div>
+                                        <% } %>
                                     </div>
                                 </div>
-                                <p class="card-text mt-2">
-                                    <a href="<%= googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
-                                </p>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="card-text mt-2">
+                                            <a href="<%= googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -203,4 +204,3 @@
 <%- include('../partials/tag-results'); %>
   
 <%- include( '../partials/footer') %> 
-

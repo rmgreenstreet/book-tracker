@@ -16,7 +16,7 @@ const middleware = {
 	attempting to be changed */
 	async isReviewAuthor (req,res,next) {
 		let review = await Review.findById(req.params.review_id);
-		if (review.author.equals(req.user._id)) {
+		if (review.author.equals(req.user.id)) {
 			return next();
 		}
 		req.session.error = "This review does not belong to you."
@@ -33,7 +33,7 @@ const middleware = {
 		attempting to be changed */
 	async isPostAuthor (req,res,next) {
 		const post = await Post.findById(req.params.id);
-		if(post.author.equals(req.user._id)){
+		if(post.author.equals(req.user.id)){
 			res.locals.post=post;
 			return next();
 		}

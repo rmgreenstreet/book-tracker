@@ -74,7 +74,8 @@ app.use(async function (req,res,next) {
     req.user = {
       username: 'bob',
       email: 'bob@bob.com',
-      id: '60217ea4db471180bc238ae2'
+      id: '60217ea4db471180bc238ae2',
+      role: 'owner'
     };
   };
   //provide options for displaying date strings

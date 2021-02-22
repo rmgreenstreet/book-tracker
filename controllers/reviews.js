@@ -27,15 +27,11 @@ module.exports = {
                 req.session.error = "Review not found";
                 return res.redirect('back');
             };
-            if(!currentReview.status.active && (req.user._id !== currentReview.author._id || req.user.role !== 'owner')) {
+            //If the review has been unpublished AND the logged-in user is not an owner or the author of the review, redirect back to the home page
+            if(!currentReview.status.active && (req.user.id !== currentReview.author._id && req.user.role !== 'owner')) {
                 req.session.error = "This review has been unpublished by the author";
                 return res.redirect('back');
             }
-            //If the review has been unpublished AND the logged-in user is not an owner, redirect back to the home page
-            if (!currentReview.status.active && req.user.role !== 'owner') {
-                req.session.error = "The specified review has been unpublished";
-                return res.redirect('back');
-            };
             //If the review has been marked private AND the logged-in user is not an owner, redirect back to the home page
             if (!currentReview.public && req.user.role !== 'owner') {
                 req.session.error = "The specified review has been marked \"Private\" by the user";
@@ -68,7 +64,7 @@ module.exports = {
                 req.session.error = "Review not found";
                 return res.redirect('back');
             };
-            if(!currentReview.status.active && (req.user._id !== currentReview.author._id || req.user.role !== 'owner')) {
+            if(!currentReview.status.active && (req.user.id !== currentReview.author._id && req.user.role !== 'owner')) {
                 req.session.error = "This review has been unpublished by the author";
                 return res.redirect('back');
             }
@@ -110,6 +106,22 @@ module.exports = {
             res.redirect(`/reviews/${req.params.reviewId}`)
         } catch (err) {
             req.session.error = err.message;
+            res.redirect('back');
+        }
+    },
+    async getPublishOrUnpublishReview(req,res,next) {
+        try {
+            const updatedReview = await Review.findById(req.params.reviewId);
+            updatedReview.status.active = !updatedReview.status.active;
+            await updatedReview.save();
+            req.session.success = `The review has been ${updatedReview.status.active ? '' : 'un'}published!`
+            if (updatedReview.status.active) {
+                return res.redirect(`/reviews/${updatedReview._id}`);
+            }
+            res.redirect('/');
+        } catch (err) {
+            console.error(err.message)
+            req.session.error = 'There was a problem changing the status of the review';
             res.redirect('back');
         }
     }

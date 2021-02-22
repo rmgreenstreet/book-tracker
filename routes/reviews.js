@@ -3,7 +3,8 @@ const router = express.Router({mergeParams:true});
 const { 
   getReviewDetails,
   getReviewEdit,
-  putUpdateReview
+  putUpdateReview,
+  getPublishOrUnpublishReview
 } = require('../controllers/reviews');
 const { 
   asyncErrorHandler, 
@@ -35,6 +36,12 @@ router.put('/:reviewId', putUpdateReview);
 //   console.log(req.body.review);
 //   res.redirect('back');
 // });
+
+/* GET publish a review */
+router.get('/:reviewId/publish', getPublishOrUnpublishReview);
+
+/* GET unpublish a review */
+router.get('/:reviewId/unpublish', getPublishOrUnpublishReview);
 
 /* PUT unpublish a review */
 // router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);
