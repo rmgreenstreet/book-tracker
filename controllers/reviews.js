@@ -27,6 +27,10 @@ module.exports = {
                 req.session.error = "Review not found";
                 return res.redirect('back');
             };
+            if(!currentReview.status.active && (req.user._id !== currentReview.author._id || req.user.role !== 'owner')) {
+                req.session.error = "This review has been unpublished by the author";
+                return res.redirect('back');
+            }
             //If the review has been unpublished AND the logged-in user is not an owner, redirect back to the home page
             if (!currentReview.status.active && req.user.role !== 'owner') {
                 req.session.error = "The specified review has been unpublished";
@@ -64,6 +68,10 @@ module.exports = {
                 req.session.error = "Review not found";
                 return res.redirect('back');
             };
+            if(!currentReview.status.active && (req.user._id !== currentReview.author._id || req.user.role !== 'owner')) {
+                req.session.error = "This review has been unpublished by the author";
+                return res.redirect('back');
+            }
             //Find tags other users have applied to this book, filtered to the (up to) seven highest occurences
             const {tags} = await getPopularTags(currentReview.book._id);
             let popularTags = tags.filter(function(tag) {
