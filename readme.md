@@ -1,0 +1,1 @@
+Wannabe "Pandora for books" after I found out that desklamp was bought by Apple years ago and hasn't been seen since
