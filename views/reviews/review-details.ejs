@@ -23,6 +23,8 @@
                                     <a href="/books/?tag=<%= tag.id %>&resource=Book"><%= tag.title %></a>&nbsp;(<%= tag.count %>)<%= popularTags.indexOf(tag) < popularTags.length - 1 ? ', ' : '' %>
                                 <% } %>
                             <% } %>
+                            
+                            <%#- include('../partials/tag-cloud', {tags: popularTags}); %>
                         </div>
                     </div>
                 </div>
