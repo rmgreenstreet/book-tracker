@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@heroku/buildpack-registry": "^1.0.1",
+    "async-file": "^2.0.2",
     "dotenv": "^8.2.0",
     "ejs-lint": "^1.1.0",
     "faker": "^5.3.1",
