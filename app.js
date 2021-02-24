@@ -29,7 +29,6 @@ var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
 var tagsRouter = require('./routes/tags');
 var reviewsRouter = require('./routes/reviews');
-const seedDatabase = require('./seeds');
 
 const app = express();
 
@@ -71,7 +70,6 @@ app.use(async function (req,res,next) {
   // req.user = User.findOne({username: 'bob'});
   if (app.get('env') == 'development'){ 
     //Require dev functions
-    const { seedDatabase } = require('./seeds');
     // req.user = await User.authenticate()('bob', 'password');
     req.user = {
       username: 'bob',
