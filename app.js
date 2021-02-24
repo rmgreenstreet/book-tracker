@@ -15,9 +15,6 @@ const expressSanitizer = require('express-sanitizer');
 const User = require('./models/user');
 const Tag = require('./models/tag');
 
-//Require dev functions
-const { seetDatabase } = require('./seeds');
-
 // CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
@@ -73,6 +70,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(async function (req,res,next) {
   // req.user = User.findOne({username: 'bob'});
   if (app.get('env') == 'development'){ 
+    //Require dev functions
+    const { seetDatabase } = require('./seeds');
     // req.user = await User.authenticate()('bob', 'password');
     req.user = {
       username: 'bob',
