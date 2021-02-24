@@ -78,6 +78,15 @@ module.exports = {
             req.session.error = err.message;
             res.redirect('/');
         }
+    },
+    async searchTags(req, res, next) {
+        let foundTags = [{data: ['No Tag Found']}];
+        try {
+            foundTags = await Tag.find({title: new RegExp(req.params.tagTitle, 'i')});
+            res.send(foundTags);
+        } catch (err) {
+            res.send(foundTags);
+        }
     }
 
 }

@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router({mergeParams:true});
 const { 
-    getAllBooks,
-    createBook,
-    findBook,
-    updateBook,
-    unPublishBook,
-    deleteBook
-} = require('../controllers/books');
+  getReviewDetails,
+  getReviewEdit,
+  putUpdateReview,
+  getPublishOrUnpublishReview
+} = require('../controllers/reviews');
 const { 
   asyncErrorHandler, 
   isLoggedIn,
@@ -17,30 +15,39 @@ const {
 
 const siteTitle = " - Book Tracker | What Should I Read Next?"
 
-/* GET All books page. */
-router.get('/', isLoggedIn, getAllBooks);
+/* GET All reviews page. */
+router.get('/', isLoggedIn);
 
-/* POST new book */
-router.post('/', /*isLoggedIn,*/ createBook);
+/* POST new review */
+// router.post('/', /*isLoggedIn,*/ createReview);
 
-/* GET books-read page. */
-router.get('/read', function(req, res, next) {
-  res.render('books/books-read', { title: 'Books I\'ve Read' + siteTitle });
-});
+/* GET specific review details */
+router.get('/:reviewId', getReviewDetails);
 
-/* GET browse-books page. */
-router.get('/browse', function(req, res, next) {
-  res.render('books/browse-books', { title: 'Browse Books' + siteTitle });
-});
+/* GET edit review */
+router.get('/:reviewId/edit', getReviewEdit);
+// router.get('/:reviewId/edit', function(req,res,next) {
+//   res.render('../test/edit-form.ejs');
+// });
 
-/* GET specific book details */
-router.get('/:bookId', findBook);
+/* PUT update a review */
+router.put('/:reviewId', putUpdateReview);
+// router.put('/:reviewId', function (req,res,next) {
+//   console.log(req.body.review);
+//   res.redirect('back');
+// });
 
-/* PUT unpublish a book */
-router.put('/:bookId/unpublish', /*isLoggedIn,*/ unPublishBook);
+/* GET publish a review */
+router.get('/:reviewId/publish', getPublishOrUnpublishReview);
 
-/* DELETE specific book details */
-router.delete('/:bookId', function (req, res, next) {
+/* GET unpublish a review */
+router.get('/:reviewId/unpublish', getPublishOrUnpublishReview);
+
+/* PUT unpublish a review */
+// router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);
+
+/* DELETE specific review details */
+router.delete('/:reviewId', function (req, res, next) {
     res.redirect('/');
 });
 

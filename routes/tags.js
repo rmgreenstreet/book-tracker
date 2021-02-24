@@ -4,6 +4,7 @@ const {
     getAllTags,
     createTag,
     findTag,
+    searchTags,
     updateTag,
     unPublishTag,
     deleteTag
@@ -19,6 +20,9 @@ const siteTitle = " - Book Tracker | What Should I Read Next?"
 
 /* GET All tags page. */
 router.get('/', isLoggedIn, getAllTags);
+
+/* GET search tag by title */
+router.get('/search/:tagTitle', isLoggedIn, searchTags);
 
 /* POST new tag */
 router.post('/', /*isLoggedIn,*/ createTag);

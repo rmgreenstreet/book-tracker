@@ -128,7 +128,7 @@ module.exports = {
     },
     async getProfile(req,res,next) {
         /* get the 10 most recent of this user's posts to display on the page */
-        const posts = await Post.find().where('author').equals(req.user._id).limit(10).exec();
+        const posts = await Post.find().where('author').equals(req.user.id).limit(10).exec();
         res.render('profile', {posts, title: `Surf Shop - ${req.user.username}'s Profile`, page: 'profile'})
     },
      async updateProfile(req,res,next) {

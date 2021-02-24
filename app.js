@@ -31,6 +31,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var booksRouter = require('./routes/books');
 var tagsRouter = require('./routes/tags');
+var reviewsRouter = require('./routes/reviews');
 const seedDatabase = require('./seeds');
 
 const app = express();
@@ -76,8 +77,15 @@ app.use(async function (req,res,next) {
     req.user = {
       username: 'bob',
       email: 'bob@bob.com',
-      id: '60217ea4db471180bc238ae2'
+      id: '60217ea4db471180bc238ae2',
+      role: 'owner'
     };
+  };
+  //provide options for displaying date strings
+  res.locals.dateStringOptions = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
   };
 	res.locals.currentUser = req.user;
 	//set success flash message
@@ -96,6 +104,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/books', booksRouter);
 app.use('/tags', tagsRouter);
+app.use('/reviews', reviewsRouter);
 
 
 if (app.get('env') == 'development'){ 

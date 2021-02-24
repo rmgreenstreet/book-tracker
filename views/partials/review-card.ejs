@@ -11,11 +11,11 @@
             <% } %>
             <h4 class="card-title review-card-title pl-1" id="<%= document.book.id + '-title' %>"><%= document.book.title.length > 25 ? document.book.title.substr(0,20)+'...' : document.book.title %></h4>
         </a>
-        <p class="card-text review-card-dates" id="<%= document.book.id + '-dates' %>">Started: <%= moment(document.bookStartedDate).format('MMM Do, YYYY') %> <br />
+        <p class="card-text review-card-dates" id="<%= document.book.id + '-dates' %>">Started: <%= document.bookStartedDate.toLocaleDateString('en-US', dateStringOptions) %> <br />
             <% if(!document.bookFinished && typeof document.bookFinishedDate !== 'undefined') { %> 
-                Re-shelved <%= moment(document.bookFinishedDate).format('MMM Do, YYYY') %>
+                Re-shelved <%= document.bookFinishedDate.toLocaleDateString('en-US', dateStringOptions) %>
             <% } else if (document.bookFinished) { %>
-                Finished: <%= moment(document.bookFinishedDate).format('MMM Do, YYYY') %>
+                Finished: <%= document.bookFinishedDate.toLocaleDateString('en-US', dateStringOptions) %>
             <% } else { %>
                 Currently Reading
             <% } %></p>

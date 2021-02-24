@@ -54,3 +54,46 @@ a.powered-by-google {
 form.unpublish-book, form.delete-book {
   display: inline;
 }
+
+.tag {
+  display: inline;
+}
+
+.tag-checkbox {
+  display: none;
+}
+
+.tag-label {
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  background-color: #e9ecef;
+  padding: .5em;
+}
+
+.remove-tag-x, .add-tag-plus{
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.not-visible {
+  display: none;
+}
+
+.quick-result {
+  border: 1px solid black;
+  padding: 1em;
+  margin-top: -1px;
+}
+
+.quick-result-title {
+  text-decoration: underline;
+}
+
+legend {
+  display: none;
+}
+
+#wasBookFinished {
+  height: 15px;
+  width: 15px;
+}

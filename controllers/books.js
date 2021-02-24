@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
-const axios = require('axios').default;
-const tagCloud = require('tag-cloud');
-const promise = require('bluebird');
-const moment = require('moment');
-// promise.promisifyAll(tagCloud);
+const { 
+    fisherYatesShuffle, 
+    getGoogleBook, 
+    flipPublished, 
+    getPopularTags
+} = require('../util');
+
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const Book = require('../models/book');
 const Tag = require('../models/tag');
@@ -14,40 +16,6 @@ const Review = require('../models/review');
 //     version: 'v1',
 //     auth: process.env.GOOGLE_BOOKS_API_KEY    
 // });
-
-const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes/'
-
-//Implement Fisher-Yates(-Knuth) shuffle--for tags/tag cloud
-function fisherYatesShuffle (arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-        const swapIndex = Math.floor(Math.random() * (i + 1))
-        const currentItem = arr[i]
-        const itemToSwap = arr[swapIndex]
-        arr[i] = itemToSwap
-        arr[swapIndex] = currentItem
-      }
-      return arr
-}
-
-
-//Look up book using id submitted via Google Books API
-async function getGoogleBook(bookId) {
-    return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
-}
-
-//flip whether book is published or unpublished (active: true/false);
-async function flipPublished(req, state) {
-    //Find book in database, then update it with state and modified by/at information
-    const updatedBook = await Book.findOneAndUpdate({_id: req.params.bookId}, {
-        active: state,
-        modified: {
-            by: req.user.id,
-            at: Date.now()
-        }
-    });
-    const action = state === false ? 'Unpublished' : 'Published';
-    req.session.success = `The Book Has Been ${action}!`;
-}
 
 module.exports = {
 
@@ -66,7 +34,7 @@ module.exports = {
             });
             // set the current page of results
             reviews.page = Number(reviews.page);
-            console.log(reviews.docs.length+' reviews found');
+            // console.log(reviews.docs.length+' reviews found');
             if(!reviews.docs.length && res.locals.query) {
                 res.locals.error = 'No results match that search.';
             }
@@ -83,7 +51,7 @@ module.exports = {
 
             //get any search provided by the user, if it exists
             const { dbQuery } = res.locals;
-            const resourceType = res.locals.query.resource;
+            let resourceType = res.locals.query.resource;
             const paginateOptions = {
                 page: req.query.page || 1,
                 limit: 10,
@@ -122,7 +90,20 @@ module.exports = {
                     results = await Tag.paginate(dbQuery, paginateOptions);
                     break;
                 default :
-                    results = await Book.find({}, paginateOptions);
+                    results = await Book.paginate({}, paginateOptions);
+                    resourceType = 'Book';
+                    for (let document of results.docs) {
+                        if (!document.averageRating) {
+                            await document.calculateAverageRating();
+                        }
+                        const googleBooksResults = await getGoogleBook(document.googleBooksId);
+                        googleBooks.push(googleBooksResults.data);
+                        const recentReview = await Review.findOne({book: document._id}).select('tags').populate({path: 'tags'});
+                        // console.log(recentReview);
+                        for (let tag of recentReview.tags) {
+                            document.tags.push(tag);
+                        }
+                    }
             }
 
             // set the current page of results
@@ -132,7 +113,7 @@ module.exports = {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, moment, resourceType});
+            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, resourceType});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');
@@ -171,43 +152,11 @@ module.exports = {
             //Look up book using id submitted via Google Books API
             const googleBook = await getGoogleBook(currentBook.googleBooksId);
 
-            /* get all reviews for currentBook, selecting only 'tags', and populate those tags */
-            const relevantReviews = await Review.find({book: currentBook._id}, 'tags')
-                .populate(
-                    {
-                        path:'tags'
-                    }
-                )
-                .exec();
-
-            /* Distill tags to title, description, id, and number of occurrences for the book that the review is about */
-            const tags = []; 
-            for (let review of relevantReviews) {
-                for (let tag of review.tags) {
-                    //Check whether an object with a 'title' attribute that matches the current tag title
-                    let foundIndex = tags.findIndex(function(e) { return e.title === tag.title });
-                    //If one does exist, increase the 'count' of the tag at that index's occurrence
-                    if (foundIndex !== -1) {
-                        tags[foundIndex].count++;
-                        foundindex = -1;
-                    } else {
-                        /* If not, make a new object with that tag's attributes, whose 'count' attribute will be incremented 
-                        if it is found again */
-                        tags.push({
-                            title: tag.title,
-                            id: tag._id,
-                            description: tag.description,
-                            count: 1
-                        })
-                    }
-                }
-                
-            }
+            const {tags, relevantReviews} = await getPopularTags(currentBook._id)
             // Sort tags by 'count'
             const orderedTags = tags.sort(function(a,b) {
-                return a.count - b.count;
-            })
-            .reverse();
+                return b.count - a.count;
+            });
 
             const highestCount = orderedTags[0].count;
             //Shuffle tag cloud for display

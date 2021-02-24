@@ -1,0 +1,216 @@
+<%- include('../partials/header') %> 
+<div class="container">
+    <form action="/reviews/<%= currentReview.id %>?_method=PUT" method="POST" class="row" enctype="application/x-www-form-urlencoded" class="form-inline">
+        <section class="col-md-3" id="review-tags">
+            <div class="row">
+                <div class="col" class="tags">
+                    <!-- <h2>Tags</h2> -->
+                    <div class="row mt-1">
+                        <div class="col">
+                            <h4>Your Tags</h4>
+                            <div class="applied-tags">
+                                <% for (let tag of currentReview.tags) { %>
+                                    <div class="tag">
+                                        <label for="tag<%= tag.id %>" class="tag-label">
+                                                    <%= tag.title %><span class="remove-tag-x">&nbsp;X</span>
+                                        </label>
+                                        <input type="checkbox" name="review[tags]" class="tag-checkbox" checked id="tag<%= tag.id %>" value="<%= tag.id %>">
+                                    </div>
+                                <% } %>
+                            </div>
+                            <input type="text" name="" id="tag-search" class="form-control" placeholder="Search for tags">
+                            <div id="tag-search-results" class="mt-1"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <h4>Popular Tags for This Book</h4>
+                            <div class="popular-tags">
+                                <% for (let tag of popularTags) { %>
+                                    <% if (tag.count > 1) { %>
+                                        <% if (!currentReview.tags.find(reviewTag => reviewTag.id == tag.id)) { %>
+                                            <div class="tag popular-tag">
+                                                <label for="tag<%= tag.id %>" class="tag-label">
+                                                            <%= tag.title %>
+                                                            <span class="tag-count">&nbsp;(<%= tag.count %>)</span>
+                                                            <span class="remove-tag-x not-visible">&nbsp;X</span>
+                                                            <span class="add-tag-plus">&nbsp;+</span>
+                                                </label>
+                                                <input type="checkbox" name="review[tags]" class="tag-checkbox" id="tag<%= tag.id %>" value="<%= tag.id %>">
+                                            </div>
+                                        <% } %>
+                                    <% } %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="col-md-9" id="review-details">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="row p-1">
+                            <div class="col-md-4 col-lg-3 cover-image">
+                                <% let thumbnailLink = '/images/book-not-found.jpg' %>
+                                <% if (googleBook.volumeInfo.imageLinks) { thumbnailLink = googleBook.volumeInfo.imageLinks.thumbnail } %>
+                                <img src="<%= thumbnailLink %>" alt="<%= currentReview.title %>" class="book-thumbnail">
+                            </div>
+                            <div class="col-md-8 col-lg-9 title-author-rating">
+                                <div class="row">
+                                    <div class="col">
+                                        <h2 class="book-title"><%= currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
+                                        <fieldset class="starability-basic">
+                                            <legend>Rating</legend>
+                                            <input type="radio" id="editReviewno-rate" class="input-no-rate" name="review[starRating]" value="0" aria-label="No rating." />
+                                            <input type="radio" name="review[starRating]" value="1" id="editReview1" <%= currentReview.starRating === 1 ? 'checked' : '' %>/>
+                                            <label for="editReview1" title="Terrible">1 star</label>
+                                            <input type="radio" name="review[starRating]" value="2" id="editReview2" <%= currentReview.starRating === 2 ? 'checked' : '' %>/>
+                                            <label for="editReview2" title="Not good">2 stars</label>
+                                            <input type="radio" name="review[starRating]" value="3" id="editReview3" <%= currentReview.starRating === 3 ? 'checked' : '' %>/>
+                                            <label for="editReview3" title="Average">3 stars</label>
+                                            <input type="radio" name="review[starRating]" value="4" id="editReview4" <%= currentReview.starRating === 4 ? 'checked' : '' %>/>
+                                            <label for="editReview4" title="Very good">4 stars</label>
+                                            <input type="radio" name="review[starRating]" value="5" id="editReview5" <%= currentReview.starRating === 5 ? 'checked' : '' %>/>
+                                            <label for="editReview5" title="Amazing">5 stars</label>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="form-row reading-journey mt-2 form-group">
+                                    <div class="col-12 col-md-6 date-started input-group">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="bookStartedDate">
+                                                Started
+                                            </label>
+                                        </div>
+                                        <% let startedDateString = currentReview.bookStartedDate.getFullYear() + 
+                                        "-" + 
+                                        (currentReview.bookStartedDate.getMonth() < 9 ? "0" + (currentReview.bookStartedDate.getMonth() + 1) : (currentReview.bookStartedDate.getMonth() + 1)) + 
+                                        "-" + 
+                                        currentReview.bookStartedDate.getDate(); %>
+                                        <input type="date" name="review[bookStartedDate]" id="bookStartedDate" class="form-control" 
+                                            value="<%= startedDateString %>">
+                                    </div>
+                                    <div class="col-12 col-md-6 date-finished input-group">
+                                        <% let finishedDateString = currentReview.bookStartedDate.getFullYear() + 
+                                        "-" + 
+                                        (currentReview.bookFinishedDate.getMonth() < 9 ? "0" + (currentReview.bookFinishedDate.getMonth() + 1) : (currentReview.bookFinishedDate.getMonth() + 1)) + 
+                                        "-" + 
+                                        currentReview.bookFinishedDate.getDate(); %>
+                                            <% if (!currentReview.bookFinished && currentReview.bookFinishedDate) { %>
+                                                <div class="input-group-prepend">
+                                                    <label class="input-group-text" for="bookFinishedDate">Re-shelved</label> 
+                                                </div>
+                                                <input type="date" name="review[bookFinishedDate]" id="bookFinishedDate" class="form-control" 
+                                                    value="<%= finishedDateString %>" >
+                                            <% } else if (!currentReview.bookFinished && !currentReview.bookFinishedDate) { %>
+                                                Currently Reading
+                                            <% } else if (currentReview.bookFinished) { %>
+                                                <div class="input-group-prepend">
+                                                    <label class="input-group-text" for="bookFinishedDate">Finished</label>
+                                                </div>
+                                                <input type="date" name="review[bookFinishedDate]" id="bookFinishedDate" class="form-control" 
+                                                    value="<%= finishedDateString %>">
+                                            <% } %>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-check-inline">
+                                            <input type="checkbox" name="review[bookFinished]" id="wasBookFinished" class="form-check-input form-control" value=false 
+                                            <%= !currentReview.bookFinished && currentReview.bookFinishedDate ? 'checked' : '' %>>
+                                            <label for="wasBookFinished" class="form-check-label">I re-shelved this book without finishing it</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row p-1">
+                            <div class="col form-group">
+                                <hr class=" mt-0"/>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label for="reviewTitle" class="input-group-text">Title</label>
+                                    </div>
+                                    <input type="text" name="review[title]" id="reviewTitle" class="form-control" maxlength="100" value="<%= currentReview.title %>">
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="reviewText" class="input-group-text">Body</label>
+                                    <textarea name="review[text]" id="reviewText" class="form-control" rows="10" maxlength="1000" placeholder="<%= currentReview.text ? '' : 'Write your review here' %>"><%= currentReview.text ? currentReview.text : '' %></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                    <div class="col">
+                                        <% if(currentUser.role = 'owner') { %>
+                                            <div class="row" id="owner-controls">
+                                                <% if (currentReview.status.active) { %>
+                                                <div class="col text-right">
+                                                    <a class="btn btn-warning my-1" data-toggle="modal" data-target="#confirm-unpublish-modal">Unpublish review</a>
+                                                </div>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="confirm-unpublish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="confirm-unpublish-label">Unpublish review?</h5>
+                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to unpublish this review? It will no longer be visible to other users. This action *can* be undone.</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <a href="/reviews/<%= currentReview.id %>/unpublish" class="btn btn-warning my-1">Unpublish review</a>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+            
+                                                <% } else { %>
+                                                    <div class="col text-right">
+                                                        <button type="button" class="btn btn-success my-1" data-toggle="modal" data-target="#confirm-publish-modal">Re-publish review</button>
+                                                    </div>
+                                                    <div class="modal fade" id="confirm-publish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirm-unpublish-label" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="confirm-publish-label">Re-publish review?</h5>
+                                                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <p>Are you sure you want to publish this review? It will become visible to other users. This action *can* be undone.</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <a href="/reviews/<%= currentReview.id %>/publish" class="btn btn-warning my-1">Re-publish review</a>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="card-text mt-2">
+                                            <a href="<%= googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
+<%- include('../partials/tag-results'); %>
+  
+<%- include( '../partials/footer') %> 
