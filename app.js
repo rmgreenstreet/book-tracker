@@ -71,7 +71,7 @@ app.use(async function (req,res,next) {
   // req.user = User.findOne({username: 'bob'});
   if (app.get('env') == 'development'){ 
     //Require dev functions
-    const { seetDatabase } = require('./seeds');
+    const { seedDatabase } = require('./seeds');
     // req.user = await User.authenticate()('bob', 'password');
     req.user = {
       username: 'bob',
