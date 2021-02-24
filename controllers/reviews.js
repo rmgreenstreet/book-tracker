@@ -41,8 +41,7 @@ module.exports = {
             const {tags} = await getPopularTags(currentReview.book._id);
             let popularTags = tags.filter(function(tag) {
                 return tag.count > 1;
-            });
-            popularTags.sort(function(a,b) {
+            }).sort(function(a,b) {
                 return b.count - a.count;
             });
             const highestCount = popularTags[0].count;
@@ -76,6 +75,8 @@ module.exports = {
             const {tags} = await getPopularTags(currentReview.book._id);
             let popularTags = tags.filter(function(tag) {
                 return tag.count > 1;
+            }).sort(function(a,b) {
+                return b.count - a.count;
             });
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
             res.render('reviews/review-edit', {currentReview, googleBook: googleBook.data, popularTags});
