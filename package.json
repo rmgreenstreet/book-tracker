@@ -50,6 +50,7 @@
     "tag-cloud": "^1.2.2"
   },
   "devDependencies": {
+    "@heroku/buildpack-registry": "^1.0.1",
     "dotenv": "^8.2.0",
     "ejs-lint": "^1.1.0",
     "faker": "^5.3.1",
