@@ -42,8 +42,12 @@ module.exports = {
             let popularTags = tags.filter(function(tag) {
                 return tag.count > 1;
             });
+            popularTags.sort(function(a,b) {
+                return b.count - a.count;
+            });
+            const highestCount = popularTags[0].count;
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
-            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags});
+            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags, highestCount});
         } catch (err) {
             console.error(err.message);
             req.session.error = err.message;
