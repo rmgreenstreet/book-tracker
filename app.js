@@ -55,7 +55,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSanitizer());
 app.use(cookieParser());
 app.use(require('express-session')({
-  secret:"more things in the world",
+  secret:process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
