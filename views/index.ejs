@@ -2,7 +2,7 @@
 
 <div class="container">
     <section id="welcome" class="m-sm">
-        <h1 class="card-title" id="welcome-text">Welcome Back, <%= typeof user !== 'undefined' && typeof user.firstName !== 'undefined' ? user.firstname : 'Buddy!' %></h1>
+        <h1 class="card-title" id="welcome-text">Welcome <%= typeof currentUser !== 'undefined' && typeof currentUser.username !== 'undefined' ? `back, ${currentUser.username}` : 'to Book Tracker!' %></h1>
     </section>
     <section class="row" id="main">
         <div class="col">
