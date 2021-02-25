@@ -103,23 +103,19 @@ module.exports = {
         const {username, password } = req.body;
         const { user, error } = await User.authenticate()(username, password);
         if(!user && error) {
-            return next(error);
+            req.session.error = error.message
+            return res.redirect('back');
         }
         const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1d"
         });
         await User.findByIdAndUpdate(user._id, { accessToken });
-        req.login(user, function (err) {
-            if(err){
-                return next(err);
-            }
-            req.session.success = `Welcome back, ${username}`;
-            /*if they came to the login page from somewhere that called 'isLoggedIn', 
-            send them back there after logging in, then remove the hook to do that */
-            const redirectUrl = req.session.redirectTo || '/';
-            delete req.session.redirectTo;
-            res.redirect(redirectUrl);
-        });
+        req.session.success = `Welcome back, ${username}`;
+        /*if they came to the login page from somewhere that called 'isLoggedIn', 
+        send them back there after logging in, then remove the hook to do that */
+        const redirectUrl = req.session.redirectTo || '/';
+        delete req.session.redirectTo;
+        res.redirect(redirectUrl);
 	},
 	// GET /logout
 	getLogout(req, res, next) {

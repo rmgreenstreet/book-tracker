@@ -13,6 +13,7 @@ const expressSanitizer = require('express-sanitizer');
 
 //Require models
 const User = require('./models/user');
+const Review = require('./models/review');
 const Tag = require('./models/tag');
 
 // CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
@@ -64,19 +65,30 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+async function reassignReviews() {
+  let oldReviews = await Review.find({author: '60217ea4db471180bc238ae2'});
+  let currentOwner = await User.findOne({role: 'owner'});
+  console.log(currentOwner._id);
+  for (let review of oldReviews) {
+    review.author = mongoose.Types.ObjectId(currentOwner._id);
+    await review.save();
+    // console.log(review.author);
+  }
 
+}
 //set local variables middleware
 app.use(async function (req,res,next) {
   // req.user = User.findOne({username: 'bob'});
   if (app.get('env') == 'development'){ 
+    // reassignReviews();
     //Require dev functions
     // req.user = await User.authenticate()('bob', 'password');
-    req.user = {
-      username: 'bob',
-      email: 'bob@bob.com',
-      id: '60217ea4db471180bc238ae2',
-      role: 'owner'
-    };
+    // req.user = {
+    //   username: 'bob',
+    //   email: 'bob@bob.com',
+    //   id: '60217ea4db471180bc238ae2',
+    //   role: 'owner'
+    // };
   };
   //provide options for displaying date strings
   res.locals.dateStringOptions = {
