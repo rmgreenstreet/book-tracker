@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const mapBoxToken = process.env.MAPBOX_TOKEN;
+const passport = require('passport');
 const util = require('util');
 const { cloudinary } = require('../cloudinary');
 const { deleteProfileImage } = require('../middleware');
@@ -26,17 +26,6 @@ async function getUserForReset (req) {
 };
 
 module.exports = {
-	// GET /
-	async landingPage(req, res, next) {
-        //find all posts in the database
-        const posts = await Post.find({}).sort('-_id').exec();
-        //get the three most recent posts to show on the home page
-        const recentPosts = posts.slice(0,3);
-        /*choose a random post from all posts to get the first image from and then 
-        get the dominant color and set ui colors based on that */
-        const randomIndex = await Math.ceil(Math.random()*posts.length);
-		res.render('index', { posts, mapBoxToken, randomIndex, color, recentPosts, title: 'Surf Shop - Home', page:'home'});
-	},
 	// GET /register
 	getRegister(req, res, next) {
         if (req.isAuthenticated()) {
@@ -101,7 +90,7 @@ module.exports = {
 	// POST /login
 	async postLogin(req, res, next) {
         const {username, password } = req.body;
-        const { user, error } = await User.authenticate()(username, password);
+        const { user, error } = await User.authenticate('local')(username, password);
         if(!user && error) {
             req.session.error = error.message
             return res.redirect('back');
@@ -110,12 +99,18 @@ module.exports = {
             expiresIn: "1d"
         });
         await User.findByIdAndUpdate(user._id, { accessToken });
-        req.session.success = `Welcome back, ${username}`;
-        /*if they came to the login page from somewhere that called 'isLoggedIn', 
-        send them back there after logging in, then remove the hook to do that */
-        const redirectUrl = req.session.redirectTo || '/';
-        delete req.session.redirectTo;
-        res.redirect(redirectUrl);
+        req.login(user, function (err) {
+            if(err){
+                req.session.error = error.message
+                return res.redirect('back');
+            }
+            req.session.success = `Welcome back, ${username}`;
+            /*if they came to the login page from somewhere that called 'isLoggedIn', 
+            send them back there after logging in, then remove the hook to do that */
+            const redirectUrl = req.session.redirectTo || '/';
+            delete req.session.redirectTo;
+            res.redirect(redirectUrl);
+        });
 	},
 	// GET /logout
 	getLogout(req, res, next) {
