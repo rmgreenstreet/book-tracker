@@ -8,21 +8,31 @@
                     <p>By other users</p>
                     <% if (typeof recentReviews !== 'undefined' && recentReviews.length) { %>
                         <% for (let review of recentReviews) { %>
-                            <div class="result row">
-                                <a href="/reviews/new/<%= review.book.id %>">
-                                    <div class="col-3 result-image">
-                                        <img src="<%= review.googleBook.volumeInfo.images.thumbnail %>" alt="<%= review.book.title %>" >
+                            <div class="result row m-2">
+                                <div class="col">
+                                    <div class="row">
+                                        <a href="/reviews/new/<%= review.book.id %>">
+                                            <div class="col-3 result-image">
+                                                <img src="<%= review.googleBook.volumeInfo.images.thumbnail %>" alt="<%= review.book.title %>" >
+                                            </div>
+                                            <div class="col-8 result-info">
+                                                <div class="row title-and-author">
+                                                    <div class="col result-book-title"><%= review.book.title %></div>
+                                                    <div class="col result-book-author"><%= review.googleBook.volumeInfo.authors[0] %></div>
+                                                </div>
+                                                <div class="row result-book-description">
+                                                    <div class="col"><%= review.googleBook.volumeInfo.description %></div>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
-                                    <div class="col-8 result-info">
-                                        <div class="row title-and-author">
-                                            <div class="col result-book-title"><%= review.book.title %></div>
-                                            <div class="col result-book-author"><%= review.googleBook.volumeInfo.authors[0] %></div>
-                                        </div>
-                                        <div class="row result-book-description">
-                                            <div class="col"><%= review.googleBook.volumeInfo.description %></div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <hr />
+                                            <a href="/profile/<%= review.author.id %>"><%= review.author.username %></a> - <span class="review-text-preview"><%= review.text.length ? review.text : review.title %></span>...
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                                 <!-- <a href="<%#= review.googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank">
                                     <div class="col-1 powered-by-google">
                                         <img src="images/powered-by-google.png" alt="Powered by Google" srcset="">
@@ -30,6 +40,10 @@
                                 </a> -->
                             </div>
                         <% } %>
+                    <% } else { %>
+                        <div class="row result my-2">
+                            <div class="col">No Recent Reviews Found</div>
+                        </div>
                     <% } %>
                     <img src="/images/poweredbygoogle.png" alt="Powered by Google" srcset="">
                 </div>

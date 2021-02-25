@@ -97,3 +97,12 @@ legend {
   height: 15px;
   width: 15px;
 }
+
+.review-text-preview {
+  width: 80%;
+  overflow: hidden;
+}
+
+.result.row {
+  border: 1px solid black;
+}
