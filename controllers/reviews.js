@@ -129,6 +129,12 @@ module.exports = {
             req.session.error = 'There was a problem changing the status of the review';
             res.redirect('back');
         }
+    },
+    async getReviewCreate(req, res, next) {
+        res.render('reviews/review-create');
+    },
+    async postReviewCreate(req, res, next) {
+
     }
 
 }

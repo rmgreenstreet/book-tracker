@@ -1,0 +1,57 @@
+<%- include('../partials/header') %> 
+<div class="container">
+    <div class="row">
+        <section class="col col-md-4" id="suggestions">
+            <div class="row">
+                <div class="col" id="recent-reviews">
+                    <h2>Recently Reviewed Books</h2>
+                    <p>By other users</p>
+                    <% if (typeof recentReviews !== 'undefined' && recentReviews.length) { %>
+                        <% for (let review of recentReviews) { %>
+                            <div class="result row">
+                                <a href="/reviews/new/<%= review.book.id %>">
+                                    <div class="col-3 result-image">
+                                        <img src="<%= review.googleBook.volumeInfo.images.thumbnail %>" alt="<%= review.book.title %>" >
+                                    </div>
+                                    <div class="col-8 result-info">
+                                        <div class="row title-and-author">
+                                            <div class="col result-book-title"><%= review.book.title %></div>
+                                            <div class="col result-book-author"><%= review.googleBook.volumeInfo.authors[0] %></div>
+                                        </div>
+                                        <div class="row result-book-description">
+                                            <div class="col"><%= review.googleBook.volumeInfo.description %></div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- <a href="<%#= review.googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank">
+                                    <div class="col-1 powered-by-google">
+                                        <img src="images/powered-by-google.png" alt="Powered by Google" srcset="">
+                                    </div>
+                                </a> -->
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <img src="/images/poweredbygoogle.png" alt="Powered by Google" srcset="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" id="suggestions">
+                    <h2>Books You May Have Read</h2>
+                    Eventually, will contain books we think you may have read, based on previous reviews
+                </div>
+            </div>
+        </section>
+        <section class="col col-md-8" id="create-review-form">
+            <h2>Search for a Book to Review</h2>
+            <div class="row">
+                <div class="col col-md-11">
+                    <input type="text" class="form-control" id="book-search">
+                </div>
+                <div class="col col-md-1">
+                    <img src="/images/poweredbygoogle.png" alt="" srcset="">
+                </div>
+            </div>
+        </section>
+    </div>
+</div>  
+<%- include( '../partials/footer') %> 

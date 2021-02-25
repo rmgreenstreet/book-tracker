@@ -4,7 +4,9 @@ const {
   getReviewDetails,
   getReviewEdit,
   putUpdateReview,
-  getPublishOrUnpublishReview
+  getPublishOrUnpublishReview,
+  getReviewCreate,
+  postReviewCreate
 } = require('../controllers/reviews');
 const { 
   asyncErrorHandler, 
@@ -18,8 +20,14 @@ const siteTitle = " - Book Tracker | What Should I Read Next?"
 /* GET All reviews page. */
 router.get('/', isLoggedIn);
 
-/* POST new review */
-// router.post('/', /*isLoggedIn,*/ createReview);
+/* GET new review page */
+router.get('/new', isLoggedIn, getReviewCreate);
+
+/* GET new review from results */
+router.get('/new/:bookId', isLoggedIn, postReviewCreate);
+
+/* POST new review page */
+router.post('/new', isLoggedIn, postReviewCreate);
 
 /* GET specific review details */
 router.get('/:reviewId', getReviewDetails);
