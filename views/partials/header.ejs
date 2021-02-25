@@ -69,6 +69,7 @@
 						<% if (currentUser) { %>
 							<a class="nav-link js-scroll-trigger" href="/books/read?author=<%= currentUser.id %>&resource=Review&page=1">Books I've Read</a>
 							<a class="nav-link js-scroll-trigger" href="/books/recommendations?resource=Book&page=1">Recommendations</a>
+							<li><a class="nav-link js-scroll-trigger" href="/reviews/new">Write a Review</a></li>
 						<% } %>
 						<a class="nav-link js-scroll-trigger" href="/books?resource=Book&page=1">Browse Books</a>
 					</ul>
