@@ -72,7 +72,7 @@ const tagSearchBox = document.querySelector('#tag-search');
 
 let timeout = null;
 tagSearchBox.addEventListener('input', function () {
-    var that = this;
+    let that = this;
     if (timeout !== null) {
         clearTimeout(timeout);
     }
@@ -86,7 +86,7 @@ tagSearchBox.addEventListener('input', function () {
 const bookSearchBox = document.querySelector('#book-search');
 
 bookSearchBox.addEventListener('input', function () {
-    var that = this;
+    let that = this;
     if (timeout !== null) {
         clearTimeout(timeout);
     }

@@ -44,6 +44,7 @@ module.exports = {
             }).sort(function(a,b) {
                 return b.count - a.count;
             });
+            popularTags = fisherYatesShuffle(popularTags);
             const highestCount = popularTags[0].count;
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
             res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags, highestCount});

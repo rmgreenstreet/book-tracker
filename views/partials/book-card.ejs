@@ -1,9 +1,9 @@
 <div class="card m-1 book-card" id="<%= document.id + '-card' %>">
     <div class="card-body">
         <a href="/books/<%= document.id %>">
-            <% let matchedGoogleBook = googleBooks.find(book => book.id === document.googleBooksId); %>
-            <% if (typeof matchedGoogleBook !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks !== 'undefined' && typeof matchedGoogleBook.volumeInfo.imageLinks.thumbnail !== 'undefined' ) { %>
-                <img src="<%= matchedGoogleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= matchedGoogleBook.volumeInfo.title %>" class="card-img" id="<%= document.id + '-cover' %>">
+            <%# let document.googleBook = googleBooks.find(book => book.id === document.googleBooksId); %>
+            <% if (typeof document.googleBook.volumeInfo.imageLinks !== 'undefined' && typeof document.googleBook.volumeInfo.imageLinks.thumbnail !== 'undefined' ) { %>
+                <img src="<%= document.googleBook.volumeInfo.imageLinks.thumbnail %>" alt="<%= document.googleBook.volumeInfo.title %>" class="card-img" id="<%= document.id + '-cover' %>">
             <% } else { %>
                 <svg class="bd-placeholder-img card-img" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
                     <rect width="100%" height="100%" fill="#868e96"></rect>
@@ -25,12 +25,12 @@
             <% } %>
         </p>
         <% let googleBooksLink = ''; %>
-        <% if (matchedGoogleBook.saleInfo.buyLink) { %>
-        <% googleBooksLink = matchedGoogleBook.saleInfo.buyLink %>
-        <% } else if (matchedGoogleBook.volumeInfo.infoLink) { %>
-        <% googleBooksLink = matchedGoogleBook.volumeInfo.infoLink %>
-        <% } else if (matchedGoogleBook.volumeInfo.canonicalVolumeLink) { %>
-        <% googleBooksLink = matchedGoogleBook.volumeInfo.canonicalVolumeLink %>
+        <% if (document.googleBook.saleInfo.buyLink) { %>
+        <% googleBooksLink = document.googleBook.saleInfo.buyLink %>
+        <% } else if (document.googleBook.volumeInfo.infoLink) { %>
+        <% googleBooksLink = document.googleBook.volumeInfo.infoLink %>
+        <% } else if (document.googleBook.volumeInfo.canonicalVolumeLink) { %>
+        <% googleBooksLink = document.googleBook.volumeInfo.canonicalVolumeLink %>
         <% } else { %>
         <% googleBooksLink = 'https://books.google.com' %>
         <% } %>

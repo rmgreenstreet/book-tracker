@@ -60,7 +60,7 @@
                             <div class="col-md-8 col-lg-9 title-author-rating">
                                 <div class="row">
                                     <div class="col">
-                                        <h2 class="book-title"><%= currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
+                                        <h2 class="book-title"><%= currentUser && currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
                                         <fieldset class="starability-basic">
                                             <legend>Rating</legend>
                                             <input type="radio" id="editReviewno-rate" class="input-no-rate" name="review[starRating]" value="0" aria-label="No rating." />
@@ -142,9 +142,10 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <button type="submit" class="btn btn-primary">Save</button>
+                                        <a href="/reviews/<%= currentReview.id %>" class="btn">Cancel</a>
                                     </div>
                                     <div class="col">
-                                        <% if(currentUser.role = 'owner') { %>
+                                        <% if(currentUser && (currentUser.role = 'owner' || currentUser.id === currentReview.author.id)) { %>
                                             <div class="row" id="owner-controls">
                                                 <% if (currentReview.status.active) { %>
                                                 <div class="col text-right">

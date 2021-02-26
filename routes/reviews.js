@@ -33,23 +33,23 @@ router.post('/new', isLoggedIn, postReviewCreate);
 router.get('/:reviewId', getReviewDetails);
 
 /* GET edit review */
-router.get('/:reviewId/edit', getReviewEdit);
+router.get('/:reviewId/edit', isLoggedIn, getReviewEdit);
 // router.get('/:reviewId/edit', function(req,res,next) {
 //   res.render('../test/edit-form.ejs');
 // });
 
 /* PUT update a review */
-router.put('/:reviewId', putUpdateReview);
+router.put('/:reviewId', isLoggedIn, putUpdateReview);
 // router.put('/:reviewId', function (req,res,next) {
 //   console.log(req.body.review);
 //   res.redirect('back');
 // });
 
 /* GET publish a review */
-router.get('/:reviewId/publish', getPublishOrUnpublishReview);
+router.get('/:reviewId/publish', isLoggedIn, getPublishOrUnpublishReview);
 
 /* GET unpublish a review */
-router.get('/:reviewId/unpublish', getPublishOrUnpublishReview);
+router.get('/:reviewId/unpublish', isLoggedIn, getPublishOrUnpublishReview);
 
 /* PUT unpublish a review */
 // router.put('/:reviewId/unpublish', /*isLoggedIn,*/ unPublishreview);

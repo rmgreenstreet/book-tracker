@@ -68,7 +68,7 @@ module.exports = {
                     results = await Review.paginate(dbQuery, paginateOptions);
                         for (let document of results.docs) {
                             const googleBooksResults = await getGoogleBook(document.book.googleBooksId);
-                            googleBooks.push(googleBooksResults.data);
+                            document.googleBook = googleBooksResults.data;
                         }
                     break;
                 case 'Book': 
@@ -78,7 +78,7 @@ module.exports = {
                             await document.calculateAverageRating();
                         }
                         const googleBooksResults = await getGoogleBook(document.googleBooksId);
-                        googleBooks.push(googleBooksResults.data);
+                        document.googleBook = googleBooksResults.data;
                         const recentReview = await Review.findOne({book: document._id}).select('tags').populate({path: 'tags'});
                         // console.log(recentReview);
                         for (let tag of recentReview.tags) {
@@ -97,7 +97,7 @@ module.exports = {
                             await document.calculateAverageRating();
                         }
                         const googleBooksResults = await getGoogleBook(document.googleBooksId);
-                        googleBooks.push(googleBooksResults.data);
+                        document.googleBook = googleBooksResults.data;
                         const recentReview = await Review.findOne({book: document._id}).select('tags').populate({path: 'tags'});
                         // console.log(recentReview);
                         for (let tag of recentReview.tags) {
@@ -113,7 +113,7 @@ module.exports = {
                 res.locals.error = 'No results match that search.';
             }
 
-            return res.render('books/books-read', {title: 'Books I\'ve Read', results, googleBooks, resourceType});
+            return res.render('books/books-read', {title: 'Books I\'ve Read', results, resourceType});
         } catch (err) {
             req.session.error = err.message;
             res.redirect('/');

@@ -43,7 +43,7 @@
                             <div class="col-md-8 col-lg-9 title-author-rating">
                                 <div class="row">
                                     <div class="col">
-                                        <h2 class="book-title"><%= currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
+                                        <h2 class="book-title"><%= currentUser && currentReview.author.id === currentUser.id ? 'Your ' : currentReview.author.username + '\'s ' %>Review of <%= currentReview.book.title %></h2>
                                         <%- include('../partials/display-stars', {rating: currentReview.starRating, resourceType: 'Review'}); %>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                         <% if (googleBook.saleInfo.buyLink) { %>
                                             <a href="<%= googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
                                         <% } %>
-                                        <% if (currentReview.author.id === currentUser.id) { %>
+                                        <% if (currentUser && currentReview.author.id === currentUser.id) { %>
                                             | <a href="/reviews/<%= currentReview.id %>/edit" class="new-review">Edit Review</a>
                                         <% } %>
                                     </div>
@@ -101,6 +101,9 @@
         </section>
         <section class="col by-this-author">
             <h4>Other books by this author</h4>
+            <div class="card-columns">
+                <%- include('../partials/results', {results: othersByAuthor, resourceType: 'Book'})
+            </div>
         </section>
     </div>
 </div>
