@@ -153,15 +153,16 @@ module.exports = {
             const googleBook = await getGoogleBook(currentBook.googleBooksId);
 
             const {tags, relevantReviews} = await getPopularTags(currentBook._id)
-            // Sort tags by 'count'
-            const orderedTags = tags.sort(function(a,b) {
-                return b.count - a.count;
-            });
-
-            const highestCount = orderedTags[0].count;
-            //Shuffle tag cloud for display
-            fisherYatesShuffle(tags);
-
+            let highestCount = 0;
+            if (tags.length && relevantReviews.length) {
+                // Sort tags by 'count'
+                const orderedTags = tags.sort(function(a,b) {
+                    return b.count - a.count;
+                });
+                highestCount = orderedTags[0].count;
+                //Shuffle tag cloud for display
+                fisherYatesShuffle(tags);
+            }
             res.render('books/book-details', {currentBook, googleBook: googleBook.data, tags, highestCount, floorRating, relevantReviews});
         } catch (err) {
             console.error(err);

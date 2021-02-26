@@ -37,7 +37,7 @@
                         <div class="row p-1">
                             <div class="col-md-4 col-lg-3 cover-image">
                                 <% let thumbnailLink = '/images/book-not-found.jpg' %>
-                                <% if (googleBook.volumeInfo.imageLinks) { thumbnailLink = googleBook.volumeInfo.imageLinks.thumbnail } %>
+                                <% if (currentReview.googleBook.volumeInfo.imageLinks) { thumbnailLink = currentReview.googleBook.volumeInfo.imageLinks.thumbnail } %>
                                 <img src="<%= thumbnailLink %>" alt="<%= currentReview.title %>" class="book-thumbnail">
                             </div>
                             <div class="col-md-8 col-lg-9 title-author-rating">
@@ -49,8 +49,8 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col">
-                                        <% if (googleBook.saleInfo.buyLink) { %>
-                                            <a href="<%= googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
+                                        <% if (currentReview.googleBook.saleInfo.buyLink) { %>
+                                            <a href="<%= currentReview.googleBook.saleInfo.buyLink %>" class="buy-on-google-books" target="_blank">Buy on Google Books</a>
                                         <% } %>
                                         <% if (currentUser && currentReview.author.id === currentUser.id) { %>
                                             | <a href="/reviews/<%= currentReview.id %>/edit" class="new-review">Edit Review</a>
@@ -86,7 +86,7 @@
                                     <% } else { %>
                                         <p class="no-description">No text was included in this review</p>
                                     <% } %>
-                                    <a href="<%= googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
+                                    <a href="<%= currentReview.googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank" class="powered-by-google py-2"><img src="/images/poweredbygoogle.png" alt="Powered by Google"></a>
                                 </p>
                             </div>
                         </div>
@@ -96,14 +96,12 @@
         </section>
     </div>
     <div class="row mt-3">
-        <section class="col books-like-this">
+        <section class="col col-md-6 books-like-this">
             <h4>Similar books you may enjoy</h4>
         </section>
-        <section class="col by-this-author">
+        <section class="col col-md-6 by-this-author">
             <h4>Other books by this author</h4>
-            <div class="card-columns">
-                <%- include('../partials/results', {results: othersByAuthor, resourceType: 'Book'})
-            </div>
+            <%- include('../partials/results', {results: othersByAuthor, resourceType: 'Book'}) %>
         </section>
     </div>
 </div>

@@ -5,7 +5,11 @@
             <div class="row">
                 <div class="col">
                     <h2>Tags</h2>
-                    <%- include('../partials/tag-cloud'); %>
+                    <% if (tags && tags.length) { %>
+                        <%- include('../partials/tag-cloud'); %>
+                    <% } else { %>
+                        No tags applied to this book
+                    <% } %>
                 </div>
             </div>
         </section>
@@ -39,7 +43,7 @@
                                                 <%= googleBook.volumeInfo.authors %>
                                             <% } %>
                                         </h3>
-                                        <% if(currentUser.role = 'owner') { %>
+                                        <% if(currentUser && (currentUser.role === 'owner' || currentUser.id === currentBook.createdBy)) { %>
                                             <div class="row" id="owner-controls">
                                                 <% if (currentBook.active) { %>
                                                 <div class="col">

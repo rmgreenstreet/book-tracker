@@ -4,12 +4,13 @@ const {
     fisherYatesShuffle, 
     getGoogleBook, 
     flipPublished, 
-    getPopularTags
+    getPopularTags,
+    getGoogleBooksResults
 } = require('../util');
 // promise.promisifyAll(tagCloud);
 if (app.get('env') == 'development'){ require('dotenv').config(); }
 const Book = require('../models/book');
-const Tag = require('../models/tag');
+const User = require('../models/user');
 const Review = require('../models/review');
 
 
@@ -47,7 +48,31 @@ module.exports = {
             popularTags = fisherYatesShuffle(popularTags);
             const highestCount = popularTags[0].count;
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
-            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags, highestCount});
+            currentReview.googleBook = googleBook.data;
+
+            let othersByAuthor = {docs:[]};
+            let googleBooksByAuthor = await getGoogleBooksResults(currentReview.googleBook.volumeInfo.authors[0], 'inauthor');
+            // googleBooksByAuthor = googleBooksByAuthor.items;
+            // console.log(googleBooksByAuthor);
+            for (let book of googleBooksByAuthor) {
+                let foundBook = await Book.findOne({googleBooksId: book.id});
+                if (!foundBook) {
+                    let ownerUser = await User.findOne({role: 'owner'});
+                    foundBook = await new Book({
+                        title: book.volumeInfo.title,
+                        googleBooksId: book.id,
+                        createdBy: ownerUser._id
+                    })
+                    .save();
+                }
+                if (foundBook.averageRating < 0) {
+                    await foundBook.calculateAverageRating();
+                }
+                foundBook.googleBook = book;
+                othersByAuthor.docs.push(foundBook);
+            }
+
+            res.render('reviews/review-details', {currentReview, googleBook: googleBook.data, popularTags, highestCount, othersByAuthor});
         } catch (err) {
             console.error(err.message);
             req.session.error = err.message;
@@ -80,6 +105,7 @@ module.exports = {
                 return b.count - a.count;
             });
             const googleBook = await getGoogleBook(currentReview.book.googleBooksId);
+            currentReview.googleBook = googleBook.data;
             res.render('reviews/review-edit', {currentReview, googleBook: googleBook.data, popularTags});
 
         } catch(err) {

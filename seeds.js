@@ -32,11 +32,15 @@ async function seedUsers() {
         }
     };
     try {
-        const devUser = await User.register({
-            username: 'bob',
-            email: 'bob@bob.com',
-            role: 'owner'
-        }, 'password');
+        let devUser = await User.find({role: 'owner'});
+        
+        if (!devUser) {
+            devUser = await User.register({
+                username: 'bob',
+                email: 'bob@bob.com',
+                role: 'owner'
+            }, 'password');
+        }
     } catch (err) {
         console.error(err.message);
     }
@@ -54,8 +58,8 @@ async function seedTags() {
 };
 
 async function seedBooks(devUser) {
-    //Choose how many books to create between 50 and 100
-    const numberOfBooks = Math.ceil(Math.random() * (200 - 100) + 100);
+    //Choose how many books to create between 200 and 500
+    const numberOfBooks = Math.ceil(Math.random() * (500 - 200) + 200);
     console.log(`Creating ${numberOfBooks} Books`);
     for (let i = 1; i < numberOfBooks; i++) {
         try {
@@ -158,7 +162,7 @@ async function seedDatabase() {
     await Review.deleteMany({});
     console.log('All Reviews removed');
 
-    // await seedUsers();
+    await seedUsers();
 
     await seedBooks(devUser);
     

@@ -3,7 +3,7 @@
     <% for (let tag of tags) { %>
         <% let fontSize = tag.count/highestCount * maxFontSize %>
         <% //Assign each tag to a 'bucket' for styling based on popularity %>
-        <% let bucketNumber = Math.floor(tag.count/highestCount * 4) %>
+        <% let bucketNumber = Math.floor(tag.count/highestCount * 5) %>
         <% fontSize = +fontSize.toFixed(2) %>
         <% //Make sure font size will be at least .75em %>
         <% if (fontSize <= 1) { %>

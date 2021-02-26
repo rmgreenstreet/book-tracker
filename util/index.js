@@ -3,7 +3,7 @@ const axios = require('axios');
 const Book = require('../models/book');
 const Review = require('../models/review');
 
-const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes/'
+const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes'
 
 module.exports = {
 
@@ -20,7 +20,15 @@ module.exports = {
     },
     //Look up book using id submitted via Google Books API
     async getGoogleBook(bookId) {
-        return await axios.get(booksApiUrl + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+        return await axios.get(booksApiUrl + '/' + bookId + '?key=' + process.env.GOOGLE_BOOKS_API_KEY);
+    },
+    /* Find Google Books results based on a search type (as specified as a parameter in the API) and a search term */
+    async getGoogleBooksResults(term, type) {
+        const cleanTerm = term.replace(/\s/g,'+');
+        const searchURL = booksApiUrl + '?q=' + type + ':"' + cleanTerm + '"&orderBy=relevance&maxResults=40&key=' + process.env.GOOGLE_BOOKS_API_KEY;
+        console.log(searchURL)
+        const results = await axios.get(searchURL);
+        return results.data.items;
     },
     //flip whether book is published or unpublished (active: true/false);
     async flipPublished(req, state) {
@@ -34,6 +42,7 @@ module.exports = {
         });
         const action = state ? 'Published' : 'Upublished';
         req.session.success = `The Book Has Been ${action}!`;
+        return;
     },
     async getPopularTags(bookId) {
         /* get all reviews for currentBook, selecting only 'tags', and populate those tags */

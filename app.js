@@ -150,8 +150,8 @@ app.use(function(err, req, res, next) {
 
 if (app.get('env') == 'development'){ 
   //Require dev functions
-  const { seedDatabase } = require('./seeds');
-// seedDatabase();
+  const seedDatabase = require('./seeds');
+  // seedDatabase();
 }
 
 let port = process.env.PORT;
