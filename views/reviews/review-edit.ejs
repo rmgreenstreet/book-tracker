@@ -10,11 +10,11 @@
                             <h4>Your Tags</h4>
                             <div class="applied-tags">
                                 <% for (let tag of currentReview.tags) { %>
-                                    <div class="tag">
+                                    <div class="tag" id="tag<%= tag.id %>">
                                         <label for="tag<%= tag.id %>" class="tag-label">
                                                     <%= tag.title %><span class="remove-tag-x">&nbsp;X</span>
                                         </label>
-                                        <input type="checkbox" name="review[tags]" class="tag-checkbox" checked id="tag<%= tag.id %>" value="<%= tag.id %>">
+                                        <input type="checkbox" name="review[tags]" class="tag-checkbox" checked id="tag<%= tag.id %>check" value="<%= tag.id %>">
                                     </div>
                                 <% } %>
                             </div>
@@ -29,14 +29,14 @@
                                 <% for (let tag of popularTags) { %>
                                     <% if (tag.count > 1) { %>
                                         <% if (!currentReview.tags.find(reviewTag => reviewTag.id == tag.id)) { %>
-                                            <div class="tag popular-tag">
+                                            <div class="tag popular-tag" id="tag<%= tag.id %>">
                                                 <label for="tag<%= tag.id %>" class="tag-label">
                                                             <%= tag.title %>
                                                             <span class="tag-count">&nbsp;(<%= tag.count %>)</span>
                                                             <span class="remove-tag-x not-visible">&nbsp;X</span>
                                                             <span class="add-tag-plus">&nbsp;+</span>
                                                 </label>
-                                                <input type="checkbox" name="review[tags]" class="tag-checkbox" id="tag<%= tag.id %>" value="<%= tag.id %>">
+                                                <input type="checkbox" name="review[tags]" class="tag-checkbox" id="tag<%= tag.id %>check" value="<%= tag.id %>">
                                             </div>
                                         <% } %>
                                     <% } %>

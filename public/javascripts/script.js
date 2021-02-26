@@ -39,10 +39,10 @@ function addTagToList(e) {
     e.preventDefault();
 
     let parentTag = this.closest('.tag');
-    let duplicateTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag')
+    let duplicateTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id'))
     if (duplicateTag && parentTag !== duplicateTag) {
         parentTag.remove();
-        parentTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag');
+        parentTag = duplicateTag;
     }
     document.querySelector('.applied-tags').appendChild(parentTag);
     parentTag.querySelector('.add-tag-plus').classList.add('not-visible');
@@ -111,13 +111,14 @@ function listResults(results, destination) {
             if (!document.querySelector('.applied-tags').querySelector(`#tag${result._id}`)) {
                 let blankResult = document.querySelector('#quick-result').content.cloneNode(true);
                 blankResult.querySelector('.tag').setAttribute('title', `${result.description.substr(0,20)}...`)
+                blankResult.querySelector('.tag').setAttribute('id', `tag${result.id}`)
                 
                 let resultLabel = blankResult.querySelector('label');
-                resultLabel.setAttribute('for', `tag${result._id}`);
+                resultLabel.setAttribute('for', `tag${result._id}check`);
                 resultLabel.prepend(`${result.title}`);
 
                 let resultCheckBox = blankResult.querySelector('input');
-                resultCheckBox.setAttribute('id', `tag${result._id}`);
+                resultCheckBox.setAttribute('id', `tag${result._id}check`);
                 resultCheckBox.setAttribute('value', `${result._id}`);
 
                 blankResult.querySelector('.remove-tag-x').addEventListener('click', removeTagFromList);
