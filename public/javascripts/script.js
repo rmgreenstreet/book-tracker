@@ -77,20 +77,33 @@ tagSearchBox.addEventListener('input', function () {
         clearTimeout(timeout);
     }
     timeout = setTimeout(async function () {
-        let results = await doSearch(that.value);
+        let results = await doSearch('tags', that.value);
+        let tagSearchResults = document.querySelector('#tag-search-results');
+        listResults(results, tagSearchResults);
+    }, 200);
+});
+
+const bookSearchBox = document.querySelector('#book-search');
+
+bookSearchBox.addEventListener('input', function () {
+    var that = this;
+    if (timeout !== null) {
+        clearTimeout(timeout);
+    }
+    timeout = setTimeout(async function () {
+        let results = await doSearch('books', that.value);
         listResults(results);
     }, 200);
 });
 
-async function doSearch(value){
-    const response = await axios.get(`/tags/search/${value}`);
+async function doSearch(type, value){
+    const response = await axios.get(`/${type}/search/${value}`);
     return response.data;
 }
 
-function listResults(results) {
-    let tagSearchResults = document.querySelector('#tag-search-results');
-    for (let child of tagSearchResults.children) {
-        tagSearchResults.removeChild(child);
+function listResults(results, destination) {
+    for (let child of destination.children) {
+        destination.removeChild(child);
     }
     if (results.length > 0) {
         for (let result of results) {
@@ -109,12 +122,12 @@ function listResults(results) {
                 blankResult.querySelector('.remove-tag-x').addEventListener('click', removeTagFromList);
                 blankResult.querySelector('.add-tag-plus').addEventListener('click', addTagToList);
 
-                tagSearchResults.appendChild(blankResult);
+                destination.appendChild(blankResult);
             }
         }
     } else {
         const noResultsNode = document.createElement('p');
-        noResultsNode.appendChild(document.createTextNode('No Tags Found'));
-        tagSearchResults.appendChild(noResultsNode);
+        noResultsNode.appendChild(document.createTextNode('No Results Found'));
+        destination.appendChild(noResultsNode);
     }
 }
