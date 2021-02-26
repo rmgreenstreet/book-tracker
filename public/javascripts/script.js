@@ -39,7 +39,8 @@ function addTagToList(e) {
     e.preventDefault();
 
     let parentTag = this.closest('.tag');
-    if (parentTag !== document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag')) {
+    let duplicateTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag')
+    if (duplicateTag && parentTag !== duplicateTag) {
         parentTag.remove();
         parentTag = document.querySelector('.popular-tags').querySelector('#'+parentTag.querySelector('input').getAttribute('id')).closest('.tag');
     }

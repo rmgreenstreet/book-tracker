@@ -161,7 +161,21 @@ module.exports = {
         res.render('reviews/review-create');
     },
     async postReviewCreate(req, res, next) {
+        try {
+            let currentUser = await User.findById(req.user.id);
+            let currentBook = await Book.findById(req.params.bookId);
+            let newReview = await Review.create({
+                title: `${currentUser.username}'s Review of ${currentBook.title}`,
+                author: currentUser._id,
+                book: currentBook._id
+            });
 
+            res.redirect(`/reviews/${newReview._id}/edit`)
+        } catch (err) {
+            console.error(err.message)
+            req.session.error = err.message;
+            res.redirect('back');
+        }
     }
 
 }

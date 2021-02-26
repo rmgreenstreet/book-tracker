@@ -93,12 +93,12 @@
                                             value="<%= startedDateString %>">
                                     </div>
                                     <div class="col-12 col-md-6 date-finished input-group">
-                                        <% let finishedDateString = currentReview.bookStartedDate.getFullYear() + 
-                                        "-" + 
-                                        (currentReview.bookFinishedDate.getMonth() < 9 ? "0" + (currentReview.bookFinishedDate.getMonth() + 1) : (currentReview.bookFinishedDate.getMonth() + 1)) + 
-                                        "-" + 
-                                        currentReview.bookFinishedDate.getDate(); %>
                                             <% if (!currentReview.bookFinished && currentReview.bookFinishedDate) { %>
+                                                <% let finishedDateString = currentReview.bookStartedDate.getFullYear() + 
+                                                "-" + 
+                                                (currentReview.bookFinishedDate.getMonth() < 9 ? "0" + (currentReview.bookFinishedDate.getMonth() + 1) : (currentReview.bookFinishedDate.getMonth() + 1)) + 
+                                                "-" + 
+                                                currentReview.bookFinishedDate.getDate(); %>
                                                 <div class="input-group-prepend">
                                                     <label class="input-group-text" for="bookFinishedDate">Re-shelved</label> 
                                                 </div>
@@ -107,6 +107,11 @@
                                             <% } else if (!currentReview.bookFinished && !currentReview.bookFinishedDate) { %>
                                                 Currently Reading
                                             <% } else if (currentReview.bookFinished) { %>
+                                                <% let finishedDateString = currentReview.bookStartedDate.getFullYear() + 
+                                                "-" + 
+                                                (currentReview.bookFinishedDate.getMonth() < 9 ? "0" + (currentReview.bookFinishedDate.getMonth() + 1) : (currentReview.bookFinishedDate.getMonth() + 1)) + 
+                                                "-" + 
+                                                currentReview.bookFinishedDate.getDate(); %>
                                                 <div class="input-group-prepend">
                                                     <label class="input-group-text" for="bookFinishedDate">Finished</label>
                                                 </div>
