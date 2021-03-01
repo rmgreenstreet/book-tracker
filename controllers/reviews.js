@@ -5,7 +5,8 @@ const {
     getGoogleBook, 
     flipPublished, 
     getPopularTags,
-    getGoogleBooksResults
+    getGoogleBooksResults,
+    createMissingBook
 } = require('../util');
 // promise.promisifyAll(tagCloud);
 if (app.get('env') == 'development'){ require('dotenv').config(); }
@@ -57,13 +58,7 @@ module.exports = {
             for (let book of googleBooksByAuthor) {
                 let foundBook = await Book.findOne({googleBooksId: book.id});
                 if (!foundBook) {
-                    let ownerUser = await User.findOne({role: 'owner'});
-                    foundBook = await new Book({
-                        title: book.volumeInfo.title,
-                        googleBooksId: book.id,
-                        createdBy: ownerUser._id
-                    })
-                    .save();
+                    foundBook = await createMissingBook(book)
                 }
                 if (foundBook.averageRating < 0) {
                     await foundBook.calculateAverageRating();

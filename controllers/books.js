@@ -4,7 +4,9 @@ const {
     fisherYatesShuffle, 
     getGoogleBook, 
     flipPublished, 
-    getPopularTags
+    getPopularTags,
+    createMissingBook,
+    getGoogleBooksResults
 } = require('../util');
 
 if (app.get('env') == 'development'){ require('dotenv').config(); }
@@ -223,6 +225,24 @@ module.exports = {
             res.redirect('/');
         }
     },
+    async searchBooks(req, res, next) {
+        let foundBooks = [];
+        try {
+            let googleBooksResults = await getGoogleBooksResults(req.params.bookTitle, 'intitle');
+            for (let book of googleBooksResults) {
+                foundBook = await Book.findOne({googleBooksId: book.id});
+                if (!foundBook) {
+                    foundBook = await createMissingBook(book)
+                }
+                foundBook.googleBook = book;
+                foundBooks.push(foundBook);
+            }
+            res.send(foundBooks);
+        } catch (err) {
+            foundBooks = ['No Book Found'];
+            res.send(foundBooks);
+        }
+    }
     // async deleteBook(req, res, next) {
     //     try {
     //         //Find book in database and delete it 

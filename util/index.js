@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const Book = require('../models/book');
 const Review = require('../models/review');
+const User = require('../models/user');
 
 const booksApiUrl = 'https://www.googleapis.com/books/v1/volumes'
 
@@ -76,6 +77,15 @@ module.exports = {
             }
         }
         return {tags, relevantReviews};
+    },
+    async createMissingBook(googleBook) {
+        let ownerUser = await User.findOne({role: 'owner'});
+        return await new Book({
+            title: googleBook.volumeInfo.title,
+            googleBooksId: googleBook.id,
+            createdBy: ownerUser._id
+        })
+        .save();
     }
 
 }

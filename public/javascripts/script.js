@@ -1,3 +1,5 @@
+// const { books } = require("googleapis/build/src/apis/books");
+
 window.onload = function () {
     // formatTagCloud();
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -72,37 +74,42 @@ for (let plus of allPluses) {
 const tagSearchBox = document.querySelector('#tag-search');
 
 let timeout = null;
-tagSearchBox.addEventListener('input', function () {
-    let that = this;
-    if (timeout !== null) {
-        clearTimeout(timeout);
-    }
-    timeout = setTimeout(async function () {
-        let results = await doSearch('tags', that.value);
-        let tagSearchResults = document.querySelector('#tag-search-results');
-        listResults(results, tagSearchResults);
-    }, 200);
-});
+if (tagSearchBox) {
+    tagSearchBox.addEventListener('input', function () {
+        let that = this;
+        if (timeout !== null) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(async function () {
+            let results = await doSearch('tags', that.value);
+            let tagSearchResults = document.querySelector('#tag-search-results');
+            listTagResults(results, tagSearchResults);
+        }, 200);
+    });
+}
 
 const bookSearchBox = document.querySelector('#book-search');
 
-bookSearchBox.addEventListener('input', function () {
-    let that = this;
-    if (timeout !== null) {
-        clearTimeout(timeout);
-    }
-    timeout = setTimeout(async function () {
-        let results = await doSearch('books', that.value);
-        listResults(results);
-    }, 200);
-});
+if(bookSearchBox) {
+    bookSearchBox.addEventListener('input', function () {
+        let that = this;
+        if (timeout !== null) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(async function () {
+            let results = await doSearch('books', that.value);
+            let bookSearchResults = document.querySelector('#book-search-results')
+            listBookResults(results, bookSearchResults);
+        }, 200);
+    });
+}
 
 async function doSearch(type, value){
     const response = await axios.get(`/${type}/search/${value}`);
     return response.data;
 }
 
-function listResults(results, destination) {
+function listTagResults(results, destination) {
     for (let child of destination.children) {
         destination.removeChild(child);
     }
@@ -126,6 +133,39 @@ function listResults(results, destination) {
 
                 destination.appendChild(blankResult);
             }
+        }
+    } else {
+        const noResultsNode = document.createElement('p');
+        noResultsNode.appendChild(document.createTextNode('No Results Found'));
+        destination.appendChild(noResultsNode);
+    }
+}
+
+function listBookResults(results, destination) {
+    console.log(results);
+    for (let child of destination.children) {
+        destination.removeChild(child);
+    }
+    if (results.length > 0) {
+        for (let result of results) {
+            console.log(result);
+            let blankResult = document.querySelector('#blank-book-result').content.cloneNode(true);
+            blankResult.querySelector('.book-result').setAttribute('id', `${result._id}result`);
+            blankResult.querySelector('.create-link')
+            .setAttribute('id', `${result._id}link`)
+            .setAttribute('href', `/reviews/new/${result._id}`);
+            blankResult.querySelector('.result-image')
+            .setAttribute('src', `${result.googleBook.volumeInfo.images.thumbnail}`)
+            .setAttribute('alt', `${result.title}`)
+            .setAttribute('id', `${result._id}thumbnail`);
+            blankResult.querySelector('.result-book-title')
+            .innerHTML = `${result.title}`;
+            blankResult.querySelector('.result-book-author')
+            .innerHTML = `${result.googleBook.volumeInfo.authors[0]}`;
+            blankResult.querySelector('.result-book-description')
+            .innerHTML = `${result.googleBook.volumeInfo.description.substr(0,50)}...`
+            
+            destination.appendChild(blankResult);
         }
     } else {
         const noResultsNode = document.createElement('p');

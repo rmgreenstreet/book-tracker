@@ -8,6 +8,7 @@ const {
     updateBook,
     unPublishBook,
     rePublishBook,
+    searchBooks
 } = require('../controllers/books');
 const { 
   asyncErrorHandler, 
@@ -32,6 +33,9 @@ router.get('/read', searchAndFilterPosts, getSearchResults);
 router.get('/recommendations', function(req, res, next) {
   res.render('books/recommended-books', { title: 'Recommended Books' + siteTitle });
 });
+
+/* GET book search box results */
+router.get('/search/:bookTitle', searchBooks);
 
 /* GET specific book details */
 router.get('/:bookId', findBook);
