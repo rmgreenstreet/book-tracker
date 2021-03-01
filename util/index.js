@@ -26,7 +26,7 @@ module.exports = {
     /* Find Google Books results based on a search type (as specified as a parameter in the API) and a search term */
     async getGoogleBooksResults(term, type) {
         const cleanTerm = term.replace(/\s/g,'+');
-        const searchURL = booksApiUrl + '?q=' + type + ':"' + cleanTerm + '"&orderBy=relevance&maxResults=40&key=' + process.env.GOOGLE_BOOKS_API_KEY;
+        const searchURL = booksApiUrl + '?q=' + type + ':"' + cleanTerm + '"&orderBy=relevance&maxResults=40&filter=ebooks&key=' + process.env.GOOGLE_BOOKS_API_KEY;
         console.log(searchURL)
         const results = await axios.get(searchURL);
         return results.data.items;

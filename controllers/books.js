@@ -230,9 +230,9 @@ module.exports = {
         try {
             let googleBooksResults = await getGoogleBooksResults(req.params.bookTitle, 'intitle');
             for (let book of googleBooksResults) {
-                foundBook = await Book.findOne({googleBooksId: book.id});
+                foundBook = await Book.findOne({googleBooksId: book.id}).lean();
                 if (!foundBook) {
-                    foundBook = await createMissingBook(book)
+                    foundBook = await createMissingBook(book);
                 }
                 foundBook.googleBook = book;
                 foundBooks.push(foundBook);

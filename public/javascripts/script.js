@@ -151,19 +151,23 @@ function listBookResults(results, destination) {
             console.log(result);
             let blankResult = document.querySelector('#blank-book-result').content.cloneNode(true);
             blankResult.querySelector('.book-result').setAttribute('id', `${result._id}result`);
-            blankResult.querySelector('.create-link')
-            .setAttribute('id', `${result._id}link`)
-            .setAttribute('href', `/reviews/new/${result._id}`);
-            blankResult.querySelector('.result-image')
-            .setAttribute('src', `${result.googleBook.volumeInfo.images.thumbnail}`)
-            .setAttribute('alt', `${result.title}`)
-            .setAttribute('id', `${result._id}thumbnail`);
+            const createLink = blankResult.querySelector('.create-link');
+            createLink.setAttribute('id', `${result._id}link`);
+            createLink.setAttribute('href', `/reviews/new/${result._id}`);
+            const thumbnailLink = result.googleBook.volumeInfo.imageLinks ? result.googleBook.volumeInfo.imageLinks.thumbnail : '/images/book-not-found.png'
+            const resultImage = blankResult.querySelector('.result-image');
+            resultImage.setAttribute('src', thumbnailLink)
+            resultImage.setAttribute('alt', `${result.title}`)
+            resultImage.setAttribute('id', `${result._id}thumbnail`);
+            const bookTitle = result.title.length > 25 ? `${result.title.substring(0,20)}...` : result.title;
             blankResult.querySelector('.result-book-title')
-            .innerHTML = `${result.title}`;
+            .innerHTML = bookTitle;
+            const bookAuthor = result.googleBook.volumeInfo.authors ? result.googleBook.volumeInfo.authors[0] : 'No author available';
             blankResult.querySelector('.result-book-author')
-            .innerHTML = `${result.googleBook.volumeInfo.authors[0]}`;
+            .innerHTML = bookAuthor;
+            const bookDescription = result.googleBook.volumeInfo.description ? `${result.googleBook.volumeInfo.description.substr(0,50)}...` : 'No description available for this book'
             blankResult.querySelector('.result-book-description')
-            .innerHTML = `${result.googleBook.volumeInfo.description.substr(0,50)}...`
+            .innerHTML = bookDescription;
             
             destination.appendChild(blankResult);
         }
