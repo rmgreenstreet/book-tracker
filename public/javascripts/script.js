@@ -148,7 +148,9 @@ function listBookResults(results, destination) {
     }
     if (results.length > 0) {
         for (let result of results) {
-            console.log(result);
+            if (!result.googleBook) {
+                continue;
+            }
             let blankResult = document.querySelector('#blank-book-result').content.cloneNode(true);
             blankResult.querySelector('.book-result').setAttribute('id', `${result._id}result`);
             const createLink = blankResult.querySelector('.create-link');
