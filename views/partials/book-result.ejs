@@ -1,28 +1,24 @@
 
 <template id="blank-book-result">
-    <div class="result row m-2 book-result">
-        <div class="col">
-            <div class="row">
-                <a href="/reviews/new/:bookId" class="create-link">
-                    <div class="col-3">
-                        <img src="<%#= book.googleBook.volumeInfo.images.thumbnail %>" alt="<%#= book.title %>" id="<%#= book.id %>thumbnail" class="result-image">
+    <a href="/reviews/new/:bookId" class="create-link">
+        <div class="result row m-2 book-result">
+                <div class="col-3 my-1">
+                    <img src="<%#= book.googleBook.volumeInfo.images.thumbnail %>" alt="<%#= book.title %>" id="<%#= book.id %>thumbnail" class="result-image">
+                </div>
+                <div class="col-9 result-info">
+                    <div class="row title-and-author">
+                        <div class="col result-book-title"><%#= book.title %></div>
+                        <div class="col result-book-author"><%#= book.googleBook.volumeInfo.authors[0] %></div>
                     </div>
-                    <div class="col-8 result-info">
-                        <div class="row title-and-author">
-                            <div class="col result-book-title"><%#= book.title %></div>
-                            <div class="col result-book-author"><%#= book.googleBook.volumeInfo.authors[0] %></div>
-                        </div>
-                        <div class="row">
-                            <div class="col result-book-description"><%#= book.googleBook.volumeInfo.description %></div>
-                        </div>
+                    <div class="row">
+                        <div class="col result-book-description"><%#= book.googleBook.volumeInfo.description %></div>
                     </div>
-                </a>
-            </div>
+                </div>
+            <!-- <a href="<%#= review.googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank">
+                <div class="col-1 powered-by-google">
+                    <img src="images/powered-by-google.png" alt="Powered by Google" srcset="">
+                </div>
+            </a> -->
         </div>
-        <!-- <a href="<%#= review.googleBook.volumeInfo.canonicalVolumeLink %>" target="_blank">
-            <div class="col-1 powered-by-google">
-                <img src="images/powered-by-google.png" alt="Powered by Google" srcset="">
-            </div>
-        </a> -->
-    </div>
+    </a>
 </template>

@@ -111,7 +111,7 @@ async function doSearch(type, value){
 
 function listTagResults(results, destination) {
     for (let child of destination.children) {
-        destination.removeChild(child);
+        child.remove();
     }
     if (results.length > 0) {
         for (let result of results) {
@@ -142,10 +142,10 @@ function listTagResults(results, destination) {
 }
 
 function listBookResults(results, destination) {
-    console.log(results);
-    for (let child of destination.children) {
-        destination.removeChild(child);
-    }
+    // for (let child of destination.children) {
+    //     child.remove();
+    // }
+    destination.innerHTML = '';
     if (results.length > 0) {
         for (let result of results) {
             if (!result.googleBook) {
@@ -156,7 +156,7 @@ function listBookResults(results, destination) {
             const createLink = blankResult.querySelector('.create-link');
             createLink.setAttribute('id', `${result._id}link`);
             createLink.setAttribute('href', `/reviews/new/${result._id}`);
-            const thumbnailLink = result.googleBook.volumeInfo.imageLinks ? result.googleBook.volumeInfo.imageLinks.thumbnail : '/images/book-not-found.png'
+            const thumbnailLink = result.googleBook.volumeInfo.imageLinks ? result.googleBook.volumeInfo.imageLinks.thumbnail : './images/book-not-found.png'
             const resultImage = blankResult.querySelector('.result-image');
             resultImage.setAttribute('src', thumbnailLink)
             resultImage.setAttribute('alt', `${result.title}`)
